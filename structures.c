@@ -5,11 +5,11 @@
 
 void showMainMenu(char* nombreusuario) {
     if(nombreusuario == NULL) {
-        printf("1. Iniciar sesion/Registrarse \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas");
+        printf("1. Iniciar sesion/Registrarse \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
 
     }
     else {
-         printf("1. Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas");
+         printf("1. Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
     }
 }
 
