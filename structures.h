@@ -4,7 +4,7 @@
 typedef struct{
     int id;
     char* nombre;
-    Usuario creador;
+    struct Usuario* creador;
 
 }Discusion;
 
@@ -20,14 +20,14 @@ typedef struct{
     char* texto;
     Usuario creador;
     char* fechaCreacion;
-    Comentario respuestaA;
+    struct Comentario* respuestaA;
 }Comentario;
 
 
 //FUNCIONES
-void showMainMenu();
-void inicioSesionoRegistro();
-
+void showMainMenu(char** nombreusuario);
+void inicioSesionoRegistro(char** nombreusuario);
+void inicioSesion(char** nombreusuario);
 
 
 
