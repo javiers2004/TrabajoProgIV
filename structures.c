@@ -1,57 +1,51 @@
 #include "structures.h"
 #include "stdio.h"
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "funciones1.h"
 //FUNCIONES
 
-void showMainMenu(char** nombreusuario) {
-        if(nombreusuario != NULL) {
-            printf("Hola, %s \n", nombreusuario);
-        }
+void showMainMenu(Usuario *user) {
+    if((*user).nombre == NULL | (*user).id < 0) {
+        printf("BIENVENIDO A --------\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
-        int seleccion;
-        char numero[10];
-        fgets(numero, 3, stdin);
-        sscanf(numero," %c", &seleccion);
-        printf("%i",seleccion);
-        if(seleccion == '1') {
-            inicioSesionoRegistro(nombreusuario);
+        char linea[10];
+	    fgets(linea, 10, stdin);
+        printf("%s", linea);
+        switch (*linea) {
+            case '1':
+                inicioSesionoRegistro(user);
+                break;
+            case '2':
+                break;
+            case '3':
+                break;
+            case '4':
+                break;
+            default:
+                break;
         }
-        if(seleccion == '2') {
-            inicioSesionoRegistro(nombreusuario);
-        
-    }
+    }    
     else {
-         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
+        printf("Hola, %s  \n", (*user).nombre, (*user).contrasena); 
+        printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
+        char linea[10];
+	    fgets(linea, 10, stdin);
+        printf("%s", linea);
+        switch (*linea) {
+            case '1':
+                cerrarSesion(user);
+                break;
+            case '2':
+                break;
+            case '3':
+                break;
+            case '4':
+                break;
+            default:
+                break;
+        }
     }
 }
-
-void inicioSesionoRegistro(char** nombreusuario) {
-    system("cls || clear");
-    printf(" 1.Iniciar sesion \n 2.Registrarse");
-        int seleccion;
-        char numero[10];
-        fgets(numero, 3, stdin);
-        sscanf(numero," %c", &seleccion);
-        if(seleccion = '1') {
-            system("cls || clear");
-            printf("---------- INICIAR SESION ----------");
-            inicioSesion(nombreusuario);
-        }
-        else if(seleccion == 2) {
-            system("cls || clear");
-            printf("---------- REGISTRARSE ----------");
-        }
-        else {
-        }
-}
-
-void inicioSesion(char** nombreusuario) {
-    system("cls || clear");
-    printf("Nombre de usuario: \n");
-    char num[10];
-    fgets(num, 3, stdin);
-    sscanf(num," %c", *nombreusuario);
-}
-
-
 

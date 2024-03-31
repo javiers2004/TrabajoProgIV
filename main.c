@@ -3,11 +3,11 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-    int trueboolean = 1;
-    char* nombreusuario = NULL;
-    while(trueboolean == 1) {    
-        showMainMenu(&nombreusuario);
-    }
+    Usuario user1;
+    user1.nombre = NULL;  
+    system("cls || clear");
+    showMainMenu(&user1);
+    
 
     //esto es una prueba
     //PRUEBA ALEJANDRO MILLA

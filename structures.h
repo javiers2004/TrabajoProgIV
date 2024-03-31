@@ -1,5 +1,6 @@
 #ifndef _STRUCTURES_H_
 #define _STRUCTURES_H_
+#include <time.h>
 //ESTRUCTURAS
 typedef struct{
     int id;
@@ -12,7 +13,9 @@ typedef struct{
     int id;
     char* nombre;
     char* contrasena;
-    char* fechaCreacion;
+    time_t fechaCreacion;
+    char* telefono;
+    char* email;
 }Usuario;
 
 typedef struct{
@@ -25,11 +28,6 @@ typedef struct{
 
 
 //FUNCIONES
-void showMainMenu(char** nombreusuario);
-void inicioSesionoRegistro(char** nombreusuario);
-void inicioSesion(char** nombreusuario);
-
-
-
+void showMainMenu(Usuario *user);
 
 #endif // _STRUCTURES_H_
