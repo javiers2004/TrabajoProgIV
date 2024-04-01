@@ -4,12 +4,13 @@
 #include <string.h>
 #include <time.h>
 #include "funciones1.h"
+#include "funciones2.h"
 //FUNCIONES
 
 void showMainMenu(Usuario *user) {
     if((*user).nombre == NULL | (*user).id < 0) {
         printf("BIENVENIDO A --------\n");   
-        printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
+        printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
         char linea[10];
 	    fgets(linea, 10, stdin);
         printf("%s", linea);
@@ -18,10 +19,7 @@ void showMainMenu(Usuario *user) {
                 inicioSesionoRegistro(user);
                 break;
             case '2':
-                break;
-            case '3':
-                break;
-            case '4':
+
                 break;
             default:
                 break;
@@ -40,6 +38,7 @@ void showMainMenu(Usuario *user) {
             case '2':
                 break;
             case '3':
+                crearDiscusion(user);
                 break;
             case '4':
                 break;

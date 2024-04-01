@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include "funciones1.h"
+#include <unistd.h>
 
 void inicioSesionoRegistro(Usuario *user) {
     system("cls || clear");
@@ -31,13 +32,13 @@ void inicioSesion(Usuario *user) {
     char str[20];
 	char nombre[20]; // Almacena el nombre de usuario
 	char contrasena[20]; // Almacena la contraseña
-	printf("NOMBRE: \n");
+	printf("INGRESE EL NOMBRE: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", nombre); // Escanea una cadena (%s) para el nombre
 	clearIfNeeded(str, sizeof(str));
     system("cls || clear");
-	printf("CONTRASENA: \n");
+	printf("INGRESE LA CONTRASENA: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", contrasena); // Escanea una cadena (%s) para la contraseña
@@ -49,7 +50,12 @@ void inicioSesion(Usuario *user) {
     //FALTA TODO EL SISTEMA DE BASES DE DATOS
     (*user).id = 1;
     system("cls || clear");
-    printf("SESION INICIADA CON EXITO\n");
+    printf("Iniciando sesion de %s...", (*user).nombre);
+    sleep(4);
+    system("cls || clear");
+    printf("Sesion iniciada con exito\n");
+    sleep(2);
+    system("cls || clear");
     showMainMenu(user);
 }
 
@@ -63,14 +69,17 @@ void clearIfNeeded(char *str, int max_line) {
 void cerrarSesion(Usuario *user) {
     system("cls || clear");
 
+    (*user).id = -1;
+    printf("Cerrando sesion de %s...", (*user).nombre);
+    sleep(4);
+    system("cls || clear");
     (*user).nombre = NULL;
     (*user).contrasena = NULL;
     (*user).email = NULL;
     (*user).telefono = NULL;
-
-    (*user).id = -1;
-
-    printf("SESION CERRADA CON EXITO\n");
+    printf("Sesion cerrada con exito\n");
+    sleep(2);
+    system("cls || clear");
     showMainMenu(user);
 }
 
@@ -82,25 +91,25 @@ void registro(Usuario *user) {
 	char contrasena[20]; // Almacena la contraseña
     char email[30];
     char telefono[12];
-	printf("NOMBRE: \n");
+	printf("INGRESE EL NOMBRE: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", nombre); // Escanea una cadena (%s) para el nombre
 	clearIfNeeded(str, sizeof(str));
     system("cls || clear");
-	printf("CONTRASENA: \n");
+	printf("INGRESE LA CONTRASENA: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", contrasena); // Escanea una cadena (%s) para la contraseña
 	clearIfNeeded(str, sizeof(str));
     system("cls || clear");
-    printf("EMAIL: \n");
+    printf("INGRESE EL EMAIL: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", email); // Escanea una cadena (%s) para el email
 	clearIfNeeded(str, sizeof(str));
     system("cls || clear");
-    printf("TELEFONO: \n");
+    printf("INGRESE EL TELEFONO: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", telefono); // Escanea una cadena (%s) para el telefono
@@ -118,7 +127,9 @@ void registro(Usuario *user) {
     //FALTA TODO EL SISTEMA DE BASES DE DATOS
     (*user).id = 1;
     system("cls || clear");
-    printf("REGISTRO CON EXITO\n");
+    printf("Registro con exito de %s\n", (*user).nombre);
+    sleep(2);
+    system("cls || clear");
     showMainMenu(user);
 
 }

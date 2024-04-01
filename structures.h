@@ -2,12 +2,6 @@
 #define _STRUCTURES_H_
 #include <time.h>
 //ESTRUCTURAS
-typedef struct{
-    int id;
-    char* nombre;
-    struct Usuario* creador;
-
-}Discusion;
 
 typedef struct{
     int id;
@@ -17,6 +11,13 @@ typedef struct{
     char* telefono;
     char* email;
 }Usuario;
+
+typedef struct{
+    int id;
+    char* nombre;
+    Usuario *creador;
+    time_t fechaCreacion;
+}Discusion;
 
 typedef struct{
     int id;
