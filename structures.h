@@ -1,8 +1,8 @@
 #ifndef _STRUCTURES_H_
 #define _STRUCTURES_H_
 #include <time.h>
-//ESTRUCTURAS
 
+//ESTRUCTURAS NECESARIAS   -> Usuario, Discusión, Comentario
 typedef struct{
     int id;
     char* nombre;
@@ -22,13 +22,15 @@ typedef struct{
 typedef struct{
     int id;
     char* texto;
-    Usuario creador;
-    char* fechaCreacion;
-    struct Comentario* respuestaA;
+    Usuario *creador;
+    Discusion *disc;
+    time_t fechaCreacion;
+   // Comentario *respuestaA;
 }Comentario;
 
 
 //FUNCIONES
 void showMainMenu(Usuario *user);
+void crearBaseDeDatosUsuarios();
 
 #endif // _STRUCTURES_H_

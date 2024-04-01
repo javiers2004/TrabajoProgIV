@@ -2,10 +2,9 @@
 #define _FUNCIONES_2_H_
 #include "structures.h"
 
-//FUNCIONES PARA CREAR UNA NUEVA DISCUSIÓN
+//FUNCIONES PARA VER TODAS LAS DISCUSIONES Y AÑADIR COMENTARIOS
 
-void crearDiscusion(Usuario *user);
-void agregarNuevaDiscusion(Usuario *user, Discusion *disc);
-char* eliminarSalto(char* frase);
+Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta);
+void AgregarNuevoComentario(Comentario *coment);
 
 #endif //_FUNCIONES_1_H_

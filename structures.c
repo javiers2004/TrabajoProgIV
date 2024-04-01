@@ -4,10 +4,15 @@
 #include <string.h>
 #include <time.h>
 #include "funciones1.h"
-#include "funciones2.h"
+#include "funciones3.h"
+#include "sqlite3.h"
 //FUNCIONES
 
-void showMainMenu(Usuario *user) {
+
+// showMainMenu(Usuario *user): despliega el menú principal, que en función de si ya está dentro de un usuario, se encarga de 
+// mostrar unas opciones u otras. Y además lee la entrada por teclado y en función de la opción seleccionada, se encarga de
+// llamar a la función correspondiente
+void showMainMenu(Usuario *user) {                      
     if((*user).nombre == NULL | (*user).id < 0) {
         printf("BIENVENIDO A --------\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
@@ -46,5 +51,40 @@ void showMainMenu(Usuario *user) {
                 break;
         }
     }
+}
+
+
+
+//crearBaseDeDatosUsuarios(): función para llamar solo la primera vez o si se quiere reiniciar la actual base (habría primero que 
+// eliminarla y llamar a esta función). Crea una tabla Usuario con sus campos: id, nombre, contraseña, fecha creación, email 
+// y telefono
+void crearBaseDeDatosUsuarios() {
+    sqlite3 *db;
+    char *err_msg = 0;
+    
+    int rc = sqlite3_open("base.db", &db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db); // Cerrar la conexión antes de salir
+        return;
+    }
+    const char *sql = "CREATE TABLE IF NOT EXISTS Usuarios ("
+                      "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                      "Nombre TEXT UNIQUE NOT NULL,"
+                      "Contrasena TEXT NOT NULL,"
+                      "FechaCreacion INTEGER,"
+                      "Telefono TEXT,"
+                      "Email TEXT"
+                      ");";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error SQL: %s\n", err_msg);
+        sqlite3_free(err_msg);
+    } else {
+        printf("Tabla creada correctamente.\n");
+    }
+    sqlite3_close(db);
 }
 

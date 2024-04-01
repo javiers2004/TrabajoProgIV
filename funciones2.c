@@ -1,64 +1,42 @@
-#include "structures.h"
 #include "funciones2.h"
+#include "structures.h"
 #include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 
-void crearDiscusion(Usuario *user) {
-    system("cls || clear");
-    Discusion d1;
-
-    char str[100];
-    char nombre[100]; // Almacena el nombre de la discusión
-    printf("NOMBRE: \n");
+// comentar(Usuario *user, Discusion *disc, Comentario *respuesta): función que a partir de un Usuario *user, una Discusion *disc y
+// un Comentario *respuesta se encarga de solicitar por teclado el texto que albergará el comentario. Con todo esos datos genera una 
+// estructura Comentario para guardarlo más tarde en la base de datos.
+Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta) {
+    Comentario c1;
+    c1.creador = user;
+    c1.disc = disc;
+    //c1.respuestaA = respuesta;
+    char str[500];
+    char texto[500]; // Almacena el contenido del comentario
+    printf("Texto: \n");
 	fflush(stdout);
-	fgets(nombre, sizeof(nombre), stdin); // Escanea una cadena (%s) para el nombre
+	fgets(texto, sizeof(texto), stdin); // Escanea una cadena (%s) para el comentario
 
-    d1.nombre = strdup(nombre);
-    d1.creador = user;
+    c1.texto = strdup(texto);
     time_t tiempo_actual;
     time(&tiempo_actual);
-    (*user).fechaCreacion = tiempo_actual;
+    c1.fechaCreacion = tiempo_actual;
 
-    //COMPROBAR QUE NO EXISTE Y ASIGNAR SU ID CORRESPONDIENTE (BASES DE DATOS)
 
-    agregarNuevaDiscusion(user, &d1);
 
 }
 
-void agregarNuevaDiscusion(Usuario *user, Discusion *disc) {
-    system("cls || clear");
-    char* time_str = ctime(&((*disc).fechaCreacion));
-    printf("Creando la nueva discusion  '%s'  de  %s  a  %s... \n", eliminarSalto((*disc).nombre), eliminarSalto((*disc).creador->nombre), eliminarSalto(time_str));
-    sleep(4);
-    system("cls || clear");
-    printf("Discusion creada con exito");
-    sleep(2);
-    system("cls || clear");
-    showMainMenu(user);
-    //AÑADIR TODOS LOS CAMPOS DE LA DISCUSION A LA BASE DE DATOS
+
+void AgregarNuevoComentario(Comentario *coment) {
+
+    //AGREGAR EL COMENTARIO A LA BASE DE DATOS
 
 }
 
-char* eliminarSalto(char* frase) {
-    int i = 0;
-    while(frase[i] != '\n' && frase[i] != '\0') {
-        i++;
-    }
-    if (frase[i] == '\n') { 
-        char* copia = (char*)malloc(sizeof(char) * (i + 1)); 
-        if (copia == NULL) {
-            return NULL; 
-        }
-        for (int e = 0; e < i; e++) {
-            copia[e] = frase[e];
-        }
-        copia[i] = '\0'; 
-        return copia; 
-    } else { 
-        return frase; 
-    }
+void desplegarConversaciones() {
+
+    //CODIGO PARA LEER LAS CONVERSACIONES DE LA BASE DE DATOS Y MOSTRARLAS
+
+
 }

@@ -8,6 +8,7 @@ void inicioSesion(Usuario *user);
 void clearIfNeeded(char *str, int max_line);
 void cerrarSesion(Usuario *user);
 void registro(Usuario *user);
-
-
+void insertarUsuario(Usuario *user);
+int nombreExiste(const char *nombre);
+int verificarCredenciales(const char *nombre, const char *contrasena);
 #endif //_FUNCIONES_1_H_
