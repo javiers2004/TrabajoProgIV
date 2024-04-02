@@ -59,8 +59,14 @@ void inicioSesion(Usuario *user) {
 
             (*user).id = 1;
             system("cls || clear");
+            printf("Iniciando sesion de %s.", (*user).nombre);
+            sleep(1);
+            system("cls || clear");
+            printf("Iniciando sesion de %s..", (*user).nombre);
+            sleep(1);
+            system("cls || clear");
             printf("Iniciando sesion de %s...", (*user).nombre);
-            sleep(4);
+            sleep(1);
             system("cls || clear");
             printf("Sesion iniciada con exito\n");
             sleep(2);
@@ -102,11 +108,17 @@ void clearIfNeeded(char *str, int max_line) {
 // cerrarSesion(Usuario *user): función que simplemente cierra la sesión actual y te devuelve al menú principal.
 void cerrarSesion(Usuario *user) {
     system("cls || clear");
-
     (*user).id = -1;
-    printf("Cerrando sesion de %s...", (*user).nombre);
-    sleep(4);
+    printf("Cerrando sesion de %s.", (*user).nombre);
+    sleep(1);
     system("cls || clear");
+    printf("Cerrando sesion de %s..", (*user).nombre);
+    sleep(1);
+    system("cls || clear");
+    printf("Cerrando sesion de %s...", (*user).nombre);
+    sleep(1);
+    system("cls || clear");
+
     (*user).nombre = NULL;
     (*user).contrasena = NULL;
     (*user).email = NULL;
@@ -160,8 +172,9 @@ void registro(Usuario *user) {
 	    fgets(str, sizeof(str), stdin);
 	    sscanf(str, "%s", telefono); 
 	    clearIfNeeded(str, sizeof(str));
-        system("cls || clear");
 
+        system("cls || clear");
+        printf("Registrando usuario.");
 	    (*user).nombre = strdup(nombre); 
         (*user).contrasena = strdup(contrasena); 
         (*user).email = email;
@@ -169,13 +182,18 @@ void registro(Usuario *user) {
         time_t tiempo_actual;
         time(&tiempo_actual);
         (*user).fechaCreacion = tiempo_actual;
-    
         insertarUsuario(user);
-
+        sleep(1);
+        system("cls || clear");
+        printf("Registrando usuario..");
+        sleep(1);
+        system("cls || clear");
+        printf("Registrando usuario...");
+        sleep(1);
         (*user).id = 1;
         system("cls || clear");
         printf("Registro con exito de %s\n", (*user).nombre);
-        sleep(2);
+        sleep(3);
         system("cls || clear");
         showMainMenu(user);
     }
@@ -204,7 +222,6 @@ void insertarUsuario(Usuario *user) {
         sqlite3_close(db);
     }
 
-    printf("Usuario insertado correctamente.\n");
     sqlite3_close(db);
 }
 
@@ -252,3 +269,4 @@ int verificarCredenciales(const char *nombre, const char *contrasena) {
     sqlite3_close(db);
     return (count > 0);
 }
+

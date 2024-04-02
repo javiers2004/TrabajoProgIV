@@ -7,5 +7,7 @@
 void crearDiscusion(Usuario *user);
 void agregarNuevaDiscusion(Usuario *user, Discusion *disc);
 char* eliminarSalto(char* frase);
+void insertarDiscusion(Discusion *disc);
+int discusionExiste(char* nombre);
 
 #endif //_FUNCIONES_1_H_
