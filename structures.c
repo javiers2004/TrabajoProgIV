@@ -7,6 +7,7 @@
 #include "funciones3.h"
 #include "sqlite3.h"
 #include "funciones2.h"
+#include "funciones5.h"
 //FUNCIONES
 
 
@@ -31,8 +32,8 @@ void showMainMenu(Usuario *user) {
         }
     }    
     else {
-        printf("Hola, %s  \n", (*user).nombre, (*user).contrasena); 
-        printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n");
+        printf("Hola, %s\n", (*user).nombre); 
+        printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
         char linea[10];
 	    fgets(linea, 10, stdin);
         switch (*linea) {
@@ -46,6 +47,9 @@ void showMainMenu(Usuario *user) {
                 crearDiscusion(user);
                 break;
             case '4':
+                break;
+            case '5':
+                imprimirInfoUsuario(user);
                 break;
             default:
                 break;

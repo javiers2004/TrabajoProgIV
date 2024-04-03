@@ -255,10 +255,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
 	sscanf(str, "%s", contrasena); // Escanea una cadena (%s) para la contraseña
 	clearIfNeeded(str, sizeof(str));
     if(verificarCredenciales(nombre, contrasena) == 1) {
-        (*user).nombre = strdup(nombre); // Asigna memoria y copia el nombre
-        (*user).contrasena = strdup(contrasena); // Asigna memoria y copia la contraseña
-
-        (*user).id = 1;
+        user = leerUsuario(nombre);
         system("cls || clear");
         printf("Iniciando sesion de %s.", (*user).nombre);
         sleep(1);
