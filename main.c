@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     showMainMenu(&user1);
     
     //crearBaseDeDatosUsuarios();
-
+    //crearBaseDeDatosDiscusiones();
 
 
     //esto es una prueba

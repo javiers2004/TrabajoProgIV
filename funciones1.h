@@ -11,4 +11,7 @@ void registro(Usuario *user);
 void insertarUsuario(Usuario *user);
 int nombreExiste(const char *nombre);
 int verificarCredenciales(const char *nombre, const char *contrasena);
+void contrasenaRecursiva(Usuario *user, int intentos, char* nombre);
+Usuario* leerUsuario(const char* nombre);
+
 #endif //_FUNCIONES_1_H_
