@@ -36,7 +36,33 @@ Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta) {
 void AgregarNuevoComentario(Comentario *coment) {
 
     //AGREGAR EL COMENTARIO A LA BASE DE DATOS
+    sqlite3 *db;
+    char *err_msg = 0;
+    int rc = sqlite3_open("base.db", &db);
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "No se puede abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+    char *sql = "INSERT INTO Comentarios (Comentario, ID_User, ID_Discusion, FechaCreacion) VALUES (?, ?, ?, ?)";
+    sqlite3_stmt *stmt;
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
+    if(rc == SQLITE_OK){
+        sqlite3_bind_text(stmt, 1, coment->texto, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, coment->creador->id, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt,3,coment->disc->id,-1,SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 4,coment->fechaCreacion,-1,SQLITE_TRANSIENT); 
+
+        rc = sqlite3_step(stmt);
+        if(rc != SQLITE_DONE){
+            printf("Error al insertar datos: %s\n", sqlite3_errmsg(db));
+        }
+        sqlite3_finalize(stmt);
+    }else{
+        fprintf(stderr, "Error al preparar la inserción: %s\n", sqlite3_errmsg(db));
+    }
+    sqlite3_close(db);
 }
 
 
@@ -105,5 +131,22 @@ void desplegarDiscusiones() {
     for (int i = 0; discusiones[i].nombre != NULL; i++) {
         printf("-----------------------------------------------------------------------------------------------------\n");
         printf("%i . %s\n        creada por %s el %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].creador->nombre, discusiones[i].fechaCreacion);
+    }
+
+    int disc_id;
+    printf("Ingresa el ID de la discusión a la que quieras acceder y comentar: ");
+    scanf("%d, &disc_id");
+    Discusion *disc_seleccionada = NULL;
+    for(int i = 0; discusiones[i].nombre != NULL; i++) {
+        if (discusiones[i].id == disc_id) {
+            disc_seleccionada = &discusiones[i];
+            break;
+        }
+    }
+    if(disc_seleccionada != NULL){
+        Comentario nuevo = comentar(user, disc_seleccionada, NULL);
+        AgregarNuevoComentario(&nuevo);
+    }else{
+        printf("Discusión no encontrada.\n");
     }
 }
