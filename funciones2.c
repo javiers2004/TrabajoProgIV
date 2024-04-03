@@ -50,8 +50,8 @@ void AgregarNuevoComentario(Comentario *coment) {
 
     if(rc == SQLITE_OK){
         sqlite3_bind_text(stmt, 1, coment->texto, -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 2, coment->creador->id, -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt,3,coment->disc->id,-1,SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 2, coment->creador->id);
+        sqlite3_bind_int(stmt, 3, coment->disc->id);
         sqlite3_bind_text(stmt, 4,coment->fechaCreacion,-1,SQLITE_TRANSIENT); 
 
         rc = sqlite3_step(stmt);
@@ -110,7 +110,7 @@ Discusion* leerDiscusiones() {
 
 // desplegarDiscusiones(): despliega todas las discusiones cuando es llamada desde showMainMenu(Usuario *user)(opción 2) y para ello usa la 
 // función leerDiscusiones() de donde las recibirá.
-void desplegarDiscusiones() {
+void desplegarDiscusiones(Usuario *user) {
     // Verificar si el array de discusiones es NULL
     system("cls || clear");
     printf("Recopilando discusiones.");
@@ -135,18 +135,25 @@ void desplegarDiscusiones() {
 
     int disc_id;
     printf("Ingresa el ID de la discusión a la que quieras acceder y comentar: ");
-    scanf("%d, &disc_id");
-    Discusion *disc_seleccionada = NULL;
-    for(int i = 0; discusiones[i].nombre != NULL; i++) {
-        if (discusiones[i].id == disc_id) {
-            disc_seleccionada = &discusiones[i];
-            break;
+    if(scanf("%d", &disc_id) != 1) {
+        int c; 
+        while((c = getchar()) != '\n' && c != EOF){ };
+        Discusion *disc_selected = NULL;
+        for(int i = 0; discusiones[i].nombre != NULL; i++) {
+            if(discusiones[i].id == disc_id) {
+                disc_selected = &discusiones[i];
+                break;
+            }
         }
-    }
-    if(disc_seleccionada != NULL){
-        Comentario nuevo = comentar(user, disc_seleccionada, NULL);
-        AgregarNuevoComentario(&nuevo);
+        if(disc_selected != NULL){
+            Comentario nuevo = comentar(user, disc_selected, NULL);
+            AgregarNuevoComentario(&nuevo);
+        }else{
+            printf("Discusión no encontrada.\n");
+        }
     }else{
-        printf("Discusión no encontrada.\n");
+        int c;
+        while((c = getchar()) != '\n' && c != EOF){};
+        printf("Entrada inválida.\n");
     }
 }

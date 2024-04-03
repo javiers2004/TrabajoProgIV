@@ -7,5 +7,5 @@
 Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta);
 void AgregarNuevoComentario(Comentario *coment);
 Discusion* leerDiscusiones();
-void desplegarDiscusiones();
+void desplegarDiscusiones(Usuario *user);
 #endif //_FUNCIONES_2_H_
