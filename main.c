@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     
     //crearBaseDeDatosUsuarios();
     //crearBaseDeDatosDiscusiones();
-
+    crearBaseDeDatosComentarios();
 
     //esto es una prueba
     //PRUEBA ALEJANDRO MILLA

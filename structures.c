@@ -122,4 +122,33 @@ void crearBaseDeDatosDiscusiones() {
     sqlite3_close(db);
 }
 
+void crearBaseDeDatosComentarios() {
+    sqlite3 *db;
+    char *err_msg = 0;
+    
+    int rc = sqlite3_open("base.db", &db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db); // Cerrar la conexión antes de salir
+        return;
+    }
+    const char *sql = "CREATE TABLE IF NOT EXISTS Comentarios ("
+                      "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                      "Comentario TEXT ,"
+                      "ID User INT NOT NULL,"
+                      "ID Discusion INT NOT NULL,"
+                      "FechaCreacion TEXT"
+                      ");";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error SQL: %s\n", err_msg);
+        sqlite3_free(err_msg);
+    } else {
+        printf("Tabla creada correctamente.\n");
+    }
+    sqlite3_close(db);
+}
+
 
