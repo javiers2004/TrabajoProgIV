@@ -33,9 +33,12 @@ void crearDiscusion(Usuario *user) {
     else {   
         d1.nombre = strdup(nombre);
         d1.creador = user;
-        time_t tiempo_actual;
-        time(&tiempo_actual);
-        (*user).fechaCreacion = tiempo_actual;
+        time_t tiempo;
+        struct tm *info_tm;
+        char buffer[26]; 
+        time(&tiempo);
+        info_tm = localtime(&tiempo);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
 
         agregarNuevaDiscusion(user, &d1);
     }
@@ -46,7 +49,7 @@ void crearDiscusion(Usuario *user) {
 // datos. Se llama desde crearDiscusion(Usuario *user).
 void agregarNuevaDiscusion(Usuario *user, Discusion *disc) {
     system("cls || clear");
-    char* time_str = ctime(&((*disc).fechaCreacion));
+    char* time_str = disc->fechaCreacion;
     printf("Creando la nueva discusion  '%s'  de  %s  a  %s... \n", eliminarSalto((*disc).nombre), eliminarSalto((*disc).creador->nombre), eliminarSalto(time_str));
     insertarDiscusion(disc);
     sleep(4);
@@ -94,8 +97,16 @@ void insertarDiscusion(Discusion *disc) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
+
+    time_t tiempo;
+    struct tm *info_tm;
+    char buffer[26]; 
+    time(&tiempo);
+    info_tm = localtime(&tiempo);
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+
     sprintf(sql, "INSERT INTO Discusiones (Nombre, Creador, FechaCreacion) VALUES ('%s', '%s', '%s');",
-            (*disc).nombre, (*disc).creador->nombre, (*disc).fechaCreacion);
+            (*disc).nombre, (*disc).creador->nombre, buffer);
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {

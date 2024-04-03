@@ -57,7 +57,7 @@ void showMainMenu(Usuario *user) {
 
 //crearBaseDeDatosUsuarios(): función para llamar solo la primera vez o si se quiere reiniciar la actual base (habría primero que 
 // eliminarla y llamar a esta función). Crea una tabla Usuario con sus campos: id, nombre, contraseña, fecha creación, email 
-// y telefono
+// y telefono.
 void crearBaseDeDatosUsuarios() {
     sqlite3 *db;
     char *err_msg = 0;
@@ -72,7 +72,7 @@ void crearBaseDeDatosUsuarios() {
                       "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                       "Nombre TEXT UNIQUE NOT NULL,"
                       "Contrasena TEXT NOT NULL,"
-                      "FechaCreacion INTEGER,"
+                      "FechaCreacion TEXT,"
                       "Telefono TEXT,"
                       "Email TEXT"
                       ");";
@@ -104,7 +104,7 @@ void crearBaseDeDatosDiscusiones() {
                       "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                       "Nombre TEXT UNIQUE NOT NULL,"
                       "Creador INT NOT NULL,"
-                      "FechaCreacion INTEGER"
+                      "FechaCreacion TEXT"
                       ");";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);

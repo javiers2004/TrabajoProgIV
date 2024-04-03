@@ -7,7 +7,7 @@ typedef struct{
     int id;
     char* nombre;
     char* contrasena;
-    time_t fechaCreacion;
+    char* fechaCreacion;
     char* telefono;
     char* email;
 }Usuario;
@@ -16,7 +16,7 @@ typedef struct{
     int id;
     char* nombre;
     Usuario *creador;
-    time_t fechaCreacion;
+    char* fechaCreacion;
 }Discusion;
 
 typedef struct{
@@ -24,7 +24,7 @@ typedef struct{
     char* texto;
     Usuario *creador;
     Discusion *disc;
-    time_t fechaCreacion;
+    char* fechaCreacion;
    // Comentario *respuestaA;
 }Comentario;
 

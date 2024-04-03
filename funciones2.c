@@ -5,6 +5,7 @@
 #include "sqlite3.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "funciones1.h"
 
 // comentar(Usuario *user, Discusion *disc, Comentario *respuesta): función que a partir de un Usuario *user, una Discusion *disc y
 // un Comentario *respuesta se encarga de solicitar por teclado el texto que albergará el comentario. Con todo esos datos genera una 
@@ -21,9 +22,13 @@ Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta) {
 	fgets(texto, sizeof(texto), stdin); // Escanea una cadena (%s) para el comentario
 
     c1.texto = strdup(texto);
-    time_t tiempo_actual;
-    time(&tiempo_actual);
-    c1.fechaCreacion = tiempo_actual;
+    time_t tiempo;
+    struct tm *info_tm;
+    char buffer[26]; 
+    time(&tiempo);
+    info_tm = localtime(&tiempo);
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+    c1.fechaCreacion = buffer;
 
 }
 
@@ -52,14 +57,18 @@ Discusion* leerDiscusiones() {
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
         const unsigned char *nombre = sqlite3_column_text(stmt, 1);
+        const unsigned char* nombreCreador = sqlite3_column_text(stmt, 2);
+        Usuario *creator = leerUsuario(nombreCreador);        
 
-        int fecha_creacion = sqlite3_column_int(stmt, 3);
+        const unsigned char* fecha_creacion = sqlite3_column_text(stmt, 3);
 
         Discusion d;
+        creator = leerUsuario((char *)nombreCreador);
+        d.creador = creator;
         d.id = id;
         d.nombre = strdup((char *)nombre); 
 
-        d.fechaCreacion = fecha_creacion;
+        d.fechaCreacion = strdup((char *)fecha_creacion); 
 
         num_discusiones++;
         discusiones = realloc(discusiones, num_discusiones * sizeof(Discusion));
@@ -95,6 +104,6 @@ void desplegarDiscusiones() {
     printf("SELECCIONA LA DISCUSION A LA QUE DESEAS ACCEDER:\n");
     for (int i = 0; discusiones[i].nombre != NULL; i++) {
         printf("-----------------------------------------------------------------------------------------------------\n");
-        printf("%i . %s\n  creada por %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].fechaCreacion);
+        printf("%i . %s\n        creada por %s el %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].creador->nombre, discusiones[i].fechaCreacion);
     }
 }

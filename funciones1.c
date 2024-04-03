@@ -48,37 +48,7 @@ void inicioSesion(Usuario *user) {
 	clearIfNeeded(str, sizeof(str));
     if(nombreExiste(nombre) == 1) {
         system("cls || clear");
-	    printf("INGRESE LA CONTRASENA: \n");
-	    fflush(stdout);
-	    fgets(str, sizeof(str), stdin);
-	    sscanf(str, "%s", contrasena); // Escanea una cadena (%s) para la contraseña
-	    clearIfNeeded(str, sizeof(str));
-        if(verificarCredenciales(nombre, contrasena) == 1) {
-            (*user).nombre = strdup(nombre); // Asigna memoria y copia el nombre
-            (*user).contrasena = strdup(contrasena); // Asigna memoria y copia la contraseña
-
-            (*user).id = 1;
-            system("cls || clear");
-            printf("Iniciando sesion de %s.", (*user).nombre);
-            sleep(1);
-            system("cls || clear");
-            printf("Iniciando sesion de %s..", (*user).nombre);
-            sleep(1);
-            system("cls || clear");
-            printf("Iniciando sesion de %s...", (*user).nombre);
-            sleep(1);
-            system("cls || clear");
-            printf("Sesion iniciada con exito\n");
-            sleep(2);
-            system("cls || clear");
-            showMainMenu(user);
-        }
-        else {
-            system("cls || clear");
-            printf("Contrasena incorrecta");
-            sleep(4);
-            showMainMenu(user);
-        }
+        contrasenaRecursiva(user, 3, nombre);
     }
     else {
         system("cls || clear");
@@ -88,11 +58,8 @@ void inicioSesion(Usuario *user) {
         printf("Si es tu primera vez aqui selecciona la opcion de Registrarse\n");
         sleep(4);
         system("cls || clear");
-        showMainMenu(user);
+        inicioSesionoRegistro(user);
     }
-
-
-
 }
 
 
@@ -151,7 +118,7 @@ void registro(Usuario *user) {
         printf("Este nombre ya esta en uso. Prueba con otro");
         sleep(4);
         system("cls || clear");
-        showMainMenu(user);
+        registro(user);
     }
     else {                                              //NOMBRE DISPONIBLE
         system("cls || clear");
@@ -179,9 +146,15 @@ void registro(Usuario *user) {
         (*user).contrasena = strdup(contrasena); 
         (*user).email = email;
         (*user).telefono = telefono;
-        time_t tiempo_actual;
-        time(&tiempo_actual);
-        (*user).fechaCreacion = tiempo_actual;
+
+        time_t tiempo;
+        struct tm *info_tm;
+        char buffer[26]; 
+        time(&tiempo);
+        info_tm = localtime(&tiempo);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+
+        (*user).fechaCreacion = buffer;
         insertarUsuario(user);
         sleep(1);
         system("cls || clear");
@@ -212,8 +185,9 @@ void insertarUsuario(Usuario *user) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
-    sprintf(sql, "INSERT INTO Usuarios (Nombre, Contrasena, Telefono, Email) VALUES ('%s', '%s', '%s', '%s');",
-            user->nombre, user->contrasena, user->telefono, user->email);
+
+    sprintf(sql, "INSERT INTO Usuarios (Nombre, Contrasena, Telefono, Email, FechaCreacion) VALUES ('%s', '%s', '%s', '%s', '%s');",
+            user->nombre, user->contrasena, user->telefono, user->email, user->fechaCreacion);
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {
@@ -270,3 +244,88 @@ int verificarCredenciales(const char *nombre, const char *contrasena) {
     return (count > 0);
 }
 
+// contrasenaRecursiva(Usuario *user, int intentos, char* nombre): función recursiva para manejar los intentos de contraseñas
+// introducidas.
+void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
+    char contrasena[20]; // Almacena la contraseña
+    char str[20];
+	printf("INGRESE LA CONTRASENA: \n");
+	fflush(stdout);
+	fgets(str, sizeof(str), stdin);
+	sscanf(str, "%s", contrasena); // Escanea una cadena (%s) para la contraseña
+	clearIfNeeded(str, sizeof(str));
+    if(verificarCredenciales(nombre, contrasena) == 1) {
+        (*user).nombre = strdup(nombre); // Asigna memoria y copia el nombre
+        (*user).contrasena = strdup(contrasena); // Asigna memoria y copia la contraseña
+
+        (*user).id = 1;
+        system("cls || clear");
+        printf("Iniciando sesion de %s.", (*user).nombre);
+        sleep(1);
+        system("cls || clear");
+        printf("Iniciando sesion de %s..", (*user).nombre);
+        sleep(1);
+        system("cls || clear");
+        printf("Iniciando sesion de %s...", (*user).nombre);
+        sleep(1);
+        system("cls || clear");
+        printf("Sesion iniciada con exito\n");
+        sleep(2);
+        system("cls || clear");
+        showMainMenu(user);
+    }
+    else if(intentos > 0) {
+        system("cls || clear");
+        printf("Contrasena incorrecta");
+        sleep(4);
+        system("cls || clear");
+        printf("Intentos: %i \n", intentos);
+        contrasenaRecursiva(user, intentos -1, nombre);
+    }   
+    else {
+        system("cls || clear");
+        printf("Has introducido demasiadas veces una contrasena incorrecta");
+        sleep(4);
+        system("cls || clear");
+        printf("Volveras al menu principal en 3");
+        sleep(1);
+        system("cls || clear");
+        printf("Volveras al menu principal en 2");
+        sleep(1);
+        system("cls || clear");
+        printf("Volveras al menu principal en 1");
+        sleep(1);
+        system("cls || clear");
+        inicioSesionoRegistro(user);
+    }
+}
+
+
+//leerUsuario(const char* nombre): función que a partir de un char* nombre busca en la base de datos un usuario con ese nombre y en el 
+// caso de encontrarlo te devuelve un puntero a un usuario con todos los datos que le corresponden. Se usa cuando en leerDiscusiones();
+Usuario* leerUsuario(const char* nombre) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+
+    rc = sqlite3_open("base.db", &db);
+
+    const char *sql = "SELECT ID, Nombre, Contrasena, FechaCreacion, Telefono, Email FROM Usuarios WHERE Nombre = ?";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    rc = sqlite3_bind_text(stmt, 1, nombre, -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+        
+    Usuario *user = malloc(sizeof(Usuario)); 
+    user->id = sqlite3_column_int(stmt, 0);
+    user->nombre = strdup((char *)sqlite3_column_text(stmt, 1));
+    user->contrasena = strdup((char *)sqlite3_column_text(stmt, 2));
+    user->fechaCreacion = strdup((char *)sqlite3_column_text(stmt, 3));
+    user->telefono = strdup((char *)sqlite3_column_text(stmt, 4));
+    user->email = strdup((char *)sqlite3_column_text(stmt, 5));
+    
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return user; 
+}
