@@ -39,7 +39,7 @@ void crearDiscusion(Usuario *user) {
         time(&tiempo);
         info_tm = localtime(&tiempo);
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-
+        d1.fechaCreacion = buffer;
         agregarNuevaDiscusion(user, &d1);
     }
 }
@@ -49,8 +49,7 @@ void crearDiscusion(Usuario *user) {
 // datos. Se llama desde crearDiscusion(Usuario *user).
 void agregarNuevaDiscusion(Usuario *user, Discusion *disc) {
     system("cls || clear");
-    char* time_str = disc->fechaCreacion;
-    printf("Creando la nueva discusion  '%s'  de  %s  a  %s... \n", eliminarSalto((*disc).nombre), eliminarSalto((*disc).creador->nombre), eliminarSalto(time_str));
+    printf("Creando la nueva discusion  '%s'  de  %s  el  %s... \n", eliminarSalto((*disc).nombre), eliminarSalto((*disc).creador->nombre), eliminarSalto((*disc).fechaCreacion));
     insertarDiscusion(disc);
     sleep(4);
     system("cls || clear");
