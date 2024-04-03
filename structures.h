@@ -33,6 +33,7 @@ typedef struct{
 void showMainMenu(Usuario *user);
 void crearBaseDeDatosUsuarios();
 void crearBaseDeDatosDiscusiones();
+void crearBaseDeDatosComentarios();
 
 
 #endif // _STRUCTURES_H_
