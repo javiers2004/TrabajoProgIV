@@ -127,6 +127,7 @@ void desplegarDiscusiones(Usuario *user) {
         printf("No hay discusiones para desplegar.\n");
         return;
     }
+
     printf("SELECCIONA LA DISCUSION A LA QUE DESEAS ACCEDER:\n");
     for (int i = 0; discusiones[i].nombre != NULL; i++) {
         printf("-----------------------------------------------------------------------------------------------------\n");
@@ -134,26 +135,34 @@ void desplegarDiscusiones(Usuario *user) {
     }
 
     int disc_id;
-    printf("Ingresa el ID de la discusión a la que quieras acceder y comentar: ");
-    if(scanf("%d", &disc_id) != 1) {
-        int c; 
-        while((c = getchar()) != '\n' && c != EOF){ };
-        Discusion *disc_selected = NULL;
-        for(int i = 0; discusiones[i].nombre != NULL; i++) {
-            if(discusiones[i].id == disc_id) {
-                disc_selected = &discusiones[i];
-                break;
-            }
+    printf("-----------------------------------------------------------------------------------------------------\n");
+    scanf("%i", &disc_id);
+
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { }
+    Discusion *disc_s = NULL;
+    for(int i = 0; discusiones[i].nombre != NULL; i++) {
+        if (discusiones[i].id == disc_id) {
+            disc_s = &discusiones[i];
+            printf("Discusion seleccionada: %s\n", disc_s->nombre);
+            printf("Creada por: %s\n", disc_s->creador->nombre);
+            printf("Fecha de creación: %s\n", disc_s->fechaCreacion);
+            printf("-----------------------------------------------------------------------------------------------------\n");
+            printf("COMENTARIOS:\n");
+            // Leer comentarios
+            
+            break;
         }
-        if(disc_selected != NULL){
-            Comentario nuevo = comentar(user, disc_selected, NULL);
-            AgregarNuevoComentario(&nuevo);
-        }else{
-            printf("Discusión no encontrada.\n");
+    }
+    if(disc_s !=NULL){
+        printf("¿Deseas comentar en esta discusión? Presiona 1, cualquier otra tecla para salir.\n");
+        int op;
+        if(scanf("%d", &op) == 1 && op == 1){
+            while((c = getchar()) != '\n' && c != EOF) { }
+            Comentario c1 = comentar(user, disc_s, NULL);
+            AgregarNuevoComentario(&c1);
         }
     }else{
-        int c;
-        while((c = getchar()) != '\n' && c != EOF){};
-        printf("Entrada inválida.\n");
+        printf("Discusión no encontrada.\n");
     }
 }

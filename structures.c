@@ -25,7 +25,7 @@ void showMainMenu(Usuario *user) {
                 inicioSesionoRegistro(user);
                 break;
             case '2':
-                desplegarDiscusiones();
+                desplegarDiscusiones(user);
                 break;
             default:
                 break;
@@ -41,7 +41,7 @@ void showMainMenu(Usuario *user) {
                 cerrarSesion(user);
                 break;
             case '2':
-                desplegarDiscusiones();
+                desplegarDiscusiones(user);
                 break;
             case '3':
                 crearDiscusion(user);
