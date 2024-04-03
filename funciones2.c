@@ -135,18 +135,25 @@ void desplegarDiscusiones() {
 
     int disc_id;
     printf("Ingresa el ID de la discusión a la que quieras acceder y comentar: ");
-    scanf("%d, &disc_id");
-    Discusion *disc_seleccionada = NULL;
-    for(int i = 0; discusiones[i].nombre != NULL; i++) {
-        if (discusiones[i].id == disc_id) {
-            disc_seleccionada = &discusiones[i];
-            break;
+    if(scanf("%d", &disc_id) != 1) {
+        int c; 
+        while((c = getchar()) != '\n' && c != EOF){ };
+        Discusion *disc_selected = NULL;
+        for(int i = 0; discusiones[i].nombre != NULL; i++) {
+            if(discusiones[i].id == disc_id) {
+                disc_selected = &discusiones[i];
+                break;
+            }
         }
-    }
-    if(disc_seleccionada != NULL){
-        Comentario nuevo = comentar(user, disc_seleccionada, NULL);
-        AgregarNuevoComentario(&nuevo);
+        if(disc_selected != NULL){
+            Comentario nuevo = comentar(user, disc_selected, NULL);
+            AgregarNuevoComentario(&nuevo);
+        }else{
+            printf("Discusión no encontrada.\n");
+        }
     }else{
-        printf("Discusión no encontrada.\n");
+        int c;
+        while((c = getchar()) != '\n' && c != EOF){};
+        printf("Entrada inválida.\n");
     }
 }
