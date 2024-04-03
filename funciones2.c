@@ -50,7 +50,7 @@ void AgregarNuevoComentario(Comentario *coment) {
 
     if(rc == SQLITE_OK){
         sqlite3_bind_text(stmt, 1, coment->texto, -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 2, coment->creador->id, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 2, coment->creador->id);
         sqlite3_bind_int(stmt, 3, coment->disc->id);
         sqlite3_bind_text(stmt, 4,coment->fechaCreacion,-1,SQLITE_TRANSIENT); 
 
