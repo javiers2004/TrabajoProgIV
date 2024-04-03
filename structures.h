@@ -34,5 +34,9 @@ void showMainMenu(Usuario *user);
 void crearBaseDeDatosUsuarios();
 void crearBaseDeDatosDiscusiones();
 void crearBaseDeDatosComentarios();
+<<<<<<< HEAD
+
+=======
+>>>>>>> 51c5e6da88e7552266423e2ec4b81f2b1154437d
 
 #endif // _STRUCTURES_H_
