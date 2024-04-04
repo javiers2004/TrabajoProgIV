@@ -42,6 +42,7 @@ void AgregarNuevoComentario(Comentario *coment) {
         fprintf(stderr, "Error al preparar la inserción: %s\n", sqlite3_errmsg(db));
     }
     sqlite3_close(db);
+    agregarstadistica(coment);
 }
 
 
@@ -87,6 +88,111 @@ Discusion* leerDiscusiones() {
 }
 
 
+int obtenerIdMaximoDiscusiones() {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+    int max_id = -1;
+
+    rc = sqlite3_open("base.db", &db);
+
+
+    const char *sql = "SELECT MAX(ID) FROM Discusiones;";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW) {
+        max_id = sqlite3_column_int(stmt, 0);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return max_id;
+}
+
+Discusion* cargarDiscusion(char* id) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+
+    rc = sqlite3_open("base.db", &db);
+    const char *sql = "SELECT ID, Nombre, FechaCreacion, Creador FROM Discusiones WHERE ID = ?";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    rc = sqlite3_bind_text(stmt, 1, id, -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+        
+    Discusion *disc = malloc(sizeof(Discusion)); 
+    disc->id = sqlite3_column_int(stmt, 0);
+    disc->nombre = strdup((char *)sqlite3_column_text(stmt, 1));
+    disc->fechaCreacion = strdup((char *)sqlite3_column_text(stmt, 2));
+    disc->creador = leerUsuario(strdup((char *)sqlite3_column_text(stmt, 3)));
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return disc; 
+}
+
+
+
+void cargarSeleccion(char* linea, Usuario *user) {
+     Discusion *disc_num = cargarDiscusion(linea);
+
+    system("cls || clear");
+    printf("Discusion seleccionada: %s\n", disc_num->nombre);
+    printf("Creada por: %s\n", disc_num->creador->nombre);
+    printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
+    printf("-----------------------------------------------------------------------------------------------------\n");
+    printf("COMENTARIOS:\n");
+
+
+    imprimirComentarios(linea);
+
+    printf("\n \n \n");
+    char str[500];
+    printf("¿QUE QUIERES DECIR? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
+	fflush(stdout);
+	fgets(str, sizeof(str), stdin);
+    // if(strcmp(str, "\n")!= 0){
+    //     char *posm = strchr(str, '@');
+    //     if(posm !=NULL){
+    //         char nUser[50];
+    //         sscanf(posm, "@%49s", nUser);
+    //         if(UsuarioExiste(nUser)){
+    //             char mencionFormat[500];
+    //             sprintf(mencionFormat, "\x1B[1m\x1B[32m@%s\x1B[0m", nUser);
+    //             strreplace(str,nUser,mencionFormat);
+    //         }
+    //     }
+    // }
+    Comentario *com = malloc(sizeof(Comentario));
+    if(strcmp(str, "\n") == 1) {
+        com->creador = user;
+        com->disc = disc_num;
+        com->texto = str;
+        
+        time_t tiempo;
+        struct tm *info_tm;
+        char buffer[26]; 
+        time(&tiempo);
+        info_tm = localtime(&tiempo);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+        com->fechaCreacion = buffer;
+        //printf("introduciendo");
+        AgregarNuevoComentario(com);
+        free(com);
+    cargarSeleccion(linea, user);
+    }
+    else {
+        system("cls || clear");
+        showMainMenu(user);
+    }
+    
+}
+
+
+
 // desplegarDiscusiones(): despliega todas las discusiones cuando es llamada desde showMainMenu(Usuario *user)(opción 2) y para ello usa la 
 // función leerDiscusiones() de donde las recibirá.
 void desplegarDiscusiones(Usuario *user) {
@@ -121,7 +227,7 @@ void desplegarDiscusiones(Usuario *user) {
 }
 void agregarstadistica(Comentario *com) {
     FILE* fichero;
-    fichero = fopen("estadisticas", "a"); // a de "append" para añadir estadísticas al final
+    fichero = fopen("estadisticas.txt", "a"); // a de "append" para añadir estadísticas al final
 
     if (fichero == NULL) {
         printf("Error al abrir el archivo de estadísticas.\n");
@@ -135,28 +241,7 @@ void agregarstadistica(Comentario *com) {
 
 
 
-Discusion* cargarDiscusion(char* id) {
-    sqlite3 *db;
-    sqlite3_stmt *stmt;
-    int rc;
 
-    rc = sqlite3_open("base.db", &db);
-    const char *sql = "SELECT ID, Nombre, FechaCreacion, Creador FROM Discusiones WHERE ID = ?";
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-    rc = sqlite3_bind_text(stmt, 1, id, -1, SQLITE_STATIC);
-    rc = sqlite3_step(stmt);
-        
-    Discusion *disc = malloc(sizeof(Discusion)); 
-    disc->id = sqlite3_column_int(stmt, 0);
-    disc->nombre = strdup((char *)sqlite3_column_text(stmt, 1));
-    disc->fechaCreacion = strdup((char *)sqlite3_column_text(stmt, 2));
-    disc->creador = leerUsuario(strdup((char *)sqlite3_column_text(stmt, 3)));
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return disc; 
-}
 bool UsuarioExiste(char *nombreUsuario){
     sqlite3 *db;
     sqlite3_stmt *stmt;
@@ -201,28 +286,7 @@ void imprimirComentarios(char* IDConversacion) {
     }
 
 
-int obtenerIdMaximoDiscusiones() {
-    sqlite3 *db;
-    sqlite3_stmt *stmt;
-    int rc;
-    int max_id = -1;
 
-    rc = sqlite3_open("base.db", &db);
-
-
-    const char *sql = "SELECT MAX(ID) FROM Discusiones;";
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
-
-    rc = sqlite3_step(stmt);
-    if (rc == SQLITE_ROW) {
-        max_id = sqlite3_column_int(stmt, 0);
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return max_id;
-}
 
 void strreplace(char *o, const char *sub, const char *replacement){
     char *pos = strstr(o, sub);
@@ -237,62 +301,6 @@ void strreplace(char *o, const char *sub, const char *replacement){
     strcpy(o, temp);
 
 }
-
-void cargarSeleccion(char* linea, Usuario *user) {
-     Discusion *disc_num = cargarDiscusion(linea);
-
-    system("cls || clear");
-    printf("Discusion seleccionada: %s\n", disc_num->nombre);
-    printf("Creada por: %s\n", disc_num->creador->nombre);
-    printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
-    printf("-----------------------------------------------------------------------------------------------------\n");
-    printf("COMENTARIOS:\n");
-
-
-    imprimirComentarios(linea);
-
-    printf("\n \n \n");
-    char str[500];
-    printf("¿QUE QUIERES DECIR? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
-	fflush(stdout);
-	fgets(str, sizeof(str), stdin);
-    if(strcmp(str, "\n")!= 0){
-        char *posm = strchr(str, '@');
-        if(posm !=NULL){
-            char nUser[50];
-            sscanf(posm, "@%49s", nUser);
-            if(UsuarioExiste(nUser)){
-                char mencionFormat[500];
-                sprintf(mencionFormat, "\x1B[1m\x1B[32m@%s\x1B[0m", nUser);
-                strreplace(str,nUser,mencionFormat);
-            }
-        }
-    }
-    Comentario *com = malloc(sizeof(Comentario));
-    if(strcmp(str, "\n") == 1) {
-        com->creador = user;
-        com->disc = disc_num;
-        com->texto = str;
-        
-        time_t tiempo;
-        struct tm *info_tm;
-        char buffer[26]; 
-        time(&tiempo);
-        info_tm = localtime(&tiempo);
-        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-        com->fechaCreacion = buffer;
-        //printf("introduciendo");
-        AgregarNuevoComentario(com);
-        free(com);
-    cargarSeleccion(linea, user);
-    }
-    else {
-        system("cls || clear");
-        showMainMenu(user);
-    }
-    
-}
-
 
 
     // Preparar la consulta SQL para obtener comentarios
