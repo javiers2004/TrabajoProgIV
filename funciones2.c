@@ -196,37 +196,32 @@ void cargarSeleccion(char* linea, Usuario *user) {
 
     printf("\n \n \n");
     char str[500];
-    printf("¿QUE QUIERES DECIR?: \n");
+    printf("¿QUE QUIERES DECIR? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
-    Comentario *com;
-    com->creador = user;
-    com->disc = disc_num;
-    com->texto = str;
-    time_t tiempo;
-    struct tm *info_tm;
-    char buffer[26]; 
-    time(&tiempo);
-    info_tm = localtime(&tiempo);
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-    com->fechaCreacion = buffer;
-    AgregarNuevoComentario(com);
-
-
-    // if(disc_s !=NULL){
-    //     printf("¿Deseas comentar en esta discusión? Presiona 1, cualquier otra tecla para salir.\n");
-    //     int op;
-    //     if(scanf("%d", &op) == 1 && op == 1){
-    //         while((c = getchar()) != '\n' && c != EOF) { }
-    //         Comentario c1 = comentar(user, disc_s, NULL);
-    //         AgregarNuevoComentario(&c1);
-    //     }
-    // }else{
-    //     printf("Discusión no encontrada.\n");
-    // }
-
-
+    Comentario *com = malloc(sizeof(Comentario));
+    if(strcmp(str, "\n") == 1) {
+        com->creador = user;
+        com->disc = disc_num;
+        com->texto = str;
+        
+        time_t tiempo;
+        struct tm *info_tm;
+        char buffer[26]; 
+        time(&tiempo);
+        info_tm = localtime(&tiempo);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+        com->fechaCreacion = buffer;
+        //printf("introduciendo");
+        AgregarNuevoComentario(com);
+        free(com);
     cargarSeleccion(linea, user);
+    }
+    else {
+        system("cls || clear");
+        showMainMenu(user);
+    }
+    
 }
 
 
