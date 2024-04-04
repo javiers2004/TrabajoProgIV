@@ -29,6 +29,7 @@ Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta) {
     info_tm = localtime(&tiempo);
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
     c1.fechaCreacion = buffer;
+    agregarstadistica(&c1);
 
 }
 
@@ -166,3 +167,17 @@ void desplegarDiscusiones(Usuario *user) {
         printf("Discusión no encontrada.\n");
     }
 }
+void agregarstadistica(Comentario *com) {
+    FILE* fichero;
+    fichero = fopen("estadisticas", "a"); // a de "append" para añadir estadísticas al final
+
+    if (fichero == NULL) {
+        printf("Error al abrir el archivo de estadísticas.\n");
+        return;
+    }
+
+    fprintf(fichero, "ID: %d | Texto: %s | Creador: %s | Discusión: %s | Fecha de creación: %s.\n",com->id, com->texto, com->creador->nombre, com->disc->nombre, com->fechaCreacion);
+
+    fclose(fichero); 
+}
+

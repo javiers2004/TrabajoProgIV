@@ -138,3 +138,4 @@ int discusionExiste(char* nombre) {
     sqlite3_close(db);
     return (count > 0); 
 }
+
