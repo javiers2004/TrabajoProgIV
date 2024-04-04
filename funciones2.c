@@ -171,7 +171,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
         com->creador = user;
         com->disc = disc_num;
         com->texto = str;
-        
+        com->id = maxComentID();
         time_t tiempo;
         struct tm *info_tm;
         char buffer[26]; 
@@ -286,21 +286,57 @@ void imprimirComentarios(char* IDConversacion) {
     }
 
 
+char* strreplace(char *o) {
+    int posicionarroba = -1;
+    int posicionespacio = -1;
+    int i = 0;
 
-
-void strreplace(char *o, const char *sub, const char *replacement){
-    char *pos = strstr(o, sub);
-    if(pos == NULL){
-        return;
+    // Encontrar la posición de la arroba '@'
+    while(o[i] != '\0') {
+        if(o[i] == '@') {
+            posicionarroba = i;
+            break;
+        }
+        i++;
     }
-    char temp[strlen(o) + strlen(replacement) - strlen(sub) + 1];
-    size_t n = pos - o;
-    strncpy(temp, o, n);
-    strcpy(temp + n, replacement);
-    strcpy(temp + n + strlen(replacement), pos + strlen(sub));
-    strcpy(o, temp);
 
+    // Si se encontró la arroba, buscar la siguiente posición de espacio ' '
+    if(posicionarroba != -1) {
+        i = posicionarroba;
+        while(o[i] != '\0') {
+            if(o[i] == ' ') {
+                posicionespacio = i;
+                break;
+            }
+            i++;
+        }
+        // Si no se encontró el espacio, tomar el resto de la cadena
+        if(posicionespacio == -1) {
+            posicionespacio = i;
+        }
+
+        const char *color_start = "\x1b[34m"; // Código de color azul
+        const char *color_end = "\x1b[0m";    // Restablecer color al predeterminado
+
+        // Calcular la longitud de la nueva cadena
+        size_t nueva_longitud = posicionarroba + strlen(color_start) + (posicionespacio - posicionarroba) + strlen(color_end) + strlen(o + posicionespacio);
+
+        // Asignar memoria para la nueva cadena
+        char *nueva_cadena = (char*)malloc(nueva_longitud);
+
+        // Construir la nueva cadena con el texto coloreado en azul
+        snprintf(nueva_cadena, nueva_longitud, "%.*s%s%.*s%s%s", posicionarroba, o, color_start, posicionespacio - posicionarroba, o + posicionarroba, color_end, o + posicionespacio);
+
+        // Retornar la nueva cadena
+        return nueva_cadena;
+    }
+
+    // Si no se encontró la arroba, retornar la cadena original
+    return o;
 }
+
+
+
 
 
     // Preparar la consulta SQL para obtener comentarios
@@ -310,13 +346,15 @@ void strreplace(char *o, const char *sub, const char *replacement){
     sqlite3_bind_int(stmt, 1, id_conversacion);
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        int id = sqlite3_column_int(stmt, 0);
+        int id = sqlite3_column_int(stmt, 0);  
         char* comentario = (char*)sqlite3_column_text(stmt, 1);
+        //comentario = strreplace(comentario);
         char* id_user = (char*)sqlite3_column_text(stmt, 2);
         char* fecha_creacion = (char*)sqlite3_column_text(stmt, 3);
         Comentario com;
         com.texto = eliminarSalto(comentario);
         com.fechaCreacion = fecha_creacion;
+        com.id = maxComentID();
         Usuario *u = leerUsuario(id_user);
         com.creador = u;
         printf("-----------------------------------------------------------------------------------------------------\n");
@@ -327,4 +365,25 @@ void strreplace(char *o, const char *sub, const char *replacement){
     // Finalizar la consulta y cerrar la base de datos
     sqlite3_finalize(stmt);
     sqlite3_close(db);
+}
+
+
+int maxComentID() {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+    int maxID = 0;
+
+    rc = sqlite3_open("base.db", &db);
+
+    const char *sql = "SELECT MAX(ID) FROM Comentarios";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+
+    rc = sqlite3_step(stmt);
+    maxID = sqlite3_column_int(stmt, 0);
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return maxID + 1; // Increment the maximum ID and return
 }
