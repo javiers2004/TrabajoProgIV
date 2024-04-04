@@ -253,7 +253,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
 
     printf("\n \n \n");
     char str[500];
-    printf("¿QUE QUIERES DECIR? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
+    printf("¿Algo interesante que comentar? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
     if(strcmp(str, "\n")!= 0){
