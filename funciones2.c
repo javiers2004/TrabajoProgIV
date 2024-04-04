@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "funciones1.h"
 #include "funciones3.h"
+#include <stdbool.h>
 
 
 // comentar(Usuario *user, Discusion *disc, Comentario *respuesta): función que a partir de un Usuario *user, una Discusion *disc y
@@ -156,6 +157,48 @@ Discusion* cargarDiscusion(char* id) {
 
     return disc; 
 }
+bool UsuarioExiste(char *nombreUsuario){
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    bool existe = false;
+    int rc = sqlite3_open("base.db", &db);
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return false;
+    }
+    const char *sql = "SELECT * FROM Usuarios WHERE Nombre = ?";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if(rc == SQLITE_OK){
+        sqlite3_bind_text(stmt, 1, nombreUsuario, -1, SQLITE_STATIC);
+        rc = sqlite3_step(stmt);
+        if(rc == SQLITE_ROW){
+            existe = true;
+        }
+    sqlite3_finalize(stmt);
+
+    }else{
+        fprintf(stderr, "error al verificar el usuario: %s\n", sqlite3_errmsg(db));
+    }
+    sqlite3_close(db);
+    return existe;
+}
+
+void imprimirComentarios(char* IDConversacion) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+
+    // Convertir el ID de conversación a entero
+    int id_conversacion = atoi(IDConversacion);
+
+    // Abrir la base de datos
+    rc = sqlite3_open("base.db", &db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
 
 
 int obtenerIdMaximoDiscusiones() {
@@ -181,6 +224,20 @@ int obtenerIdMaximoDiscusiones() {
     return max_id;
 }
 
+void strreplace(char *o, const char *sub, const char *replacement){
+    char *pos = strstr(o, sub);
+    if(pos == NULL){
+        return;
+    }
+    char temp[strlen(o) + strlen(replacement) - strlen(sub) + 1];
+    size_t n = pos - o;
+    strncpy(temp, o, n);
+    strcpy(temp + n, replacement);
+    strcpy(temp + n + strlen(replacement), pos + strlen(sub));
+    strcpy(o, temp);
+
+}
+
 void cargarSeleccion(char* linea, Usuario *user) {
      Discusion *disc_num = cargarDiscusion(linea);
 
@@ -190,7 +247,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
     printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
     printf("-----------------------------------------------------------------------------------------------------\n");
     printf("COMENTARIOS:\n");
-    // Leer comentarios
+
 
     imprimirComentarios(linea);
 
@@ -199,6 +256,18 @@ void cargarSeleccion(char* linea, Usuario *user) {
     printf("¿QUE QUIERES DECIR? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
+    if(strcmp(str, "\n")!= 0){
+        char *posm = strchr(str, '@');
+        if(posm !=NULL){
+            char nUser[50];
+            sscanf(posm, "@%49s", nUser);
+            if(UsuarioExiste(nUser)){
+                char mencionFormat[500];
+                sprintf(mencionFormat, "\x1B[1m\x1B[32m@%s\x1B[0m", nUser);
+                strreplace(str,nUser,mencionFormat);
+            }
+        }
+    }
     Comentario *com = malloc(sizeof(Comentario));
     if(strcmp(str, "\n") == 1) {
         com->creador = user;
@@ -225,21 +294,6 @@ void cargarSeleccion(char* linea, Usuario *user) {
 }
 
 
-void imprimirComentarios(char* IDConversacion) {
-    sqlite3 *db;
-    sqlite3_stmt *stmt;
-    int rc;
-
-    // Convertir el ID de conversación a entero
-    int id_conversacion = atoi(IDConversacion);
-
-    // Abrir la base de datos
-    rc = sqlite3_open("base.db", &db);
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return;
-    }
 
     // Preparar la consulta SQL para obtener comentarios
     const char *sql = "SELECT ID, Comentario, IDUser, FechaCreacion FROM Comentarios WHERE IDDiscusion = ?;";
