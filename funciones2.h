@@ -4,9 +4,12 @@
 
 //FUNCIONES PARA VER TODAS LAS DISCUSIONES Y AÑADIR COMENTARIOS
 
-Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta);
 void AgregarNuevoComentario(Comentario *coment);
 Discusion* leerDiscusiones();
 void desplegarDiscusiones(Usuario *user);
 void agregarstadistica(Comentario *com);
+Discusion* cargarDiscusion(char* id);
+int obtenerIdMaximoDiscusiones();
+void cargarSeleccion(char* linea, Usuario *user);
+void imprimirComentarios(char* IDConversacion);
 #endif //_FUNCIONES_2_H_

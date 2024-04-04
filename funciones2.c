@@ -6,32 +6,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "funciones1.h"
+#include "funciones3.h"
+
 
 // comentar(Usuario *user, Discusion *disc, Comentario *respuesta): función que a partir de un Usuario *user, una Discusion *disc y
 // un Comentario *respuesta se encarga de solicitar por teclado el texto que albergará el comentario. Con todo esos datos genera una 
 // estructura Comentario para guardarlo más tarde en la base de datos.
-Comentario comentar(Usuario *user, Discusion *disc, Comentario *respuesta) {
-    Comentario c1;
-    c1.creador = user;
-    c1.disc = disc;
-    //c1.respuestaA = respuesta;
-    char str[500];
-    char texto[500]; // Almacena el contenido del comentario
-    printf("Texto: \n");
-	fflush(stdout);
-	fgets(texto, sizeof(texto), stdin); // Escanea una cadena (%s) para el comentario
 
-    c1.texto = strdup(texto);
-    time_t tiempo;
-    struct tm *info_tm;
-    char buffer[26]; 
-    time(&tiempo);
-    info_tm = localtime(&tiempo);
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-    c1.fechaCreacion = buffer;
-    agregarstadistica(&c1);
-
-}
 
 
 void AgregarNuevoComentario(Comentario *coment) {
@@ -40,18 +21,14 @@ void AgregarNuevoComentario(Comentario *coment) {
     sqlite3 *db;
     char *err_msg = 0;
     int rc = sqlite3_open("base.db", &db);
-    if(rc != SQLITE_OK){
-        fprintf(stderr, "No se puede abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return;
-    }
-    char *sql = "INSERT INTO Comentarios (Comentario, ID_User, ID_Discusion, FechaCreacion) VALUES (?, ?, ?, ?)";
+
+    char *sql = "INSERT INTO Comentarios (Comentario, IDUser, IDDiscusion, FechaCreacion) VALUES (?, ?, ?, ?)";
     sqlite3_stmt *stmt;
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
     if(rc == SQLITE_OK){
         sqlite3_bind_text(stmt, 1, coment->texto, -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt, 2, coment->creador->id);
+        sqlite3_bind_text(stmt, 2, coment->creador->nombre, -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(stmt, 3, coment->disc->id);
         sqlite3_bind_text(stmt, 4,coment->fechaCreacion,-1,SQLITE_TRANSIENT); 
 
@@ -130,42 +107,16 @@ void desplegarDiscusiones(Usuario *user) {
     }
 
     printf("SELECCIONA LA DISCUSION A LA QUE DESEAS ACCEDER:\n");
-    for (int i = 0; discusiones[i].nombre != NULL; i++) {
+    for (int i = 0; i<obtenerIdMaximoDiscusiones(); i++) {
         printf("-----------------------------------------------------------------------------------------------------\n");
         printf("%i . %s\n        creada por %s el %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].creador->nombre, discusiones[i].fechaCreacion);
     }
 
-    int disc_id;
     printf("-----------------------------------------------------------------------------------------------------\n");
-    scanf("%i", &disc_id);
-
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF) { }
-    Discusion *disc_s = NULL;
-    for(int i = 0; discusiones[i].nombre != NULL; i++) {
-        if (discusiones[i].id == disc_id) {
-            disc_s = &discusiones[i];
-            printf("Discusion seleccionada: %s\n", disc_s->nombre);
-            printf("Creada por: %s\n", disc_s->creador->nombre);
-            printf("Fecha de creación: %s\n", disc_s->fechaCreacion);
-            printf("-----------------------------------------------------------------------------------------------------\n");
-            printf("COMENTARIOS:\n");
-            // Leer comentarios
-            
-            break;
-        }
-    }
-    if(disc_s !=NULL){
-        printf("¿Deseas comentar en esta discusión? Presiona 1, cualquier otra tecla para salir.\n");
-        int op;
-        if(scanf("%d", &op) == 1 && op == 1){
-            while((c = getchar()) != '\n' && c != EOF) { }
-            Comentario c1 = comentar(user, disc_s, NULL);
-            AgregarNuevoComentario(&c1);
-        }
-    }else{
-        printf("Discusión no encontrada.\n");
-    }
+    char linea[10];
+	fgets(linea, 10, stdin);
+    cargarSeleccion(linea, user);
+   
 }
 void agregarstadistica(Comentario *com) {
     FILE* fichero;
@@ -181,3 +132,142 @@ void agregarstadistica(Comentario *com) {
     fclose(fichero); 
 }
 
+
+
+Discusion* cargarDiscusion(char* id) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+
+    rc = sqlite3_open("base.db", &db);
+    const char *sql = "SELECT ID, Nombre, FechaCreacion, Creador FROM Discusiones WHERE ID = ?";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    rc = sqlite3_bind_text(stmt, 1, id, -1, SQLITE_STATIC);
+    rc = sqlite3_step(stmt);
+        
+    Discusion *disc = malloc(sizeof(Discusion)); 
+    disc->id = sqlite3_column_int(stmt, 0);
+    disc->nombre = strdup((char *)sqlite3_column_text(stmt, 1));
+    disc->fechaCreacion = strdup((char *)sqlite3_column_text(stmt, 2));
+    disc->creador = leerUsuario(strdup((char *)sqlite3_column_text(stmt, 3)));
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return disc; 
+}
+
+
+int obtenerIdMaximoDiscusiones() {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+    int max_id = -1;
+
+    rc = sqlite3_open("base.db", &db);
+
+
+    const char *sql = "SELECT MAX(ID) FROM Discusiones;";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW) {
+        max_id = sqlite3_column_int(stmt, 0);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return max_id;
+}
+
+void cargarSeleccion(char* linea, Usuario *user) {
+     Discusion *disc_num = cargarDiscusion(linea);
+
+    system("cls || clear");
+    printf("Discusion seleccionada: %s\n", disc_num->nombre);
+    printf("Creada por: %s\n", disc_num->creador->nombre);
+    printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
+    printf("-----------------------------------------------------------------------------------------------------\n");
+    printf("COMENTARIOS:\n");
+    // Leer comentarios
+
+    imprimirComentarios(linea);
+
+    printf("\n \n \n");
+    char str[500];
+    printf("¿QUE QUIERES DECIR?: \n");
+	fflush(stdout);
+	fgets(str, sizeof(str), stdin);
+    Comentario *com;
+    com->creador = user;
+    com->disc = disc_num;
+    com->texto = str;
+    time_t tiempo;
+    struct tm *info_tm;
+    char buffer[26]; 
+    time(&tiempo);
+    info_tm = localtime(&tiempo);
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+    com->fechaCreacion = buffer;
+    AgregarNuevoComentario(com);
+
+
+    // if(disc_s !=NULL){
+    //     printf("¿Deseas comentar en esta discusión? Presiona 1, cualquier otra tecla para salir.\n");
+    //     int op;
+    //     if(scanf("%d", &op) == 1 && op == 1){
+    //         while((c = getchar()) != '\n' && c != EOF) { }
+    //         Comentario c1 = comentar(user, disc_s, NULL);
+    //         AgregarNuevoComentario(&c1);
+    //     }
+    // }else{
+    //     printf("Discusión no encontrada.\n");
+    // }
+
+
+    cargarSeleccion(linea, user);
+}
+
+
+void imprimirComentarios(char* IDConversacion) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    int rc;
+
+    // Convertir el ID de conversación a entero
+    int id_conversacion = atoi(IDConversacion);
+
+    // Abrir la base de datos
+    rc = sqlite3_open("base.db", &db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+
+    // Preparar la consulta SQL para obtener comentarios
+    const char *sql = "SELECT ID, Comentario, IDUser, FechaCreacion FROM Comentarios WHERE IDDiscusion = ?;";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int(stmt, 1, id_conversacion);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        char* comentario = (char*)sqlite3_column_text(stmt, 1);
+        char* id_user = (char*)sqlite3_column_text(stmt, 2);
+        char* fecha_creacion = (char*)sqlite3_column_text(stmt, 3);
+        Comentario com;
+        com.texto = eliminarSalto(comentario);
+        com.fechaCreacion = fecha_creacion;
+        Usuario *u = leerUsuario(id_user);
+        com.creador = u;
+        printf("-----------------------------------------------------------------------------------------------------\n");
+        printf("%s\n%s: %s  \n", com.fechaCreacion, com.creador->nombre, com.texto);
+    }
+    printf("-----------------------------------------------------------------------------------------------------\n");
+
+    // Finalizar la consulta y cerrar la base de datos
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}

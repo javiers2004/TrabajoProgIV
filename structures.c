@@ -135,8 +135,8 @@ void crearBaseDeDatosComentarios() {
     const char *sql = "CREATE TABLE IF NOT EXISTS Comentarios ("
                       "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                       "Comentario TEXT ,"
-                      "ID User INT NOT NULL,"
-                      "ID Discusion INT NOT NULL,"
+                      "IDUser TEXT NOT NULL,"
+                      "IDDiscusion INT NOT NULL,"
                       "FechaCreacion TEXT"
                       ");";
 
@@ -150,5 +150,6 @@ void crearBaseDeDatosComentarios() {
     }
     sqlite3_close(db);
 }
+
 
 

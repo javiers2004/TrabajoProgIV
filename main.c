@@ -11,9 +11,9 @@ int main(int argc, char *argv[]) {
     system("cls || clear");
     showMainMenu(&user1);
     
-    //crearBaseDeDatosUsuarios();
-    //crearBaseDeDatosDiscusiones();
-    crearBaseDeDatosComentarios();
+    // crearBaseDeDatosUsuarios();
+    // crearBaseDeDatosDiscusiones();
+    // crearBaseDeDatosComentarios();
 
     //esto es una prueba
     //PRUEBA ALEJANDRO MILLA
