@@ -335,6 +335,65 @@ char* strreplace(char *o) {
     return o;
 }
 
+<<<<<<< HEAD
+void cargarSeleccion(char* linea, Usuario *user) {
+     Discusion *disc_num = cargarDiscusion(linea);
+
+    system("cls || clear");
+    printf("Discusion seleccionada: %s\n", disc_num->nombre);
+    printf("Creada por: %s\n", disc_num->creador->nombre);
+    printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
+    printf("-----------------------------------------------------------------------------------------------------\n");
+    printf("COMENTARIOS:\n");
+
+
+    imprimirComentarios(linea);
+
+    printf("\n \n \n");
+    char str[500];
+    printf("¿Algo interesante que comentar? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
+	fflush(stdout);
+	fgets(str, sizeof(str), stdin);
+    if(strcmp(str, "\n")!= 0){
+        char *posm = strchr(str, '@');
+        if(posm !=NULL){
+            char nUser[50];
+            sscanf(posm, "@%49s", nUser);
+            if(UsuarioExiste(nUser)){
+                char mencionFormat[500];
+                sprintf(mencionFormat, "\x1B[1m\x1B[32m@%s\x1B[0m", nUser);
+                strreplace(str,nUser,mencionFormat);
+            }
+        }
+    }
+    Comentario *com = malloc(sizeof(Comentario));
+    if(strcmp(str, "\n") == 1) {
+        com->creador = user;
+        com->disc = disc_num;
+        com->texto = str;
+        
+        time_t tiempo;
+        struct tm *info_tm;
+        char buffer[26]; 
+        time(&tiempo);
+        info_tm = localtime(&tiempo);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+        com->fechaCreacion = buffer;
+        //printf("introduciendo");
+        AgregarNuevoComentario(com);
+        free(com);
+    cargarSeleccion(linea, user);
+    }
+    else {
+        system("cls || clear");
+        showMainMenu(user);
+    }
+    
+}
+
+
+=======
+>>>>>>> 72f61bb21fd4a16e916867ebe34a247d783f2469
 
 
 
