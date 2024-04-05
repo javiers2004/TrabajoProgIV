@@ -31,3 +31,44 @@ ID: 40 | Texto: @Javiers2004 fuck
 ID: 41 | Texto: hola hola @Javiers2004
  | Creador: Javiers2004 | Discusi√≥n: prueba
  | Fecha de creaci√≥n: 2024-04-04 17:33:01.
+ID: 42 | Texto: dfl§gmdf§gf
+ | Creador: Javiers2005 | Discusi√≥n: prueba
+ | Fecha de creaci√≥n: 2024-04-05 09:36:27.
+ID: 43 | Texto: prueba
+ | Creador: Javiers2005 | Discusi√≥n: prueba
+ | Fecha de creaci√≥n: 2024-04-05 09:36:32.
+ID: 44 | Texto:  | Creador: (null) | Discusi√≥n: prueba
+ | Fecha de creaci√≥n: 2024-04-05 09:44:30.
+ID: 44 | Texto:  | Creador: (null) | Discusi√≥n: prueba
+ | Fecha de creaci√≥n: 2024-04-05 09:44:41.
+ID: 44 | Texto:  | Creador: (null) | Discusi√≥n: que mas queda de haceeeer?
+ | Fecha de creaci√≥n: 2024-04-05 09:44:50.
+ID: 44 | Texto:  | Creador: Javiers2004 | Discusi√≥n: prueba
+ | Fecha de creaci√≥n: 2024-04-05 09:45:51.
+ID: 16 | Texto: hola hola @J
+ | Creador: (null) | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:01:43.
+ID: 16 | Texto: HOLA
+ | Creador: (null) | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:01:52.
+ID: 16 | Texto: hola hola @j
+ | Creador: Javiers2004 | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:03:03.
+ID: 16 | Texto: @Javiers hola hola
+ | Creador: (null) | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:16:09.
+ID: 16 | Texto: @Javier hola hola
+ | Creador: Javiers2004 | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:16:40.
+ID: 16 | Texto: @javier holahola
+ | Creador: Javiers2004 | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:19:31.
+ID: 16 | Texto: gcc 
+ | Creador: (null) | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:25:25.
+ID: 16 | Texto: @a funciona?
+ | Creador: Javiers2005 | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:45:26.
+ID: 16 | Texto: si funciona @prueba
+ | Creador: Javiers2005 | Discusi√≥n: ®Nos dar† tiempo de acabarlo...?
+ | Fecha de creaci√≥n: 2024-04-05 10:45:43.

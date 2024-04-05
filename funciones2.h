@@ -13,5 +13,6 @@ int obtenerIdMaximoDiscusiones();
 void cargarSeleccion(char* linea, Usuario *user);
 void imprimirComentarios(char* IDConversacion);
 int maxComentID();
+char* strreplace(char *o);
 
 #endif //_FUNCIONES_2_H_

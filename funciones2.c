@@ -46,6 +46,33 @@ void AgregarNuevoComentario(Comentario *coment) {
 }
 
 
+bool UsuarioExiste(char *nombreUsuario){
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    bool existe = false;
+    int rc = sqlite3_open("base.db", &db);
+    if(rc != SQLITE_OK){
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return false;
+    }
+    const char *sql = "SELECT * FROM Usuarios WHERE Nombre = ?";
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if(rc == SQLITE_OK){
+        sqlite3_bind_text(stmt, 1, nombreUsuario, -1, SQLITE_STATIC);
+        rc = sqlite3_step(stmt);
+        if(rc == SQLITE_ROW){
+            existe = true;
+        }
+    sqlite3_finalize(stmt);
+
+    }else{
+        fprintf(stderr, "error al verificar el usuario: %s\n", sqlite3_errmsg(db));
+    }
+    sqlite3_close(db);
+    return existe;
+}
+
 // leerDiscusiones(): lee las discusiones de la base de datos y las devuelve mediante un Puntero Discusion*. Esta función es llamada 
 // desde el método desplegarDiscusiones().
 Discusion* leerDiscusiones() {
@@ -135,6 +162,49 @@ Discusion* cargarDiscusion(char* id) {
 }
 
 
+char* strreplace(char *o) {
+    int posicionarroba = -1;
+    int posicionespacio = -1;
+    int i = 0;
+    while(o[i] != '\0') {
+        if(o[i] == '@') {
+            posicionarroba = i;
+        }
+        i++;
+    }
+    i = posicionarroba;
+    while(o[i] != '\0') {
+        if(o[i] == ' ') {
+            posicionespacio = i;
+            break;
+        }
+        i++;
+    }
+    if(posicionespacio == -1) {
+        posicionespacio = i;    
+    }
+
+    // char *nuevacadena = (char*)malloc(((posicionespacio - posicionarroba) ) * sizeof(char));
+    // int a;
+    // for(int a = 0; a<(posicionespacio - posicionarroba) -1; a++) {
+    //     nuevacadena[a] = o[a+posicionarroba+1];
+    // }
+    // printf("/%s/\n %i \n", nuevacadena, (posicionespacio - posicionarroba) + 1);
+    // bool existe = UsuarioExiste(nuevacadena);
+
+    int e;
+    for (int e = 0; o[e] != '\0'; e++) {
+        if (e >= posicionarroba && e < posicionespacio && posicionarroba != -1) {
+            printf("\x1b[34m%c\x1b[0m", o[e]); // Impresión en azul (código ANSI)
+        } else {
+            printf("%c", o[e]); // Impresión en blanco
+        }
+    }
+    printf("\n");
+
+    return o;
+}
+
 
 void cargarSeleccion(char* linea, Usuario *user) {
      Discusion *disc_num = cargarDiscusion(linea);
@@ -151,27 +221,16 @@ void cargarSeleccion(char* linea, Usuario *user) {
 
     printf("\n \n \n");
     char str[500];
-    printf("¿QUE QUIERES DECIR? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
+    printf("¿Algo interesante que comentar? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
 	fflush(stdout);
 	fgets(str, sizeof(str), stdin);
-    // if(strcmp(str, "\n")!= 0){
-    //     char *posm = strchr(str, '@');
-    //     if(posm !=NULL){
-    //         char nUser[50];
-    //         sscanf(posm, "@%49s", nUser);
-    //         if(UsuarioExiste(nUser)){
-    //             char mencionFormat[500];
-    //             sprintf(mencionFormat, "\x1B[1m\x1B[32m@%s\x1B[0m", nUser);
-    //             strreplace(str,nUser,mencionFormat);
-    //         }
-    //     }
-    // }
+    
     Comentario *com = malloc(sizeof(Comentario));
     if(strcmp(str, "\n") == 1) {
         com->creador = user;
         com->disc = disc_num;
         com->texto = str;
-        com->id = maxComentID();
+
         time_t tiempo;
         struct tm *info_tm;
         char buffer[26]; 
@@ -179,7 +238,6 @@ void cargarSeleccion(char* linea, Usuario *user) {
         info_tm = localtime(&tiempo);
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
         com->fechaCreacion = buffer;
-        //printf("introduciendo");
         AgregarNuevoComentario(com);
         free(com);
     cargarSeleccion(linea, user);
@@ -188,7 +246,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
         system("cls || clear");
         showMainMenu(user);
     }
-    
+
 }
 
 
@@ -242,32 +300,7 @@ void agregarstadistica(Comentario *com) {
 
 
 
-bool UsuarioExiste(char *nombreUsuario){
-    sqlite3 *db;
-    sqlite3_stmt *stmt;
-    bool existe = false;
-    int rc = sqlite3_open("base.db", &db);
-    if(rc != SQLITE_OK){
-        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return false;
-    }
-    const char *sql = "SELECT * FROM Usuarios WHERE Nombre = ?";
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-    if(rc == SQLITE_OK){
-        sqlite3_bind_text(stmt, 1, nombreUsuario, -1, SQLITE_STATIC);
-        rc = sqlite3_step(stmt);
-        if(rc == SQLITE_ROW){
-            existe = true;
-        }
-    sqlite3_finalize(stmt);
 
-    }else{
-        fprintf(stderr, "error al verificar el usuario: %s\n", sqlite3_errmsg(db));
-    }
-    sqlite3_close(db);
-    return existe;
-}
 
 void imprimirComentarios(char* IDConversacion) {
     sqlite3 *db;
@@ -284,121 +317,6 @@ void imprimirComentarios(char* IDConversacion) {
         sqlite3_close(db);
         return;
     }
-
-
-char* strreplace(char *o) {
-    int posicionarroba = -1;
-    int posicionespacio = -1;
-    int i = 0;
-
-    // Encontrar la posición de la arroba '@'
-    while(o[i] != '\0') {
-        if(o[i] == '@') {
-            posicionarroba = i;
-            break;
-        }
-        i++;
-    }
-
-    // Si se encontró la arroba, buscar la siguiente posición de espacio ' '
-    if(posicionarroba != -1) {
-        i = posicionarroba;
-        while(o[i] != '\0') {
-            if(o[i] == ' ') {
-                posicionespacio = i;
-                break;
-            }
-            i++;
-        }
-        // Si no se encontró el espacio, tomar el resto de la cadena
-        if(posicionespacio == -1) {
-            posicionespacio = i;
-        }
-
-        const char *color_start = "\x1b[34m"; // Código de color azul
-        const char *color_end = "\x1b[0m";    // Restablecer color al predeterminado
-
-        // Calcular la longitud de la nueva cadena
-        size_t nueva_longitud = posicionarroba + strlen(color_start) + (posicionespacio - posicionarroba) + strlen(color_end) + strlen(o + posicionespacio);
-
-        // Asignar memoria para la nueva cadena
-        char *nueva_cadena = (char*)malloc(nueva_longitud);
-
-        // Construir la nueva cadena con el texto coloreado en azul
-        snprintf(nueva_cadena, nueva_longitud, "%.*s%s%.*s%s%s", posicionarroba, o, color_start, posicionespacio - posicionarroba, o + posicionarroba, color_end, o + posicionespacio);
-
-        // Retornar la nueva cadena
-        return nueva_cadena;
-    }
-
-    // Si no se encontró la arroba, retornar la cadena original
-    return o;
-}
-
-<<<<<<< HEAD
-void cargarSeleccion(char* linea, Usuario *user) {
-     Discusion *disc_num = cargarDiscusion(linea);
-
-    system("cls || clear");
-    printf("Discusion seleccionada: %s\n", disc_num->nombre);
-    printf("Creada por: %s\n", disc_num->creador->nombre);
-    printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
-    printf("-----------------------------------------------------------------------------------------------------\n");
-    printf("COMENTARIOS:\n");
-
-
-    imprimirComentarios(linea);
-
-    printf("\n \n \n");
-    char str[500];
-    printf("¿Algo interesante que comentar? Escribe tu mensaje o pulsa solo ENTER para volver al menu: \n");
-	fflush(stdout);
-	fgets(str, sizeof(str), stdin);
-    if(strcmp(str, "\n")!= 0){
-        char *posm = strchr(str, '@');
-        if(posm !=NULL){
-            char nUser[50];
-            sscanf(posm, "@%49s", nUser);
-            if(UsuarioExiste(nUser)){
-                char mencionFormat[500];
-                sprintf(mencionFormat, "\x1B[1m\x1B[32m@%s\x1B[0m", nUser);
-                strreplace(str,nUser,mencionFormat);
-            }
-        }
-    }
-    Comentario *com = malloc(sizeof(Comentario));
-    if(strcmp(str, "\n") == 1) {
-        com->creador = user;
-        com->disc = disc_num;
-        com->texto = str;
-        
-        time_t tiempo;
-        struct tm *info_tm;
-        char buffer[26]; 
-        time(&tiempo);
-        info_tm = localtime(&tiempo);
-        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-        com->fechaCreacion = buffer;
-        //printf("introduciendo");
-        AgregarNuevoComentario(com);
-        free(com);
-    cargarSeleccion(linea, user);
-    }
-    else {
-        system("cls || clear");
-        showMainMenu(user);
-    }
-    
-}
-
-
-=======
->>>>>>> 72f61bb21fd4a16e916867ebe34a247d783f2469
-
-
-
-
-    // Preparar la consulta SQL para obtener comentarios
     const char *sql = "SELECT ID, Comentario, IDUser, FechaCreacion FROM Comentarios WHERE IDDiscusion = ?;";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
 
@@ -417,7 +335,8 @@ void cargarSeleccion(char* linea, Usuario *user) {
         Usuario *u = leerUsuario(id_user);
         com.creador = u;
         printf("-----------------------------------------------------------------------------------------------------\n");
-        printf("%s\n%s: %s  \n", com.fechaCreacion, com.creador->nombre, com.texto);
+        printf("%s\n%s: ", com.fechaCreacion, com.creador->nombre);
+        strreplace(com.texto);
     }
     printf("-----------------------------------------------------------------------------------------------------\n");
 

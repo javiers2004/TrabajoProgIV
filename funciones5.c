@@ -6,14 +6,14 @@
 
 void imprimirInfoUsuario(Usuario *user) {
     system("cls || clear");
-    printf(" _________________________________\n");
-    printf("|        Informacion Usuario      |\n");
-    printf("|_________________________________|\n");
+    printf(" ______________________________________________________________\n");
+    printf("|                     Informacion Usuario                      |\n");
+    printf("|______________________________________________________________|\n");
     printf("| Nombre:        %s\n", user->nombre);
     printf("| Email:         %s\n", user->email);
     printf("| Telefono:      %s\n", user->telefono);
     printf("| Fecha Creacion:%s\n", user->fechaCreacion);
-    printf("|_________________________________|\n \n");
+    printf("|______________________________________________________________|\n \n");
 
     printf("Pulsa ENTER para continuar.");
     char linea[10];
