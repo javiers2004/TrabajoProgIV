@@ -277,11 +277,17 @@ void desplegarDiscusiones(Usuario *user) {
         printf("%i . %s\n        creada por %s el %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].creador->nombre, discusiones[i].fechaCreacion);
     }
 
-    printf("-----------------------------------------------------------------------------------------------------\n");
+    printf("-----------------------------------------------------------------------------------------------------\n \n\n");
+    printf("Pulsa ENTER para volver al menu principal\n");
     char linea[10];
 	fgets(linea, 10, stdin);
+    if(linea[0] == '\n') {
+        system("cls || clear");
+        showMainMenu(user);
+        
+    }else {	
     cargarSeleccion(linea, user);
-   
+   }
 }
 void agregarstadistica(Comentario *com) {
     FILE* fichero;

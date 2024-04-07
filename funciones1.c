@@ -13,7 +13,7 @@
 //corresponda.
 void inicioSesionoRegistro(Usuario *user) {
     system("cls || clear");
-    printf(" 1.Iniciar sesion \n 2.Registrarse \n");
+    printf(" 1.Iniciar sesion \n 2.Registrarse \n\n\n Pulsa ENTER para volver atras\n");
     char numero[10];
     fgets(numero, sizeof(numero), stdin);
     if(numero[0] == '1') {
@@ -26,8 +26,10 @@ void inicioSesionoRegistro(Usuario *user) {
         printf("---------- REGISTRARSE ----------");
         registro(user);
     }
-    else {
-        // Manejar otra entrada si es necesario
+    else if( numero[0] == '\n') {
+        system("cls || clear");
+        showMainMenu(user);
+        
     }
 }
 
