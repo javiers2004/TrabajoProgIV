@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include "sqlite3.h"
 
+char base[20];
+char nombreAdmin[20];
+char contrasenaAdmin[20];
+leerConfigAdmin(nombreAdmin, contrasenaAdmin, base);
 
 // crearDiscusion(Usuario *user): función que se encarga de crear una discusión permitiendo introducir el tema a tratar además 
 // del usuario que recibe por argumentos.
@@ -98,7 +102,7 @@ void insertarDiscusion(Discusion *disc) {
     char *err_msg = 0;
     char sql[500];
 
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(base, &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -131,7 +135,7 @@ int discusionExiste(char* nombre) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open("base.db", &db);
+    rc = sqlite3_open(base, &db);
 
     const char *sql = "SELECT COUNT(*) FROM Discusiones WHERE Nombre = ?";
 

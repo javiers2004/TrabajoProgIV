@@ -35,5 +35,5 @@ void crearBaseDeDatosUsuarios();
 void crearBaseDeDatosDiscusiones();
 void crearBaseDeDatosComentarios();
 void eliminar(int id, int n);
-
+void leerConfigAdmin(char* nombre, char* contrasena, char* base);
 #endif // _STRUCTURES_H_

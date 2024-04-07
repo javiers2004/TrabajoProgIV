@@ -7,6 +7,11 @@
 #include <unistd.h>
 #include "sqlite3.h"
 
+char base[20];
+char nombreAdmin[20];
+char contrasenaAdmin[20];
+leerConfigAdmin(nombreAdmin, contrasenaAdmin, base);
+
 
 // inicioSesionoRegistro(Usuario *user): función llamada desde la funcion showMainMenu(Usuario *user)(con la opción 1), se encarga de
 // preguntar al usuario por la opción que desea: 1.Iniciar sesión o 2.Registrarse, lee la entrada por teclado y llama a la función que 
@@ -182,7 +187,7 @@ void insertarUsuario(Usuario *user) {
     char *err_msg = 0;
     char sql[500];
 
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(base, &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -210,7 +215,7 @@ int nombreExiste(const char *nombre) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open("base.db", &db);
+    rc = sqlite3_open(base, &db);
 
     const char *sql = "SELECT COUNT(*) FROM Usuarios WHERE Nombre = ?";
 
@@ -232,7 +237,7 @@ int verificarCredenciales(const char *nombre, const char *contrasena) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open("base.db", &db);
+    rc = sqlite3_open(base, &db);
 
     const char *sql = "SELECT COUNT(*) FROM Usuarios WHERE Nombre = ? AND Contrasena = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
@@ -307,7 +312,7 @@ Usuario* leerUsuario(const char* nombre) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open("base.db", &db);
+    rc = sqlite3_open(base, &db);
 
     const char *sql = "SELECT ID, Nombre, Contrasena, FechaCreacion, Telefono, Email FROM Usuarios WHERE Nombre = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);

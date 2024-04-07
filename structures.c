@@ -251,3 +251,26 @@ void eliminar(int id, int n) {
     }
 }
 
+//funcion para leer un archivo adminConfig.txt y obtener los datos de configuracion del administrador (nombre, contraseña y base de datos) 
+void leerConfigAdmin(char *nombre, char *contrasena, char *base) {
+    FILE *fichero;
+    fichero = fopen("adminConfig.txt", "r");
+    if (fichero == NULL) {
+        printf("Error al abrir el fichero\n");
+    }
+    char linea[100];
+    int i = 0;
+    while (fgets(linea, 100, fichero) != NULL) {
+        if (i == 3) {
+            strcpy(nombre, linea);
+        }
+        if (i == 6) {
+            strcpy(contrasena, linea);
+        }
+        if (i == 9) {
+            strcpy(base, linea);
+        }
+        i++;
+    }
+    fclose(fichero);
+}
