@@ -9,6 +9,7 @@
 #include "funciones2.h"
 #include "funciones5.h"
 #include <unistd.h>
+#include "funciones6.h"
 //FUNCIONES
 
 
@@ -19,7 +20,7 @@ void showMainMenu(Usuario *user) {
     if((*user).nombre == NULL | (*user).id < 0) {
         fflush(stdout);
         printf("BIENVENIDO A --------\n");   
-        printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
+        printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n 3.Estadisticas \n");
         char linea[10];
 	    fgets(linea, 10, stdin);
         switch (*linea) {
@@ -29,6 +30,10 @@ void showMainMenu(Usuario *user) {
             case '2':
                 desplegarDiscusiones(user);
                 break;
+                case '3':
+                contarComentariosPorUsuario("estadisticas.txt");
+                break;
+                
             default:
                 break;
         }
