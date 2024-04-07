@@ -17,8 +17,15 @@ void crearDiscusion(Usuario *user) {
     char str[100];
     char nombre[100]; // Almacena el nombre de la discusión
     printf("NOMBRE: \n");
+
 	fflush(stdout);
+    printf("\n\n-------------------------------------------- \nPulse 'Enter' para volver al menu principal \n \n \n");
 	fgets(nombre, sizeof(nombre), stdin); // Escanea una cadena (%s) para el nombre
+    if(nombre[0] == '\n') {
+        system("cls || clear");
+        showMainMenu(user);
+        
+    }else{
     if (discusionExiste(nombre) == 1) {
         system("cls || clear");
         printf("Esta discusion ya existe");
@@ -41,7 +48,7 @@ void crearDiscusion(Usuario *user) {
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
         d1.fechaCreacion = buffer;
         agregarNuevaDiscusion(user, &d1);
-    }
+    }}
 }
 
 
