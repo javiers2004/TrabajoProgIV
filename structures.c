@@ -9,7 +9,7 @@
 #include "funciones2.h"
 #include "funciones5.h"
 #include <unistd.h>
-#include "funciones6.h"
+#include "funciones4.h"
 //FUNCIONES
 
 
