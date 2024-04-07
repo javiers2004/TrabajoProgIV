@@ -9,6 +9,8 @@
 #include "funciones2.h"
 #include "funciones5.h"
 #include <unistd.h>
+#include "funciones6.h"
+#include "funciones6.h"
 //FUNCIONES
 
 
@@ -54,6 +56,7 @@ void showMainMenu(Usuario *user) {
                 crearDiscusion(user);
                 break;
             case '4':
+                contarComentariosPorUsuario("estadisticas.txt");
                 break;
             case '5':
                 imprimirInfoUsuario(user);
