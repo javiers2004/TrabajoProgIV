@@ -18,7 +18,7 @@
 void showMainMenu(Usuario *user) {                      
     if((*user).nombre == NULL | (*user).id < 0) {
         fflush(stdout);
-        printf("BIENVENIDO A --------\n");   
+        printf("BIENVENIDO A THREADSPHERE\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
         char linea[10];
 	    fgets(linea, 10, stdin);
