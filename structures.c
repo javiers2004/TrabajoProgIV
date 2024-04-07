@@ -264,11 +264,11 @@ void leerConfigAdmin(char *nombre, char *contrasena, char *base) {
     
     while (fscanf(fichero, "%s = %s", clave, valor) == 2) {
         if (strcmp(clave, "admin") == 0) {
-            strcpy(nombreAdmin, valor);
+            strcpy(nombre, valor);
         } else if (strcmp(clave, "contrasena") == 0) {
-            strcpy(contrasenaAdmin, valor);
+            strcpy(contrasena, valor);
         } else if (strcmp(clave, "db") == 0) {
-            strcpy(baseDatos, valor);
+            strcpy(base, valor);
         }
     }
 
