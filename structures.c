@@ -257,20 +257,23 @@ void leerConfigAdmin(char *nombre, char *contrasena, char *base) {
     fichero = fopen("adminConfig.txt", "r");
     if (fichero == NULL) {
         printf("Error al abrir el fichero\n");
+        return; // Salir de la función si no se puede abrir el fichero
     }
     char linea[100];
     int i = 0;
     while (fgets(linea, 100, fichero) != NULL) {
-        if (i == 3) {
+        if (i == 2) { // Línea 3 para el nombre del admin
             strcpy(nombre, linea);
-        }
-        if (i == 6) {
+            nombre[strcspn(nombre, "\n")] = 0; // Remover el salto de línea al final
+        } else if (i == 5) { // Línea 6 para la contraseña del admin
             strcpy(contrasena, linea);
-        }
-        if (i == 9) {
+            contrasena[strcspn(contrasena, "\n")] = 0; // Remover el salto de línea al final
+        } else if (i == 8) { // Línea 9 para la base de datos
             strcpy(base, linea);
+            base[strcspn(base, "\n")] = 0; // Remover el salto de línea al final
         }
         i++;
     }
     fclose(fichero);
 }
+
