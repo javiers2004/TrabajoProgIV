@@ -8,6 +8,9 @@
 #include "sqlite3.h"
 #include "funciones2.h"
 #include "funciones5.h"
+#include <unistd.h>
+#include "funciones6.h"
+#include "funciones6.h"
 //FUNCIONES
 
 
@@ -16,7 +19,8 @@
 // llamar a la función correspondiente
 void showMainMenu(Usuario *user) {                      
     if((*user).nombre == NULL | (*user).id < 0) {
-        printf("BIENVENIDO A --------\n");   
+        fflush(stdout);
+        printf("BIENVENIDO A THREADSPHERE\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
         char linea[10];
 	    fgets(linea, 10, stdin);
@@ -32,8 +36,13 @@ void showMainMenu(Usuario *user) {
         }
     }    
     else {
+        int n;
+        char id[100];
         printf("Hola, %s\n", (*user).nombre); 
         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
+        if(strcmp(user->nombre, "admin") == 0) {
+            printf(" \n-OPCIONES DE ADMINISTRADOR-\n 6.Borrar usuario\n 7.Borrar discusion\n 8.Borrar comentario\n");
+        }
         char linea[10];
 	    fgets(linea, 10, stdin);
         switch (*linea) {
@@ -47,9 +56,37 @@ void showMainMenu(Usuario *user) {
                 crearDiscusion(user);
                 break;
             case '4':
+                contarComentariosPorUsuario("estadisticas.txt");
                 break;
             case '5':
                 imprimirInfoUsuario(user);
+                break;
+            case '6':
+                system("cls || clear");
+                printf("ID del usuario:\n");
+	            fgets(id, 100, stdin);
+                n = atoi(id);
+                eliminar(n, 6);
+                system("cls || clear");
+                showMainMenu(user);
+                break;
+            case '7':
+                system("cls || clear");
+                printf("ID de la discusion\n");
+	            fgets(id, 100, stdin);
+                n = atoi(id);
+                eliminar(n, 7);
+                system("cls || clear");
+                showMainMenu(user);
+                break;
+            case '8':
+                system("cls || clear");
+                printf("ID del comentario\n");
+	            fgets(id, 100, stdin);
+                n = atoi(id);
+                eliminar(n, 8);
+                system("cls || clear");
+                showMainMenu(user);
                 break;
             default:
                 break;
@@ -152,4 +189,65 @@ void crearBaseDeDatosComentarios() {
 }
 
 
+void eliminar(int id, int n) {
+    if(n == 6) {
+        printf("Borrando...");
+        sleep(2);
+        sqlite3 *db;
+        char *err_msg = 0;
+        int rc = sqlite3_open("base.db", &db);
+
+        char *sql = "DELETE FROM Usuarios WHERE ID = ?";
+        sqlite3_stmt *stmt;
+        rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+        sqlite3_bind_int(stmt, 1, id);
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            fprintf(stderr, "Error al eliminar el comentario: %s\n", sqlite3_errmsg(db));
+        } else {
+            printf("Comentario eliminado exitosamente.\n");
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+    }
+    if(n == 7) {
+        printf("Borrando...");
+        sleep(2);
+        sqlite3 *db;
+        char *err_msg = 0;
+        int rc = sqlite3_open("base.db", &db);
+
+        char *sql = "DELETE FROM Discusiones WHERE ID = ?";
+        sqlite3_stmt *stmt;
+        rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+        sqlite3_bind_int(stmt, 1, id);
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            fprintf(stderr, "Error al eliminar el comentario: %s\n", sqlite3_errmsg(db));
+        } else {
+            printf("Comentario eliminado exitosamente.\n");
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+    }
+    if(n == 8) {
+        printf("Borrando...");
+        sleep(2);
+        sqlite3 *db;
+        char *err_msg = 0;
+        int rc = sqlite3_open("base.db", &db);
+        char *sql = "DELETE FROM Comentarios WHERE ID = ?";
+        sqlite3_stmt *stmt;
+        rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+        sqlite3_bind_int(stmt, 1, id);
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            fprintf(stderr, "Error al eliminar el comentario: %s\n", sqlite3_errmsg(db));
+        } else {
+            printf("Comentario eliminado exitosamente.\n");
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+    }
+}
 
