@@ -286,26 +286,24 @@ void crearBaseDeDatosEstadisticas() {
 //funcion para leer un archivo adminConfig.txt y obtener los datos de configuracion del administrador (nombre, contraseña y base de datos) 
 void leerConfigAdmin(char *nombre, char *contrasena, char *base) {
     FILE *fichero;
+    char clave[100], valor[100];
+    
     fichero = fopen("adminConfig.txt", "r");
     if (fichero == NULL) {
         printf("Error al abrir el fichero\n");
-        return; // Salir de la función si no se puede abrir el fichero
+        return;
     }
-    char linea[100];
-    int i = 0;
-    while (fgets(linea, 100, fichero) != NULL) {
-        if (i == 2) { // Línea 3 para el nombre del admin
-            strcpy(nombre, linea);
-            nombre[strcspn(nombre, "\n")] = 0; // Remover el salto de línea al final
-        } else if (i == 5) { // Línea 6 para la contraseña del admin
-            strcpy(contrasena, linea);
-            contrasena[strcspn(contrasena, "\n")] = 0; // Remover el salto de línea al final
-        } else if (i == 8) { // Línea 9 para la base de datos
-            strcpy(base, linea);
-            base[strcspn(base, "\n")] = 0; // Remover el salto de línea al final
+    
+    while (fscanf(fichero, "%s = %s", clave, valor) == 2) {
+        if (strcmp(clave, "admin") == 0) {
+            strcpy(nombre, valor);
+        } else if (strcmp(clave, "contrasena") == 0) {
+            strcpy(contrasena, valor);
+        } else if (strcmp(clave, "db") == 0) {
+            strcpy(base, valor);
         }
-        i++;
     }
+
     fclose(fichero);
 }
 
