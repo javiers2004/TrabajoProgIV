@@ -72,7 +72,7 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
 
     fclose(file);
     anadirEst(user);
-    printf("Pulsa ENTER para continuar.");
+    printf(" \n\n Pulsa ENTER para continuar.");
     char linea[10];
     fgets(linea, 10, stdin);
     system("cls || clear");
