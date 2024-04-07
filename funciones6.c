@@ -15,6 +15,7 @@ void contarComentariosPorUsuario(const char *archivo) {
     int num_counters = 0;
     int total_caracteres = 0;
     int total_comentarios = 0;
+    int total_menciones = 0;
 
     while (fgets(line, sizeof(line), file)) {
         char *token = strtok(line, "|");
@@ -38,6 +39,12 @@ void contarComentariosPorUsuario(const char *archivo) {
                 }
             } else if (strstr(token, "Texto:") != NULL) {
                 texto = token;
+                // Contar menciones en el texto
+                char *mention = strchr(texto, '@');
+                while (mention != NULL) {
+                    total_menciones++;
+                    mention = strchr(mention + 1, '@');
+                }
             }
             token = strtok(NULL, "|");
         }
@@ -58,6 +65,8 @@ void contarComentariosPorUsuario(const char *archivo) {
     } else {
         printf("No se encontraron comentarios en el archivo.\n");
     }
+
+    printf("Total de menciones en los comentarios: %d\n", total_menciones);
 
     fclose(file);
 }
