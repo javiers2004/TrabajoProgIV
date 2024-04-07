@@ -16,7 +16,4 @@ int main(int argc, char *argv[]) {
     // crearBaseDeDatosComentarios();
     // crearBaseDeDatosEstadisticas();
 
-    //esto es una prueba
-    //PRUEBA ALEJANDRO MILLA
-    //elena
 }
