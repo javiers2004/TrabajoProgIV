@@ -56,7 +56,7 @@ void showMainMenu(Usuario *user) {
                 crearDiscusion(user);
                 break;
             case '4':
-                contarComentariosPorUsuario("estadisticas.txt");
+                contarComentariosPorUsuario(*user, "estadisticas.txt");
                 break;
             case '5':
                 imprimirInfoUsuario(user);
@@ -249,5 +249,37 @@ void eliminar(int id, int n) {
         sqlite3_finalize(stmt);
         sqlite3_close(db);
     }
+}
+
+void crearBaseDeDatosEstadisticas() {
+    sqlite3 *db;
+    char *err_msg = 0;
+    
+    int rc = sqlite3_open("base.db", &db);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db); // Cerrar la conexión antes de salir
+        return;
+    }
+    const char *sql = "CREATE TABLE IF NOT EXISTS Estadisticas ("
+                      "FECHA TEXT PRIMARY KEY ,"
+                      "Nombre TEXT"
+                      ");";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error SQL: %s\n", err_msg);
+        sqlite3_free(err_msg);
+    } else {
+        printf("Tabla creada correctamente.\n");
+    }
+    sqlite3_close(db);
+
+
+
+
+
+
 }
 

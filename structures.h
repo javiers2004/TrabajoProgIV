@@ -34,6 +34,8 @@ void showMainMenu(Usuario *user);
 void crearBaseDeDatosUsuarios();
 void crearBaseDeDatosDiscusiones();
 void crearBaseDeDatosComentarios();
+void crearBaseDeDatosEstadisticas();
+
 void eliminar(int id, int n);
 
 #endif // _STRUCTURES_H_
