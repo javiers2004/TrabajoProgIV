@@ -1,9 +1,8 @@
-
 # Admin
-admin = admin
-
+admin
 # Contraseña
-contraseña = admin1234
-
+admin1234
 # Base de datos
-db = base.db
+base.db
+# Fichero de texto de estadísticas
+estadisticas.txt

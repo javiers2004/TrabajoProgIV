@@ -10,7 +10,6 @@
 #include "funciones5.h"
 #include <unistd.h>
 #include "funciones6.h"
-#include "funciones6.h"
 //FUNCIONES
 
 
@@ -40,7 +39,7 @@ void showMainMenu(Usuario *user) {
         char id[100];
         printf("Hola, %s\n", (*user).nombre); 
         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
-        if(strcmp(user->nombre, "admin") == 0) {
+        if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {
             printf(" \n-OPCIONES DE ADMINISTRADOR-\n 6.Borrar usuario\n 7.Borrar discusion\n 8.Borrar comentario\n");
         }
         char linea[10];
@@ -56,37 +55,43 @@ void showMainMenu(Usuario *user) {
                 crearDiscusion(user);
                 break;
             case '4':
-                contarComentariosPorUsuario(*user, "estadisticas.txt");
+                contarComentariosPorUsuario(*user, obtenerLineaPorNumero(8));
                 break;
             case '5':
                 imprimirInfoUsuario(user);
                 break;
             case '6':
-                system("cls || clear");
-                printf("ID del usuario:\n");
-	            fgets(id, 100, stdin);
-                n = atoi(id);
-                eliminar(n, 6);
-                system("cls || clear");
-                showMainMenu(user);
-                break;
+                if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {
+                    system("cls || clear");
+                    printf("ID del usuario:\n");
+	                fgets(id, 100, stdin);
+                    n = atoi(id);
+                    eliminar(n, 6);
+                    system("cls || clear");
+                    showMainMenu(user);
+                }
+                break;  
             case '7':
-                system("cls || clear");
-                printf("ID de la discusion\n");
-	            fgets(id, 100, stdin);
-                n = atoi(id);
-                eliminar(n, 7);
-                system("cls || clear");
-                showMainMenu(user);
+                if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {
+                    system("cls || clear");
+                    printf("ID de la discusion\n");
+	                fgets(id, 100, stdin);
+                    n = atoi(id);
+                    eliminar(n, 7);
+                    system("cls || clear");
+                    showMainMenu(user);
+                }
                 break;
             case '8':
-                system("cls || clear");
-                printf("ID del comentario\n");
-	            fgets(id, 100, stdin);
-                n = atoi(id);
-                eliminar(n, 8);
-                system("cls || clear");
-                showMainMenu(user);
+                if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {   
+                    system("cls || clear");
+                    printf("ID del comentario\n");
+	                fgets(id, 100, stdin);
+                    n = atoi(id);
+                    eliminar(n, 8);
+                    system("cls || clear");
+                    showMainMenu(user);
+                }
                 break;
             default:
                 break;
@@ -103,7 +108,7 @@ void crearBaseDeDatosUsuarios() {
     sqlite3 *db;
     char *err_msg = 0;
     
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db); // Cerrar la conexión antes de salir
@@ -135,7 +140,7 @@ void crearBaseDeDatosDiscusiones() {
     sqlite3 *db;
     char *err_msg = 0;
     
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db); // Cerrar la conexión antes de salir
@@ -163,7 +168,7 @@ void crearBaseDeDatosComentarios() {
     sqlite3 *db;
     char *err_msg = 0;
     
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db); // Cerrar la conexión antes de salir
@@ -195,7 +200,7 @@ void eliminar(int id, int n) {
         sleep(2);
         sqlite3 *db;
         char *err_msg = 0;
-        int rc = sqlite3_open("base.db", &db);
+        int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
         char *sql = "DELETE FROM Usuarios WHERE ID = ?";
         sqlite3_stmt *stmt;
@@ -215,7 +220,7 @@ void eliminar(int id, int n) {
         sleep(2);
         sqlite3 *db;
         char *err_msg = 0;
-        int rc = sqlite3_open("base.db", &db);
+        int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
         char *sql = "DELETE FROM Discusiones WHERE ID = ?";
         sqlite3_stmt *stmt;
@@ -235,7 +240,7 @@ void eliminar(int id, int n) {
         sleep(2);
         sqlite3 *db;
         char *err_msg = 0;
-        int rc = sqlite3_open("base.db", &db);
+        int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
         char *sql = "DELETE FROM Comentarios WHERE ID = ?";
         sqlite3_stmt *stmt;
         rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
@@ -256,7 +261,7 @@ void crearBaseDeDatosEstadisticas() {
     sqlite3 *db;
     char *err_msg = 0;
     
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db); // Cerrar la conexión antes de salir
@@ -277,33 +282,33 @@ void crearBaseDeDatosEstadisticas() {
     }
     sqlite3_close(db);
 
-
+}
 
 
 
 
 
 //funcion para leer un archivo adminConfig.txt y obtener los datos de configuracion del administrador (nombre, contraseña y base de datos) 
-void leerConfigAdmin(char *nombre, char *contrasena, char *base) {
-    FILE *fichero;
-    char clave[100], valor[100];
-    
-    fichero = fopen("adminConfig.txt", "r");
-    if (fichero == NULL) {
-        printf("Error al abrir el fichero\n");
-        return;
-    }
-    
-    while (fscanf(fichero, "%s = %s", clave, valor) == 2) {
-        if (strcmp(clave, "admin") == 0) {
-            strcpy(nombre, valor);
-        } else if (strcmp(clave, "contrasena") == 0) {
-            strcpy(contrasena, valor);
-        } else if (strcmp(clave, "db") == 0) {
-            strcpy(base, valor);
+char* obtenerLineaPorNumero(int numeroLinea) {
+    FILE* archivo = fopen("adminConfig.txt", "r");
+    char* linea = NULL;
+    size_t longitud = 0;
+    ssize_t leidos;
+    int contador = 0;
+
+    // Leer el archivo línea por línea
+    while ((leidos = getline(&linea, &longitud, archivo)) != -1) {
+        contador++;
+        if (contador == numeroLinea) {
+            // Hemos encontrado la línea que buscamos
+            // Eliminar el carácter de nueva línea, si existe
+            if (linea[leidos - 1] == '\n')
+                linea[leidos - 1] = '\0';
+            fclose(archivo);
+            return linea;
         }
     }
 
-    fclose(fichero);
+    fclose(archivo);
 }
 

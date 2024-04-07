@@ -83,7 +83,7 @@ void anadirEst(Usuario user) {
     sqlite3 *db;
     char *err_msg = 0;
     
-    int rc = sqlite3_open("base.db", &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     char *sql = "INSERT INTO Estadisticas (Nombre, Fecha) VALUES (?, ?)";
     sqlite3_stmt *stmt;

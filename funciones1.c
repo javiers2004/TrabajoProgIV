@@ -7,10 +7,6 @@
 #include <unistd.h>
 #include "sqlite3.h"
 
-char base[20];
-char nombreAdmin[20];
-char contrasenaAdmin[20];
-leerConfigAdmin(nombreAdmin, contrasenaAdmin, base);
 
 
 // inicioSesionoRegistro(Usuario *user): función llamada desde la funcion showMainMenu(Usuario *user)(con la opción 1), se encarga de
@@ -187,7 +183,7 @@ void insertarUsuario(Usuario *user) {
     char *err_msg = 0;
     char sql[500];
 
-    int rc = sqlite3_open(base, &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -215,7 +211,7 @@ int nombreExiste(const char *nombre) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     const char *sql = "SELECT COUNT(*) FROM Usuarios WHERE Nombre = ?";
 
@@ -230,14 +226,14 @@ int nombreExiste(const char *nombre) {
 }
 
 
-// verificarCredenciales(const char *nombre, const char *contrasena): función que se encarga de decir si existe un usuario con el 
+// verificarCredenciales(const char *nombre, const char *base.dbcontrasena): función que se encarga de decir si existe un usuario con el 
 // nombre y contraseña introducidos y en el caso de haberlo devuelve 1, sino 0. Esta función es llamada en inicioSesion(Usuario *user)
 int verificarCredenciales(const char *nombre, const char *contrasena) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     const char *sql = "SELECT COUNT(*) FROM Usuarios WHERE Nombre = ? AND Contrasena = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
@@ -312,7 +308,7 @@ Usuario* leerUsuario(const char* nombre) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     const char *sql = "SELECT ID, Nombre, Contrasena, FechaCreacion, Telefono, Email FROM Usuarios WHERE Nombre = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);

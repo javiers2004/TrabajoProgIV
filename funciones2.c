@@ -14,10 +14,7 @@
 // un Comentario *respuesta se encarga de solicitar por teclado el texto que albergará el comentario. Con todo esos datos genera una 
 // estructura Comentario para guardarlo más tarde en la base de datos.
 
-char base[20];
-char nombreAdmin[20];
-char contrasenaAdmin[20];
-leerConfigAdmin(nombreAdmin, contrasenaAdmin, base);
+
 
 
 void AgregarNuevoComentario(Comentario *coment) {
@@ -25,7 +22,7 @@ void AgregarNuevoComentario(Comentario *coment) {
     //AGREGAR EL COMENTARIO A LA BASE DE DATOS
     sqlite3 *db;
     char *err_msg = 0;
-    int rc = sqlite3_open(base, &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     char *sql = "INSERT INTO Comentarios (Comentario, IDUser, IDDiscusion, FechaCreacion) VALUES (?, ?, ?, ?)";
     sqlite3_stmt *stmt;
@@ -54,7 +51,7 @@ bool UsuarioExiste(char *nombreUsuario){
     sqlite3 *db;
     sqlite3_stmt *stmt;
     bool existe = false;
-    int rc = sqlite3_open(base, &db);
+    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if(rc != SQLITE_OK){
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -83,7 +80,7 @@ Discusion* leerDiscusiones() {
     sqlite3 *db;
     sqlite3_stmt *stmt;
     int rc;
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     const char *sql = "SELECT ID, Nombre, Creador, FechaCreacion FROM Discusiones";
     
@@ -125,7 +122,7 @@ int obtenerIdMaximoDiscusiones() {
     int rc;
     int max_id = -1;
 
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
 
     const char *sql = "SELECT MAX(ID) FROM Discusiones;";
@@ -147,7 +144,7 @@ Discusion* cargarDiscusion(char* id) {
     sqlite3_stmt *stmt;
     int rc;
 
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     const char *sql = "SELECT ID, Nombre, FechaCreacion, Creador FROM Discusiones WHERE ID = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     rc = sqlite3_bind_text(stmt, 1, id, -1, SQLITE_STATIC);
@@ -295,7 +292,7 @@ void desplegarDiscusiones(Usuario *user) {
 }
 void agregarstadistica(Comentario *com) {
     FILE* fichero;
-    fichero = fopen("estadisticas.txt", "a"); // a de "append" para añadir estadísticas al final
+    fichero = fopen(obtenerLineaPorNumero(8), "a"); // a de "append" para añadir estadísticas al final
 
     if (fichero == NULL) {
         printf("Error al abrir el archivo de estadísticas.\n");
@@ -321,7 +318,7 @@ void imprimirComentarios(char* IDConversacion) {
     int id_conversacion = atoi(IDConversacion);
 
     // Abrir la base de datos
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -362,7 +359,7 @@ int maxComentID() {
     int rc;
     int maxID = 0;
 
-    rc = sqlite3_open(base, &db);
+    rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
 
     const char *sql = "SELECT MAX(ID) FROM Comentarios";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
