@@ -251,6 +251,7 @@ void eliminar(int id, int n) {
     }
 }
 
+
 void crearBaseDeDatosEstadisticas() {
     sqlite3 *db;
     char *err_msg = 0;
@@ -281,5 +282,30 @@ void crearBaseDeDatosEstadisticas() {
 
 
 
+
+//funcion para leer un archivo adminConfig.txt y obtener los datos de configuracion del administrador (nombre, contraseña y base de datos) 
+void leerConfigAdmin(char *nombre, char *contrasena, char *base) {
+    FILE *fichero;
+    fichero = fopen("adminConfig.txt", "r");
+    if (fichero == NULL) {
+        printf("Error al abrir el fichero\n");
+        return; // Salir de la función si no se puede abrir el fichero
+    }
+    char linea[100];
+    int i = 0;
+    while (fgets(linea, 100, fichero) != NULL) {
+        if (i == 2) { // Línea 3 para el nombre del admin
+            strcpy(nombre, linea);
+            nombre[strcspn(nombre, "\n")] = 0; // Remover el salto de línea al final
+        } else if (i == 5) { // Línea 6 para la contraseña del admin
+            strcpy(contrasena, linea);
+            contrasena[strcspn(contrasena, "\n")] = 0; // Remover el salto de línea al final
+        } else if (i == 8) { // Línea 9 para la base de datos
+            strcpy(base, linea);
+            base[strcspn(base, "\n")] = 0; // Remover el salto de línea al final
+        }
+        i++;
+    }
+    fclose(fichero);
 }
 

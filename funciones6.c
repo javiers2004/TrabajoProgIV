@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,10 +15,13 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
     char line[256];
     CommentCounter counters[100];
     int num_counters = 0;
+    int total_caracteres = 0;
+    int total_comentarios = 0;
 
     while (fgets(line, sizeof(line), file)) {
         char *token = strtok(line, "|");
         char creator[50] = "";
+        char *texto = NULL;
         while (token != NULL) {
             if (strstr(token, "Creador:") != NULL) {
                 sscanf(token, " Creador: %s", creator);
@@ -36,14 +38,27 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
                     counters[num_counters].comment_count = 1;
                     num_counters++;
                 }
+            } else if (strstr(token, "Texto:") != NULL) {
+                texto = token;
             }
             token = strtok(NULL, "|");
+        }
+        if (texto != NULL) {
+            total_caracteres += strlen(texto);
+            total_comentarios++;
         }
     }
 
     printf("Conteo de comentarios por creador:\n");
     for (int i = 0; i < num_counters; i++) {
         printf("%s: %d comentarios\n", counters[i].creator, counters[i].comment_count);
+    }
+
+    if (total_comentarios > 0) {
+        float media_caracteres = (float)total_caracteres / total_comentarios;
+        printf("Media de caracteres por comentario: %.2f\n", media_caracteres);
+    } else {
+        printf("No se encontraron comentarios en el archivo.\n");
     }
 
     fclose(file);

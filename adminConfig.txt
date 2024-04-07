@@ -1,0 +1,9 @@
+
+# Admin
+admin = admin
+
+# Contraseña
+contraseña = admin1234
+
+# Base de datos
+db = base.db
