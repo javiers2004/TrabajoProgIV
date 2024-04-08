@@ -14,18 +14,15 @@
 void crearDiscusion(Usuario *user) {
     system("cls || clear");
     Discusion d1;
-
     char str[100];
     char nombre[100]; // Almacena el nombre de la discusión
     printf("NOMBRE: \n");
-
 	fflush(stdout);
     printf("\n\n-------------------------------------------- \nPulse 'Enter' para volver al menu principal \n \n \n");
 	fgets(nombre, sizeof(nombre), stdin); // Escanea una cadena (%s) para el nombre
     if(nombre[0] == '\n') {
         system("cls || clear");
-        showMainMenu(user);
-        
+        showMainMenu(user); 
     }else{
     if (discusionExiste(nombre) == 1) {
         system("cls || clear");
@@ -36,7 +33,6 @@ void crearDiscusion(Usuario *user) {
         sleep(3);
         system("cls || clear");
         showMainMenu(user);
-
     }
     else {   
         d1.nombre = strdup(nombre);
@@ -64,8 +60,7 @@ void agregarNuevaDiscusion(Usuario *user, Discusion *disc) {
     printf("Discusion creada con exito");
     sleep(2);
     system("cls || clear");
-    showMainMenu(user);
-    
+    showMainMenu(user); 
 }
 
 
@@ -98,13 +93,11 @@ void insertarDiscusion(Discusion *disc) {
     sqlite3 *db;
     char *err_msg = 0;
     char sql[500];
-
     int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
-
     time_t tiempo;
     struct tm *info_tm;
     char buffer[26]; 
@@ -113,8 +106,7 @@ void insertarDiscusion(Discusion *disc) {
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
 
     sprintf(sql, "INSERT INTO Discusiones (Nombre, Creador, FechaCreacion) VALUES ('%s', '%s', '%s');",
-            (*disc).nombre, (*disc).creador->nombre, buffer);
-
+    (*disc).nombre, (*disc).creador->nombre, buffer);
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error SQL al insertar usuario: %s\n", err_msg);
@@ -131,14 +123,10 @@ int discusionExiste(char* nombre) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
     int rc;
-
     rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
-
     const char *sql = "SELECT COUNT(*) FROM Discusiones WHERE Nombre = ?";
-
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     rc = sqlite3_bind_text(stmt, 1, nombre, -1, SQLITE_STATIC);
-
     rc = sqlite3_step(stmt);  
     int count = sqlite3_column_int(stmt, 0);
     sqlite3_finalize(stmt);

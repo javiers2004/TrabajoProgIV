@@ -12,7 +12,6 @@
 #include "funciones4.h"
 //FUNCIONES
 
-
 // showMainMenu(Usuario *user): despliega el menú principal, que en función de si ya está dentro de un usuario, se encarga de 
 // mostrar unas opciones u otras. Y además lee la entrada por teclado y en función de la opción seleccionada, se encarga de
 // llamar a la función correspondiente
@@ -135,7 +134,7 @@ void crearBaseDeDatosUsuarios() {
 }
 
 //crearBaseDeDatosDiscusiones(): función para llamar solo la primera vez o si se quiere reiniciar la actual base (habría primero que 
-// eliminarla y llamar a esta función). Crea una tabla Discusiones con sus campos: id, nombre, contraseña, fecha creación y creacion.
+// eliminarla y llamar a esta función). Crea una tabla Discusiones con sus campos: id, nombre, contraseña y fecha creación.
 void crearBaseDeDatosDiscusiones() {
     sqlite3 *db;
     char *err_msg = 0;
@@ -164,6 +163,10 @@ void crearBaseDeDatosDiscusiones() {
     sqlite3_close(db);
 }
 
+
+
+//crearBaseDeDatosComentarios(): función para llamar solo la primera vez o si se quiere reiniciar la actual base (habría primero que 
+// eliminarla y llamar a esta función). Crea una tabla Comentarios con sus campos: id, comentario, IDUser, IDDiscusión y fecha creación.
 void crearBaseDeDatosComentarios() {
     sqlite3 *db;
     char *err_msg = 0;
@@ -193,7 +196,8 @@ void crearBaseDeDatosComentarios() {
     sqlite3_close(db);
 }
 
-
+// eliminar(int id, int n): función que recive dos int, el primero indicando el int de lo que quiere eliminar y el segundo de que tabla 
+// siendo n == 6 para usuarios, n == 7 para discusiones y n == 8 para comentarios
 void eliminar(int id, int n) {
     if(n == 6) {
         printf("Borrando...");
@@ -283,9 +287,6 @@ void crearBaseDeDatosEstadisticas() {
     sqlite3_close(db);
 
 }
-
-
-
 
 
 //funcion para leer un archivo adminConfig.txt y obtener los datos de configuracion del administrador (nombre, contraseña y base de datos) 

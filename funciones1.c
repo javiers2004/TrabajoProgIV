@@ -29,8 +29,7 @@ void inicioSesionoRegistro(Usuario *user) {
     }
     else if( numero[0] == '\n') {
         system("cls || clear");
-        showMainMenu(user);
-        
+        showMainMenu(user);   
     }
 }
 
@@ -182,23 +181,19 @@ void insertarUsuario(Usuario *user) {
     sqlite3 *db;
     char *err_msg = 0;
     char sql[500];
-
     int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
-
     sprintf(sql, "INSERT INTO Usuarios (Nombre, Contrasena, Telefono, Email, FechaCreacion) VALUES ('%s', '%s', '%s', '%s', '%s');",
             user->nombre, user->contrasena, user->telefono, user->email, user->fechaCreacion);
-
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error SQL al insertar usuario: %s\n", err_msg);
         sqlite3_free(err_msg);
         sqlite3_close(db);
     }
-
     sqlite3_close(db);
 }
 
@@ -206,38 +201,31 @@ void insertarUsuario(Usuario *user) {
 // nombreExiste(const char *nombre): función que se encarga de decir si el nombre introducido ya ha sido usado por otra persona
 // si es así devuelve 1, si no 0. Estafunción es usada en registro(Usuario *user) y en inicioSesion(Usuario *user) para comprobar 
 // la posibilidad de usar el nombre/existencia del nombre introducido.
-int nombreExiste(const char *nombre) {
+int nombreExiste(const char *nombre) {               // He usado const porque *nombre no se va a tocar
     sqlite3 *db;
     sqlite3_stmt *stmt;
     int rc;
-
     rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
-
     const char *sql = "SELECT COUNT(*) FROM Usuarios WHERE Nombre = ?";
-
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     rc = sqlite3_bind_text(stmt, 1, nombre, -1, SQLITE_STATIC);
-
     rc = sqlite3_step(stmt);  
     int count = sqlite3_column_int(stmt, 0);
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-    return (count > 0); 
+    return (count > 0); // Al ser count > 0 devuelve 1 y se daría en el caso de que ya haya sido usado ese nombre
 }
 
 
 // verificarCredenciales(const char *nombre, const char *base.dbcontrasena): función que se encarga de decir si existe un usuario con el 
 // nombre y contraseña introducidos y en el caso de haberlo devuelve 1, sino 0. Esta función es llamada en inicioSesion(Usuario *user)
-int verificarCredenciales(const char *nombre, const char *contrasena) {
+int verificarCredenciales(const char *nombre, const char *contrasena) {         // He usado const porque ni nombre ni contraseña se tocan
     sqlite3 *db;
     sqlite3_stmt *stmt;
     int rc;
-
     rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
-
     const char *sql = "SELECT COUNT(*) FROM Usuarios WHERE Nombre = ? AND Contrasena = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-
     rc = sqlite3_bind_text(stmt, 1, nombre, -1, SQLITE_STATIC);
     rc = sqlite3_bind_text(stmt, 2, contrasena, -1, SQLITE_STATIC);
     rc = sqlite3_step(stmt);
@@ -246,6 +234,7 @@ int verificarCredenciales(const char *nombre, const char *contrasena) {
     sqlite3_close(db);
     return (count > 0);
 }
+
 
 // contrasenaRecursiva(Usuario *user, int intentos, char* nombre): función recursiva para manejar los intentos de contraseñas
 // introducidas.
@@ -257,7 +246,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
 	fgets(str, sizeof(str), stdin);
 	sscanf(str, "%s", contrasena); // Escanea una cadena (%s) para la contraseña
 	clearIfNeeded(str, sizeof(str));
-    if(verificarCredenciales(nombre, contrasena) == 1) {
+    if(verificarCredenciales(nombre, contrasena) == 1) { // CASO DE QUE LA CONTRASEÑA INTRODUCIDA SEA CORRECTA
         user = leerUsuario(nombre);
         system("cls || clear");
         printf("Iniciando sesion de %s.", (*user).nombre);
@@ -274,7 +263,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
         system("cls || clear");
         showMainMenu(user);
     }
-    else if(intentos > 0) {
+    else if(intentos > 0) {  // CASO DE QUE LA CONTRASEÑA INTRODUCIDA SEA INCORRECTA PERO QUEDEN INTENTOS
         system("cls || clear");
         printf("Contrasena incorrecta");
         sleep(4);
@@ -282,7 +271,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
         printf("Intentos: %i \n", intentos);
         contrasenaRecursiva(user, intentos -1, nombre);
     }   
-    else {
+    else {  // CASO DE QUE LA CONTRASEÑA INTRODUCIDA SEA INCORRECTA Y NO QUEDEN INTENTOS
         system("cls || clear");
         printf("Has introducido demasiadas veces una contrasena incorrecta");
         sleep(4);
@@ -307,9 +296,7 @@ Usuario* leerUsuario(const char* nombre) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
     int rc;
-
     rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
-
     const char *sql = "SELECT ID, Nombre, Contrasena, FechaCreacion, Telefono, Email FROM Usuarios WHERE Nombre = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     rc = sqlite3_bind_text(stmt, 1, nombre, -1, SQLITE_STATIC);
@@ -323,10 +310,8 @@ Usuario* leerUsuario(const char* nombre) {
     user->telefono = strdup((char *)sqlite3_column_text(stmt, 4));
     user->email = strdup((char *)sqlite3_column_text(stmt, 5));
     
-
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
     return user; 
 }
 
