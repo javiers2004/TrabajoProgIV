@@ -56,19 +56,19 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
         }
     }
 
-    printf("Conteo de comentarios por creador:\n");
+    printf("Conteo de comentarios por creador:\n\n");
     for (int i = 0; i < num_counters; i++) {
-        printf("%s: %d comentarios\n", counters[i].creator, counters[i].comment_count);
+        printf("    %s: %d comentarios\n", counters[i].creator, counters[i].comment_count);
     }
 
     if (total_comentarios > 0) {
         float media_caracteres = (float)total_caracteres / total_comentarios;
-        printf("Media de caracteres por comentario: %.2f\n", media_caracteres);
+        printf("\n\nMedia de caracteres por comentario: %.2f\n", media_caracteres);
     } else {
         printf("No se encontraron comentarios en el archivo.\n");
     }
 
-    printf("Total de menciones en los comentarios: %d\n", total_menciones);
+    printf("\n\nTotal de menciones en los comentarios: %d\n", total_menciones);
 
     fclose(file);
     anadirEst(user);
