@@ -4,6 +4,10 @@
 #include "sqlite3.h"
 #include "funciones4.h"
 #include "structures.h"
+
+// contarComentariosPorUsuario(Usuario user, const char *archivo): función que a partir de un fichero de tipo .txt en donde están todos  
+// los comentarios de los usuarios, imprime las estadísticas de la base de datos(comentarios totales, media de caracteres por comentario
+// y total de menciones) e imprime todo por pantalla. También llama a anadirEst(Usuario user);
 void contarComentariosPorUsuario(Usuario user, const char *archivo) {
     system("cls || clear");
     FILE *file = fopen(archivo, "r");
@@ -51,7 +55,7 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
             token = strtok(NULL, "|");
         }
         if (texto != NULL) {
-            total_caracteres += strlen(texto);
+            total_caracteres += (strlen(texto)-9);
             total_comentarios++;
         }
     }
@@ -79,6 +83,8 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
     showMainMenu(&user);
 }
 
+
+// anadirEst(Usuario user): función que a 
 void anadirEst(Usuario user) {
     sqlite3 *db;
     char *err_msg = 0;

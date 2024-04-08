@@ -308,7 +308,8 @@ void agregarstadistica(Comentario *com) {
 
 
 
-
+// imprimirComentarios(char* IDConversacion): función que recive un char* lo convierte a int y imprime por pantalla todos los
+// comentarios de la conversación con dicho ID.
 void imprimirComentarios(char* IDConversacion) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
@@ -352,7 +353,7 @@ void imprimirComentarios(char* IDConversacion) {
     sqlite3_close(db);
 }
 
-
+// maxComentID(): función que devuelve el ultimo id asociado a un comentario de la base de datos + 1
 int maxComentID() {
     sqlite3 *db;
     sqlite3_stmt *stmt;

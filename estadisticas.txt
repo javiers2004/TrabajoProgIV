@@ -20,18 +20,15 @@ ID: 37 | Texto: hhhhhhhhh
  | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-04 16:51:49.
 ID: 38 | Texto: gcc 
- | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-04 17:04:16.
 ID: 39 | Texto: @Javiers2004
- | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-04 17:05:06.
-ID: 40 | Texto: @Javiers2004 fuck
- | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
- | Fecha de creación: 2024-04-04 17:05:42.
 ID: 41 | Texto: hola hola @Javiers2004
  | Creador: Javiers2004 | Discusión: prueba
  | Fecha de creación: 2024-04-04 17:33:01.
-ID: 42 | Texto: dfl�gmdf�gf
+ID: 42 | Texto: dfl�gmdf�gf
  | Creador: Javiers2005 | Discusión: prueba
  | Fecha de creación: 2024-04-05 09:36:27.
 ID: 43 | Texto: prueba
@@ -46,46 +43,46 @@ ID: 44 | Texto:  | Creador: (null) | Discusión: que mas queda de haceeeer?
 ID: 44 | Texto:  | Creador: Javiers2004 | Discusión: prueba
  | Fecha de creación: 2024-04-05 09:45:51.
 ID: 16 | Texto: hola hola @J
- | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:01:43.
 ID: 16 | Texto: HOLA
- | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:01:52.
 ID: 16 | Texto: hola hola @j
- | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:03:03.
 ID: 16 | Texto: @Javiers hola hola
- | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:16:09.
 ID: 16 | Texto: @Javier hola hola
- | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:16:40.
 ID: 16 | Texto: @javier holahola
- | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2004 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:19:31.
 ID: 16 | Texto: gcc 
- | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: (null) | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:25:25.
 ID: 16 | Texto: @a funciona?
- | Creador: Javiers2005 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2005 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:45:26.
 ID: 16 | Texto: si funciona @prueba
- | Creador: Javiers2005 | Discusión: �Nos dar� tiempo de acabarlo...?
+ | Creador: Javiers2005 | Discusión: �Nos dar� tiempo de acabarlo...?
  | Fecha de creación: 2024-04-05 10:45:43.
 ID: 16 | Texto: @Javiers2004 ole q ya van las menciones
- | Creador: elenaa | Discusión: �Funciona ya todo?
+ | Creador: elenaa | Discusión: �Funciona ya todo?
  | Fecha de creación: 2024-04-05 18:35:53.
 ID: 16 | Texto: @javier
- | Creador: elenaa | Discusión: �Funciona ya todo?
+ | Creador: elenaa | Discusión: �Funciona ya todo?
  | Fecha de creación: 2024-04-05 18:35:58.
 ID: 16 | Texto: @alex
- | Creador: elenaa | Discusión: �Funciona ya todo?
+ | Creador: elenaa | Discusión: �Funciona ya todo?
  | Fecha de creación: 2024-04-05 18:36:31.
 ID: 16 | Texto: cs
- | Creador: (null) | Discusión: �Funciona ya todo?
+ | Creador: (null) | Discusión: �Funciona ya todo?
  | Fecha de creación: 2024-04-05 19:03:28.
 ID: 16 | Texto: cz
- | Creador: (null) | Discusión: �Funciona ya todo?
+ | Creador: (null) | Discusión: �Funciona ya todo?
  | Fecha de creación: 2024-04-05 19:03:29.
 ID: 16 | Texto: z
  | Creador: (null) | Discusión: que mas queda de haceeeer?
@@ -94,17 +91,17 @@ ID: 16 | Texto: sd
  | Creador: (null) | Discusión: que mas queda de haceeeer?
  | Fecha de creación: 2024-04-07 18:42:40.
 ID: 16 | Texto: Si que funciona
- | Creador: Javi2006 | Discusión: �Funciona esta prueba?
+ | Creador: Javi2006 | Discusión: �Funciona esta prueba?
  | Fecha de creación: 2024-04-07 23:04:29.
 ID: 16 | Texto: no?
- | Creador: Javi2006 | Discusión: �Funciona esta prueba?
+ | Creador: Javi2006 | Discusión: �Funciona esta prueba?
  | Fecha de creación: 2024-04-07 23:04:31.
 ID: 16 | Texto: vale
- | Creador: Javi2006 | Discusión: �Funciona esta prueba?
+ | Creador: Javi2006 | Discusión: �Funciona esta prueba?
  | Fecha de creación: 2024-04-07 23:04:34.
 ID: 16 | Texto: perfecto
- | Creador: Javi2006 | Discusión: �Funciona esta prueba?
+ | Creador: Javi2006 | Discusión: �Funciona esta prueba?
  | Fecha de creación: 2024-04-07 23:04:38.
 ID: 16 | Texto: @j funciona
- | Creador: Javi2006 | Discusión: �Funciona esta prueba?
+ | Creador: Javi2006 | Discusión: �Funciona esta prueba?
  | Fecha de creación: 2024-04-07 23:04:49.
