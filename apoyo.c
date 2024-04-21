@@ -1,14 +1,8 @@
-#include "cargarDiscusion.h"
-#include <stdio.h>
-#include <string.h>
-#include "sqlite3.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include"structures.h"
-#include"menuPrincipal.h"
-#include"apoyo.h"
+#include "apoyo.h"
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 char* strreplace(char *o) {
     int posicionarroba = -1;

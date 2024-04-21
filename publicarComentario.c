@@ -1,13 +1,10 @@
-#include "cargarDiscusiones.h"
 #include "structures.h"
-#include <stdio.h>
-#include <string.h>
 #include "sqlite3.h"
-#include <stdlib.h>
-#include <unistd.h>
+#include "apoyo.h"
+#include "anadirEstadisticas.h"
 #include "publicarComentario.h"
-#include <stdbool.h>
 
+#include <stdio.h>
 
 // comentar(Usuario *user, Discusion *disc, Comentario *respuesta): función que a partir de un Usuario *user, una Discusion *disc y
 // un Comentario *respuesta se encarga de solicitar por teclado el texto que albergará el comentario. Con todo esos datos genera una 

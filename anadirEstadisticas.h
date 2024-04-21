@@ -5,4 +5,4 @@
 void contarComentariosPorUsuario(Usuario user, const char *filename);
 void anadirEst(Usuario user);
 
-#define //_ANADIRESTADISTICAS_H_
+#endif //_ANADIRESTADISTICAS_H_

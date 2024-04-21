@@ -9,7 +9,16 @@
         "carrito.h": "c",
         "string.h": "c",
         "time.h": "c",
-        "sqlite3.h": "c"
+        "sqlite3.h": "c",
+        "apoyo.h": "c",
+        "unistd.h": "c",
+        "anadirestadisticas.h": "c",
+        "stdbool.h": "c",
+        "creardiscusiones.h": "c",
+        "publicarcomentario.h": "c",
+        "menuprincipal.h": "c",
+        "cargardiscusiones.h": "c",
+        "informacionusuario.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

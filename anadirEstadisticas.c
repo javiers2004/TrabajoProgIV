@@ -1,5 +1,14 @@
+
 #include "anadirEstadisticas.h"
-#include "structures.h"
+#include "menuPrincipal.h"
+#include "apoyo.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "sqlite3.h"
+
+CommentCounter counters[100];
 
 // contarComentariosPorUsuario(Usuario user, const char *archivo): función que a partir de un fichero de tipo .txt en donde están todos  
 // los comentarios de los usuarios, imprime las estadísticas de la base de datos(comentarios totales, media de caracteres por comentario

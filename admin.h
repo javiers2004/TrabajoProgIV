@@ -2,4 +2,4 @@
 #define ADMIN_H_
 #include "structures.h"
 void eliminar(int id, int n);
-#nedif
+#endif

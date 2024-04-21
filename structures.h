@@ -28,4 +28,9 @@ typedef struct{
    // Comentario *respuestaA;
 }Comentario;
 
+typedef struct {
+    char creator[50];
+    int comment_count;
+} CommentCounter;
+
 #endif // _STRUCTURES_H_

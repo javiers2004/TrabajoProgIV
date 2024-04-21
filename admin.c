@@ -1,13 +1,9 @@
-#include "cargarDiscusiones.h"
-#include "structures.h"
-#include <stdio.h>
-#include <string.h>
 #include "sqlite3.h"
-#include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
-#include "publicarComentario.h"
-#include <stdbool.h>
-#include"admin.h"
+#include "apoyo.h"
+#include "admin.h"
+
 // eliminar(int id, int n): función que recive dos int, el primero indicando el int de lo que quiere eliminar y el segundo de que tabla 
 // siendo n == 6 para usuarios, n == 7 para discusiones y n == 8 para comentarios
 void eliminar(int id, int n) {

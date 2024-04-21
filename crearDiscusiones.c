@@ -1,5 +1,14 @@
-#include "crearDiscusiones.h"
+
 #include "structures.h"
+#include "sqlite3.h"
+#include "menuPrincipal.h"
+#include "crearDiscusiones.h"
+#include "apoyo.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 // crearDiscusion(Usuario *user): función que se encarga de crear una discusión permitiendo introducir el tema a tratar además 
 // del usuario que recibe por argumentos.

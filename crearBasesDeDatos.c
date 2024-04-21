@@ -1,5 +1,8 @@
-#include "crearBasesDeDatos.h"
 #include "structures.h"
+#include "sqlite3.h"
+#include "apoyo.h"
+
+#include <stdio.h>
 
 //crearBaseDeDatosUsuarios(): función para llamar solo la primera vez o si se quiere reiniciar la actual base (habría primero que 
 // eliminarla y llamar a esta función). Crea una tabla Usuario con sus campos: id, nombre, contraseña, fecha creación, email 

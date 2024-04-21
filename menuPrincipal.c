@@ -1,12 +1,17 @@
-#include "cargarDiscusion.h"
+#include "inicioSesion.h"
+#include "structures.h"
+#include "admin.h"
+#include "anadirEstadisticas.h"
+#include "cargarDiscusiones.h"
+#include "crearDiscusiones.h"
+#include "informacionUsuario.h"
+#include "menuPrincipal.h"
+#include "apoyo.h"
+#include "registro.h"
+
 #include <stdio.h>
 #include <string.h>
-#include "sqlite3.h"
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include"structures.h"
-#include"menuPrincipal.h"
 
 // showMainMenu(Usuario *user): despliega el menú principal, que en función de si ya está dentro de un usuario, se encarga de 
 // mostrar unas opciones u otras. Y además lee la entrada por teclado y en función de la opción seleccionada, se encarga de

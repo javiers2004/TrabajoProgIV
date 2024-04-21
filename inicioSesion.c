@@ -1,5 +1,13 @@
 #include "inicioSesion.h"
 #include "structures.h"
+#include "sqlite3.h"
+#include "apoyo.h"
+#include "menuPrincipal.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
 // inicioSesion(Usuario *user): función llamada por inicioSesionoRegistro(Usuario *user)(opción 1), se encarga de pedir el nombre y la
 // contraseña para el correcto inicio de sesión. Cuando introduces el nombre comprueba que está en la base de datos (si no está 

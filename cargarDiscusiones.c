@@ -1,11 +1,16 @@
-#include "cargarDiscusion.h"
+#include "inicioSesion.h"
+#include "structures.h"
+#include "sqlite3.h"
+#include "apoyo.h"
+#include "menuPrincipal.h"
+#include "publicarComentario.h"
+#include "cargarDiscusiones.h"
+#include "crearDiscusiones.h"
+
 #include <stdio.h>
 #include <string.h>
-#include "sqlite3.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdbool.h>
-#include"structures.h"
 
 // desplegarDiscusiones(): despliega todas las discusiones cuando es llamada desde showMainMenu(Usuario *user)(opción 2) y para ello usa la 
 // función leerDiscusiones() de donde las recibirá.

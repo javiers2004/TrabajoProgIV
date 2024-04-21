@@ -1,5 +1,14 @@
-#include "registro.h"
 #include "structures.h"
+#include "sqlite3.h"
+#include "apoyo.h"
+#include "menuPrincipal.h"
+#include "registro.h"
+#include "inicioSesion.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
 // insertarUsuario(Usuario *user): se encarga de establecer conexión con la base de datos y añadir al usuario que se le pasa por
 // argumentos en la tabla Usuario, el Id se asigna automaticamente de manera ascendente.

@@ -1,15 +1,8 @@
-#include "cargarDiscusion.h"
-#include <stdio.h>
-#include <string.h>
-#include "sqlite3.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include"structures.h"
-#include"menuPrincipal.h"
 #include "informacionUsuario.h"
+#include "menuPrincipal.h"
 
-
+#include <stdio.h>
+#include <stdlib.h>
 
 void imprimirInfoUsuario(Usuario *user) {
     system("cls || clear");
