@@ -1,8 +1,8 @@
-#ifndef _FUNCIONES_1_H_
-#define _FUNCIONES_1_H_
+#ifndef _REGISTRO_H_
+#define _REGISTRO_H_
 #include "structures.h"
 
 void insertarUsuario(Usuario *user);
 void registro(Usuario *user);
 
-#endif //_FUNCIONES_1_H_
+#endif //_REGISTRO_H_
