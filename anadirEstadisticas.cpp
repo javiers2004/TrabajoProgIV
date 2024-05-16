@@ -88,21 +88,5 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
 // anadirEst(Usuario user): función que añade las solicitudes por parte de los usuarios de las estadísticas, incluyendo en la base de 
 // datos la hora y quién fue el usuario que lo solicitó
 void anadirEst(Usuario user) {
-    sqlite3 *db;
-    char *err_msg = 0;
-    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
-    char *sql = "INSERT INTO Estadisticas (Nombre, Fecha) VALUES (?, ?)";
-    sqlite3_stmt *stmt;
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-    time_t tiempo;
-    struct tm *info_tm;
-    char buffer[26]; 
-    time(&tiempo);
-    info_tm = localtime(&tiempo);
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-    sqlite3_bind_text(stmt, 1, user.nombre, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, buffer, -1, SQLITE_TRANSIENT);
-    rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
+    
 }

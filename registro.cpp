@@ -13,23 +13,7 @@
 // insertarUsuario(Usuario *user): se encarga de establecer conexión con la base de datos y añadir al usuario que se le pasa por
 // argumentos en la tabla Usuario, el Id se asigna automaticamente de manera ascendente.
 void insertarUsuario(Usuario *user) {
-    sqlite3 *db;
-    char *err_msg = 0;
-    char sql[500];
-    int rc = sqlite3_open(obtenerLineaPorNumero(6), &db);
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-    }
-    sprintf(sql, "INSERT INTO Usuarios (Nombre, Contrasena, Telefono, Email, FechaCreacion) VALUES ('%s', '%s', '%s', '%s', '%s');",
-            user->nombre, user->contrasena, user->telefono, user->email, user->fechaCreacion);
-    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error SQL al insertar usuario: %s\n", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(db);
-    }
-    sqlite3_close(db);
+    
 }
 
 // registro(Usuario *user): función para registrarse por primera vez, es llamada desde inicioSesionoRegistro(Usuario *user)(opción 2)

@@ -8,10 +8,13 @@
 #include "menuPrincipal.h"
 #include "apoyo.h"
 #include "registro.h"
+#include "publicarComentario.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <winsock2.h>
+
 
 // showMainMenu(Usuario *user): despliega el menú principal, que en función de si ya está dentro de un usuario, se encarga de 
 // mostrar unas opciones u otras. Y además lee la entrada por teclado y en función de la opción seleccionada, se encarga de
@@ -25,7 +28,8 @@ void showMainMenu(Usuario *user) {
 	    fgets(linea, 10, stdin);
         switch (*linea) {
             case '1':
-                inicioSesionoRegistro(user);
+                eliminar(7, 6);
+                //inicioSesionoRegistro(user);
                 break;
             case '2':
                 desplegarDiscusiones(user);
