@@ -90,7 +90,15 @@ int nombreExiste(const char *nombre) {               // He usado const porque *n
 // verificarCredenciales(const char *nombre, const char *base.dbcontrasena): función que se encarga de decir si existe un usuario con el 
 // nombre y contraseña introducidos y en el caso de haberlo devuelve 1, sino 0. Esta función es llamada en inicioSesion(Usuario *user)
 int verificarCredenciales(const char *nombre, const char *contrasena) {         // He usado const porque ni nombre ni contraseña se tocan
-    
+    char code[] = "VERIFICARCREDENCIALES:";
+    char sendBuff[512], recvBuff[512];
+
+	strcpy(sendBuff, strcat(code, nombre));
+    strcat(sendBuff, ":");
+    strcat(sendBuff, contrasena);
+	send(s, sendBuff, sizeof(sendBuff), 0);
+	recv(s, recvBuff, sizeof(recvBuff), 0);
+	return std::stoi(recvBuff);
 }
 
 // contrasenaRecursiva(Usuario *user, int intentos, char* nombre): función recursiva para manejar los intentos de contraseñas

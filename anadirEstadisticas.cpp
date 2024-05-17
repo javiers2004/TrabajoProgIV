@@ -3,12 +3,16 @@
 #include "menuPrincipal.h"
 #include "apoyo.h"
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "sqlite3.h"
+#include <winsock2.h>
 
 CommentCounter counters[100];
+
+extern SOCKET s;
 
 // contarComentariosPorUsuario(Usuario user, const char *archivo): función que a partir de un fichero de tipo .txt en donde están todos  
 // los comentarios de los usuarios, imprime las estadísticas de la base de datos(comentarios totales, media de caracteres por comentario
@@ -88,5 +92,10 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
 // anadirEst(Usuario user): función que añade las solicitudes por parte de los usuarios de las estadísticas, incluyendo en la base de 
 // datos la hora y quién fue el usuario que lo solicitó
 void anadirEst(Usuario user) {
-    
+
+    char code[] = "ANADIRESTADISTICA:";
+    char sendBuff[512], recvBuff[512];
+
+	strcpy(sendBuff, strcat(code, user.nombre));
+	send(s, sendBuff, sizeof(sendBuff), 0);
 }

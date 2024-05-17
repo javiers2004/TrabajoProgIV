@@ -14,7 +14,16 @@ extern SOCKET s;
 // un Comentario *respuesta se encarga de solicitar por teclado el texto que albergará el comentario. Con todo esos datos genera una 
 // estructura Comentario para guardarlo más tarde en la base de datos.
 void AgregarNuevoComentario(Comentario *coment) {
-    
+    char sendBuff[512], recvBuff[512];
+    char code[] = "AGREGARNUEVOCOMENTARIO:";
+	strcpy(sendBuff, strcat(code, coment->creador->nombre));
+    strcat(sendBuff, ":");
+    char str[20]; 
+    snprintf(str, sizeof(str), "%d", coment->disc->id);
+    strcat(sendBuff, str);
+    strcat(sendBuff, ":");
+    strcat(sendBuff, coment->texto);
+	send(s, sendBuff, sizeof(sendBuff), 0);
 }
 // agregarstadistica(Comentario *com): función que reciviendo un puntero a un comentario lo añade al archivo de estadísticas
 void agregarstadistica(Comentario *com) {

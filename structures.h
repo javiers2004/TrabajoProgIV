@@ -6,10 +6,10 @@
 typedef struct{
     int id;
     const char* nombre;
-    char* contrasena;
-    char* fechaCreacion;
-    char* telefono;
-    char* email;
+    const char* contrasena;
+    const char* fechaCreacion;
+    const char* telefono;
+    const char* email;
 }Usuario;
 
 typedef struct{
@@ -21,7 +21,7 @@ typedef struct{
 
 typedef struct{
     int id;
-    char* texto;
+    const char* texto;
     Usuario *creador;
     Discusion *disc;
     char* fechaCreacion;

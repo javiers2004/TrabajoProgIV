@@ -22,19 +22,13 @@
 void showMainMenu(Usuario *user) {                      
     if((*user).nombre == NULL | (*user).id < 0) {
         fflush(stdout);
-        Discusion *d = new Discusion();
-        d->nombre = "prueba socket2";
-        Usuario *c = new Usuario();
-        c->nombre = "Jaa";
-        d->creador = c;
-        insertarDiscusion(d);
         printf("BIENVENIDO A THREADSPHERE\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
         char linea[10];
 	    fgets(linea, 10, stdin);
         switch (*linea) {
             case '1':
-                //inicioSesionoRegistro(user);
+                inicioSesionoRegistro(user);
                 break;
             case '2':
                 desplegarDiscusiones(user);
