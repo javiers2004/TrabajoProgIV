@@ -71,7 +71,12 @@ void agregarNuevaDiscusion(Usuario *user, Discusion *disc) {
 // insertarDiscusion(Discusion *disc): función que se encarga de insertar la discusion que recibe como argumento dentro de la base
 // de datos 'base.db'. Es llamada desde agregarNuevaDiscusion(Usuario *user, Discusion *disc).
 void insertarDiscusion(Discusion *disc) {
-    
+    char code[] = "INSERTARDISCUSION:";
+	strcpy(sendBuff, code);
+    strcat(sendBuff, disc->nombre);
+    strcat(sendBuff, ":");
+    strcat(sendBuff, disc->creador->nombre);
+	send(s, sendBuff, sizeof(sendBuff), 0);
 }
 
 // discusionExiste(char* nombre): función que se encarga de verificar si el string que se pasa como argumentos ya es el nombre de una

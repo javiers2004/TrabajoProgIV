@@ -38,23 +38,26 @@ char* strreplace(char *o) {
 }
 // eliminarSalto(char* frase): función para eliminar el '\n' de los campos y poder imprimir por pantalla los campos correctamente.
 // Se llama desde agregarNuevaDiscusion(Usuario *user, Discusion *disc).
-char* eliminarSalto(char* frase) {
+char* eliminarSalto( const char* frase) {
     int i = 0;
     while(frase[i] != '\n' && frase[i] != '\0') {
         i++;
     }
     if (frase[i] == '\n') { 
         char* copia = (char*)malloc(sizeof(char) * (i + 1)); 
-        if (copia == NULL) {
-            return NULL; 
-        }
-        for (int e = 0; e < i; e++) {
+        int e;
+        for (e = 0; e < i; e++) {
             copia[e] = frase[e];
         }
         copia[i] = '\0'; 
         return copia; 
     } else { 
-        return frase; 
+        char* copia = (char*)malloc(sizeof(char) * (i + 1)); 
+        int e;
+        for (e = 0; e < i; e++) {
+            copia[e] = frase[e];
+        }
+        return copia; 
     }
 }
 //funcion para leer un archivo adminConfig.txt y obtener los datos de configuracion del administrador (nombre, contraseña y base de datos) 
