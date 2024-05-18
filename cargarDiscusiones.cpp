@@ -72,6 +72,7 @@ char sendBuff[512], recvBuff[512];
     // token = strtok(NULL, ":");
     // strcpy(disc->fechaCreacion, token);
 
+    // Parsear la respuesta y crear la estructura de Discusion
     Discusion *disc = (Discusion*) malloc(sizeof(Discusion));
     disc->creador = (Usuario*) malloc(sizeof(Usuario));
 
@@ -79,40 +80,54 @@ char sendBuff[512], recvBuff[512];
     char temp[512];
     int i = 0;
 
+    // Parsear el ID de la discusión
     while (*token != ':' && *token != '\0') {
         temp[i++] = *token++;
     }
     temp[i] = '\0';
     disc->id = atoi(temp);
 
-    if (*token == ':') token++;  
+    if (*token == ':') token++;  // Saltar el delimitador ':'
+
+    // Parsear el nombre de la discusión
     i = 0;
     while (*token != ':' && *token != '\0') {
-        temp[i++] = *token++;
+        if (i < sizeof(disc->nombre) - 1) {
+            disc->nombre[i++] = *token++;
+        } else {
+            token++;  // Saltar el caracter actual si excede el tamaño del buffer
+        }
     }
-    temp[i] = '\0';
-    strncpy(disc->nombre, temp, sizeof(disc->nombre) - 1);
-    disc->nombre[sizeof(disc->nombre) - 1] = '\0'; // Asegurarse de que la cadena esté terminada en NULL
+    disc->nombre[i] = '\0';
 
-    if (*token == ':') token++;  
+    if (*token == ':') token++;  // Saltar el delimitador ':'
+
+    // Parsear el nombre del creador
     i = 0;
     while (*token != ':' && *token != '\0') {
-        temp[i++] = *token++;
+        if (i < sizeof(disc->creador->nombre) - 1) {
+            disc->creador->nombre[i++] = *token++;
+        } else {
+            token++;  // Saltar el caracter actual si excede el tamaño del buffer
+        }
     }
-    temp[i] = '\0';
-    strncpy(disc->creador->nombre, temp, sizeof(disc->creador->nombre) - 1);
-    disc->creador->nombre[sizeof(disc->creador->nombre) - 1] = '\0'; // Asegurarse de que la cadena esté terminada en NULL
+    disc->creador->nombre[i] = '\0';
 
-    if (*token == ':') token++;  
-    
+    if (*token == ':') token++;  // Saltar el delimitador ':'
+
+    // Parsear la fecha de creación
+    i = 0;
     while (*token != '\0') {
-        temp[i++] = *token++;
+        if (i < sizeof(disc->fechaCreacion) - 1) {
+            disc->fechaCreacion[i++] = *token++;
+        } else {
+            token++;  // Saltar el caracter actual si excede el tamaño del buffer
+        }
     }
-    temp[i] = '\0';
-    strncpy(disc->fechaCreacion, temp, sizeof(disc->fechaCreacion) - 1);
-    disc->fechaCreacion[sizeof(disc->fechaCreacion) - 1] = '\0'; // Asegurarse de que la cadena esté terminada en NULL
+    disc->fechaCreacion[i] = '\0';
 
     return disc;
+
         
 }
 // cargarSeleccion(char* linea, Usuario *user): función que recibiendo un char* imprime los datos de la discusión con ese id y 
