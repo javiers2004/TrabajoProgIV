@@ -61,16 +61,58 @@ char sendBuff[512], recvBuff[512];
     if (strcmp(recvBuff, "NULL") == 0) {
         return NULL;
     }
-    
+
+    // Discusion *disc = (Discusion*) malloc(sizeof(Discusion));
+    // char *token = strtok(recvBuff, ":");
+    // disc->id = atoi(token);
+    // token = strtok(NULL, ":");
+    // strcpy(disc->nombre, token);
+    // token = strtok(NULL, ":");
+    // strcpy(disc->creador->nombre, token);
+    // token = strtok(NULL, ":");
+    // strcpy(disc->fechaCreacion, token);
+
     Discusion *disc = (Discusion*) malloc(sizeof(Discusion));
-    char *token = strtok(recvBuff, ":");
-    disc->id = atoi(token);
-    token = strtok(NULL, ":");
-    strcpy(disc->nombre, token);
-    token = strtok(NULL, ":");
-    strcpy(disc->creador->nombre, token);
-    token = strtok(NULL, ":");
-    strcpy(disc->fechaCreacion, token);
+    disc->creador = (Usuario*) malloc(sizeof(Usuario));
+
+    char *token = recvBuff;
+    char temp[512];
+    int i = 0;
+
+   
+    while (*token != ':' && *token != '\0') {
+        temp[i++] = *token++;
+    }
+    temp[i] = '\0';
+    disc->id = atoi(temp);
+
+    if (*token == ':') token++;  
+
+
+    i = 0;
+    while (*token != ':' && *token != '\0') {
+        temp[i++] = *token++;
+    }
+    temp[i] = '\0';
+    strcpy(disc->nombre, temp);
+
+    if (*token == ':') token++;  
+
+    i = 0;
+    while (*token != ':' && *token != '\0') {
+        temp[i++] = *token++;
+    }
+    temp[i] = '\0';
+    strcpy(disc->creador->nombre, temp);
+
+    if (*token == ':') token++; 
+    
+    i = 0;
+    while (*token != '\0') {
+        temp[i++] = *token++;
+    }
+    temp[i] = '\0';
+    strcpy(disc->fechaCreacion, temp);
 
     return disc;
     
