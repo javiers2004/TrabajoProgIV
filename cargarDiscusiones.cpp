@@ -79,7 +79,6 @@ char sendBuff[512], recvBuff[512];
     char temp[512];
     int i = 0;
 
-   
     while (*token != ':' && *token != '\0') {
         temp[i++] = *token++;
     }
@@ -87,36 +86,34 @@ char sendBuff[512], recvBuff[512];
     disc->id = atoi(temp);
 
     if (*token == ':') token++;  
-
-
     i = 0;
     while (*token != ':' && *token != '\0') {
         temp[i++] = *token++;
     }
     temp[i] = '\0';
-    strcpy(disc->nombre, temp);
+    strncpy(disc->nombre, temp, sizeof(disc->nombre) - 1);
+    disc->nombre[sizeof(disc->nombre) - 1] = '\0'; // Asegurarse de que la cadena esté terminada en NULL
 
     if (*token == ':') token++;  
-
     i = 0;
     while (*token != ':' && *token != '\0') {
         temp[i++] = *token++;
     }
-    //s
     temp[i] = '\0';
-    strcpy(disc->creador->nombre, temp);
+    strncpy(disc->creador->nombre, temp, sizeof(disc->creador->nombre) - 1);
+    disc->creador->nombre[sizeof(disc->creador->nombre) - 1] = '\0'; // Asegurarse de que la cadena esté terminada en NULL
 
-    if (*token == ':') token++; 
-
-    i = 0;
+    if (*token == ':') token++;  
+    
     while (*token != '\0') {
         temp[i++] = *token++;
     }
     temp[i] = '\0';
-    strcpy(disc->fechaCreacion, temp);
+    strncpy(disc->fechaCreacion, temp, sizeof(disc->fechaCreacion) - 1);
+    disc->fechaCreacion[sizeof(disc->fechaCreacion) - 1] = '\0'; // Asegurarse de que la cadena esté terminada en NULL
 
     return disc;
-    
+        
 }
 // cargarSeleccion(char* linea, Usuario *user): función que recibiendo un char* imprime los datos de la discusión con ese id y 
 // todos sus comentarios
