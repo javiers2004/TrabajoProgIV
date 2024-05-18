@@ -22,6 +22,12 @@
 void showMainMenu(Usuario *user) {                      
     if((*user).nombre == NULL | (*user).id < 0) {
         fflush(stdout);
+        Usuario *u = new Usuario();
+        u->nombre = "Usersocket4";
+        u->email = "jj@";
+        u->contrasena = "contrasocket";
+        u->telefono = "648";
+        insertarUsuario(u);
         printf("BIENVENIDO A THREADSPHERE\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
         char linea[10];
