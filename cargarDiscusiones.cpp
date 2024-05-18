@@ -102,11 +102,12 @@ char sendBuff[512], recvBuff[512];
     while (*token != ':' && *token != '\0') {
         temp[i++] = *token++;
     }
+    //s
     temp[i] = '\0';
     strcpy(disc->creador->nombre, temp);
 
     if (*token == ':') token++; 
-    
+
     i = 0;
     while (*token != '\0') {
         temp[i++] = *token++;
