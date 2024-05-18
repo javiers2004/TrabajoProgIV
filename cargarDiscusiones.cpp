@@ -51,6 +51,28 @@ void desplegarDiscusiones(Usuario *user) {
 }
 // cargarDiscusion(char* id): función que recibe un id de una conversacion y devuelve un puntero a la discusión
 Discusion* cargarDiscusion(char* id) {
+char sendBuff[512], recvBuff[512];
+    sprintf(sendBuff, "CARGARDISCUSION:%s", id);
+
+    send(comm_socket, sendBuff, strlen(sendBuff), 0);
+    int bytes = recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+    recvBuff[bytes] = '\0';
+
+    if (strcmp(recvBuff, "NULL") == 0) {
+        return NULL;
+    }
+    
+    Discusion *disc = (Discusion*) malloc(sizeof(Discusion));
+    char *token = strtok(recvBuff, ":");
+    disc->id = atoi(token);
+    token = strtok(NULL, ":");
+    strcpy(disc->nombre, token);
+    token = strtok(NULL, ":");
+    strcpy(disc->creador->nombre, token);
+    token = strtok(NULL, ":");
+    strcpy(disc->fechaCreacion, token);
+
+    return disc;
     
 }
 // cargarSeleccion(char* linea, Usuario *user): función que recibiendo un char* imprime los datos de la discusión con ese id y 
