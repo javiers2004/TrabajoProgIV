@@ -9,11 +9,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <winsock2.h>
+
+extern SOCKET s;
 
 // insertarUsuario(Usuario *user): se encarga de establecer conexión con la base de datos y añadir al usuario que se le pasa por
 // argumentos en la tabla Usuario, el Id se asigna automaticamente de manera ascendente.
 void insertarUsuario(Usuario *user) {
-    
+    char code[] = "INSERTARUSUARIO:";
+    char sendBuff[512], recvBuff[512];
+
+	strcpy(sendBuff, strcat(code, user->nombre));
+    strcat(sendBuff, ":");
+    strcat(sendBuff, user->contrasena);
+    strcat(sendBuff, ":");
+    strcat(sendBuff, user->telefono);
+    strcat(sendBuff, ":");
+    strcat(sendBuff, user->email);
+    strcat(sendBuff, ":");
+	send(s, sendBuff, sizeof(sendBuff), 0);
 }
 
 // registro(Usuario *user): función para registrarse por primera vez, es llamada desde inicioSesionoRegistro(Usuario *user)(opción 2)
