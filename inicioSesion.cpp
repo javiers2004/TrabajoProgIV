@@ -141,7 +141,6 @@ Usuario* leerUsuario(const char* nombre) {
     u->email = email;
     u->telefono = telefono;
     u->fechaCreacion = fechaCreacion;
-    printf("%s", u->contrasena);
     return u;
 }
 
