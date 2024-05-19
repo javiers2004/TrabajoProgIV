@@ -6,11 +6,15 @@
 #include "publicarComentario.h"
 #include "cargarDiscusiones.h"
 #include "crearDiscusiones.h"
+#include <winsock2.h>
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string>
+
+extern SOCKET s;
 
 // desplegarDiscusiones(): despliega todas las discusiones cuando es llamada desde showMainMenu(Usuario *user)(opción 2) y para ello usa la 
 // función leerDiscusiones() de donde las recibirá.
@@ -50,72 +54,57 @@ void desplegarDiscusiones(Usuario *user) {
    }
 }
 // cargarDiscusion(char* id): función que recibe un id de una conversacion y devuelve un puntero a la discusión
-Discusion* cargarDiscusion(char* id) {
-char sendBuff[512], recvBuff[512];
-    sprintf(sendBuff, "CARGARDISCUSION:%s", id);
+Discusion* cargarDiscusion(const char* id) {
+    char sendBuff[512], recvBuff[512];
+    char code[] = "CARGARDISCUSION:";
 
-    send(comm_socket, sendBuff, strlen(sendBuff), 0);
-    int bytes = recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-    recvBuff[bytes] = '\0';
+	strcpy(sendBuff, strcat(code, id));
+    send(s, sendBuff, strlen(sendBuff), 0);
+	recv(s, recvBuff, sizeof(recvBuff), 0);
 
-    if (strcmp(recvBuff, "NULL") == 0) {
-        return NULL;
-    }
+    Discusion *d = new Discusion();
 
-    // Discusion *disc = (Discusion*) malloc(sizeof(Discusion));
-    // char *token = strtok(recvBuff, ":");
-    // disc->id = atoi(token);
-    // token = strtok(NULL, ":");
-    // strcpy(disc->nombre, token);
-    // token = strtok(NULL, ":");
-    // strcpy(disc->creador->nombre, token);
-    // token = strtok(NULL, ":");
-    // strcpy(disc->fechaCreacion, token);
-
-    Discusion *disc = (Discusion*) malloc(sizeof(Discusion));
-    disc->creador = (Usuario*) malloc(sizeof(Usuario));
-
-    char *token = recvBuff;
-    char temp[512];
+    char idConversacion[256];
+    char nombre[256];
+    char nombreCreador[256];
+    char fecha[256];
     int i = 0;
-
-   
-    while (*token != ':' && *token != '\0') {
-        temp[i++] = *token++;
+    while(recvBuff[i] != ';') {
+        idConversacion[i] = recvBuff[i];
+        i++;
     }
-    temp[i] = '\0';
-    disc->id = atoi(temp);
-
-    if (*token == ':') token++;  
-
-
-    i = 0;
-    while (*token != ':' && *token != '\0') {
-        temp[i++] = *token++;
+    printf("%s\n",idConversacion);
+    idConversacion[i] = '\0';
+    i++;
+    int e = 0;
+    while(recvBuff[i] != '\n') {
+        nombre[e] = recvBuff[i];
+        i++;
+        e++;
     }
-    temp[i] = '\0';
-    strcpy(disc->nombre, temp);
-
-    if (*token == ':') token++;  
-
-    i = 0;
-    while (*token != ':' && *token != '\0') {
-        temp[i++] = *token++;
+    nombre[e] = '\0';
+    i++;
+    i++;
+    e = 0;
+    while(recvBuff[i] != ';') {
+        nombreCreador[e] = recvBuff[i];
+        i++;
+        e++;
     }
-    temp[i] = '\0';
-    strcpy(disc->creador->nombre, temp);
-
-    if (*token == ':') token++; 
-    
-    i = 0;
-    while (*token != '\0') {
-        temp[i++] = *token++;
+    i++;
+    e = 0;
+    while(recvBuff[i] != ';') {
+        fecha[e] = recvBuff[i];
+        i++;
+        e++;
     }
-    temp[i] = '\0';
-    strcpy(disc->fechaCreacion, temp);
+    d->id = idConversacion[3] - '0';
+    d->nombre = nombre;
+    //d->creador->nombre = nombreCreador;
+    d->fechaCreacion = fecha;
 
-    return disc;
-    
+    return d;
+        
 }
 // cargarSeleccion(char* linea, Usuario *user): función que recibiendo un char* imprime los datos de la discusión con ese id y 
 // todos sus comentarios
