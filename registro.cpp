@@ -88,9 +88,11 @@ void registro(Usuario *user) {
         info_tm = localtime(&tiempo);
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
 
-        (*user).fechaCreacion = buffer;
+        
         insertarUsuario(user);
-        sleep(1);
+        user = leerUsuario(user->nombre);
+    
+        sleep(4);
         system("cls || clear");
         printf("Registrando usuario..");
         sleep(1);
