@@ -28,6 +28,7 @@ void insertarUsuario(Usuario *user) {
     strcat(sendBuff, user->email);
     strcat(sendBuff, ":");
 	send(s, sendBuff, sizeof(sendBuff), 0);
+
 }
 
 // registro(Usuario *user): función para registrarse por primera vez, es llamada desde inicioSesionoRegistro(Usuario *user)(opción 2)
@@ -96,7 +97,6 @@ void registro(Usuario *user) {
         system("cls || clear");
         printf("Registrando usuario...");
         sleep(1);
-        (*user).id = 1;
         system("cls || clear");
         printf("Registro con exito de %s\n", (*user).nombre);
         sleep(3);

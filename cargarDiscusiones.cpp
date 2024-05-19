@@ -73,7 +73,6 @@ Discusion* cargarDiscusion(const char* id) {
         idConversacion[i] = recvBuff[i];
         i++;
     }
-    printf("%s\n",idConversacion);
     idConversacion[i] = '\0';
     i++;
     int e = 0;
@@ -140,7 +139,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
         com->fechaCreacion = buffer;
         AgregarNuevoComentario(com);
         free(com);
-    cargarSeleccion(linea, user);
+        cargarSeleccion(linea, user);
     }
     else {
         system("cls || clear");

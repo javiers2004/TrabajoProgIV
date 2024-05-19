@@ -70,7 +70,79 @@ void cerrarSesion(Usuario *user) {
 //leerUsuario(const char* nombre): función que a partir de un char* nombre busca en la base de datos un usuario con ese nombre y en el 
 // caso de encontrarlo te devuelve un puntero a un usuario con todos los datos que le corresponden. Se usa cuando en leerDiscusiones();
 Usuario* leerUsuario(const char* nombre) {
-   
+    char sendBuff[512], recvBuff[512];
+    printf("%s", nombre);
+    char code[] = "LEERUSUARIO:";
+
+	strcpy(sendBuff, strcat(code, nombre));
+    strcat(sendBuff, ";");
+    send(s, sendBuff, strlen(sendBuff), 0);
+    printf("%s", sendBuff);
+	recv(s, recvBuff, sizeof(recvBuff), 0);
+    Usuario *u = new Usuario();
+
+    char id[256];
+    char nombreUsuario[256];
+    char contrasena[256];
+    char email[256];
+    char telefono[256];
+    char fechaCreacion[256];
+    int i = 0;
+    while(recvBuff[i] != ';') {
+        id[i] = recvBuff[i];
+        i++;
+    }
+    id[i] = '\0';
+
+    i++;
+    int e = 0;
+    while(recvBuff[i] != ';') {
+        nombreUsuario[e] = recvBuff[i];
+        i++;
+        e++;
+    }
+    nombreUsuario[e] = '\0';
+    i++;
+    e = 0;
+    while(recvBuff[i] != ';') {
+        contrasena[e] = recvBuff[i];
+        i++;
+        e++;
+    }
+    contrasena[e] = '\0';
+    i++;
+    e = 0;
+    while(recvBuff[i] != ';') {
+        email[e] = recvBuff[i];
+        i++;
+        e++;
+    }
+    email[e] = '\0';
+    i++;
+    e = 0;
+    while(recvBuff[i] != ';') {
+        telefono[e] = recvBuff[i];
+        i++;
+        e++;
+    }
+    telefono[e] = '\0';
+    i++;
+    e = 0;
+    while(recvBuff[i] != ';') {
+        fechaCreacion[e] = recvBuff[i];
+        i++;
+        e++;
+    }
+    fechaCreacion[e] = '\0';
+
+    u->id = id[0] - '0';
+    u->nombre = nombreUsuario;
+    u->contrasena = contrasena;
+    u->email = email;
+    u->telefono = telefono;
+    u->fechaCreacion = fechaCreacion;
+    printf("%s", u->contrasena);
+    return u;
 }
 
 // nombreExiste(const char *nombre): función que se encarga de decir si el nombre introducido ya ha sido usado por otra persona
@@ -82,6 +154,7 @@ int nombreExiste(const char *nombre) {               // He usado const porque *n
     char sendBuff[512], recvBuff[512];
 
 	strcpy(sendBuff, strcat(code, nombre));
+    strcat(sendBuff, ";");
 	send(s, sendBuff, sizeof(sendBuff), 0);
 	recv(s, recvBuff, sizeof(recvBuff), 0);
 	return std::stoi(recvBuff);
@@ -96,6 +169,7 @@ int verificarCredenciales(const char *nombre, const char *contrasena) {         
 	strcpy(sendBuff, strcat(code, nombre));
     strcat(sendBuff, ":");
     strcat(sendBuff, contrasena);
+    strcat(sendBuff, ":");
 	send(s, sendBuff, sizeof(sendBuff), 0);
 	recv(s, recvBuff, sizeof(recvBuff), 0);
 	return std::stoi(recvBuff);
