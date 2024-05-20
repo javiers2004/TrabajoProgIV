@@ -14,7 +14,7 @@ typedef struct{
 
 typedef struct{
     int id;
-    const char* nombre;
+    char* nombre;
     Usuario *creador;
     char* fechaCreacion;
 }Discusion;

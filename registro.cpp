@@ -18,17 +18,17 @@ extern SOCKET s;
 
 // insertarUsuario(Usuario *user): se encarga de establecer conexión con la base de datos y añadir al usuario que se le pasa por
 // argumentos en la tabla Usuario, el Id se asigna automaticamente de manera ascendente.
-void insertarUsuario(Usuario *user) {
+void insertarUsuario(Usuario *user, char* contrasena, char* telefono, char* email) {
     char code[] = "INSERTARUSUARIO:";
     char sendBuff[512], recvBuff[512];
 
-	strcpy(sendBuff, strcat(code, user->nombre));
+	strcpy(sendBuff, strcat(code, nombreU));
     strcat(sendBuff, ":");
-    strcat(sendBuff, user->contrasena);
+    strcat(sendBuff, contrasena);
     strcat(sendBuff, ":");
-    strcat(sendBuff, user->telefono);
+    strcat(sendBuff, telefono);
     strcat(sendBuff, ":");
-    strcat(sendBuff, user->email);
+    strcat(sendBuff, email);
     strcat(sendBuff, ":");
 	send(s, sendBuff, sizeof(sendBuff), 0);
 
@@ -82,10 +82,6 @@ void registro(Usuario *user) {
         //system("cls || clear");
         printf("Registrando usuario.");
         strcpy(nombreU, nombre);
-        user->nombre = nombre;
-        user->contrasena = contrasena;
-        user->email = email;
-        user->telefono = telefono;
 
 
         time_t tiempo;
@@ -94,8 +90,7 @@ void registro(Usuario *user) {
         time(&tiempo);
         info_tm = localtime(&tiempo);
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-
-        insertarUsuario(user);
+        insertarUsuario(user, contrasena, telefono, email);
     
         sleep(4);
         system("cls || clear");
@@ -105,7 +100,7 @@ void registro(Usuario *user) {
         printf("Registrando usuario...");
         sleep(1);
         system("cls || clear");
-        printf("Registro con exito de %s\n", (*user).nombre);
+        printf("Registro con exito de %s\n", nombreU);
         sleep(3);
         system("cls || clear");
         showMainMenu(user);

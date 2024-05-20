@@ -5,6 +5,7 @@
 #include "crearDiscusiones.h"
 #include "apoyo.h"
 #include "inicioSesion.h"
+#include "globals.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +24,6 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
     Discusion *d1  = new Discusion();
     char str[100];
     char nombre[100]; // Almacena el nombre de la discusión
-    printf("%s", nombreCreador);
     printf("NOMBRE: \n");
 	fflush(stdout);
     printf("\n\n-------------------------------------------- \nPulse 'Enter' para volver al menu principal \n \n \n");
@@ -43,9 +43,7 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
         showMainMenu(user);
     }
     else {   
-        printf("%s", nombreCreador);
-        sleep(5);
-        d1->nombre = strdup(nombre);
+        sleep(3);
         // time_t tiempo;
         // struct tm *info_tm;
         // char buffer[26]; 
@@ -54,7 +52,8 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
         // info_tm = localtime(&tiempo);
         // strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
         // d1->fechaCreacion = buffer;
-        agregarNuevaDiscusion(user, d1, nombreCreador);
+        agregarNuevaDiscusion(user, d1, nombre);
+
 
     }}
 }
@@ -63,8 +62,8 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
 // datos. Se llama desde crearDiscusion(Usuario *user).
 void agregarNuevaDiscusion(Usuario *user, Discusion *disc, char* nombreCreador) {
     system("cls || clear");
-    printf("Creando la nueva discusion  '%s'  de  %s  el  %s... \n", eliminarSalto((*disc).nombre), nombreCreador, eliminarSalto((*disc).fechaCreacion));
-    insertarDiscusion(disc, nombreCreador);
+    printf("Creando la nueva discusion  '%s'  de  %s  el  %s... \n", nombreCreador, nombreU, "21/05/2024");
+    insertarDiscusion(nombreCreador, nombreU);
     sleep(4);
     system("cls || clear");
     printf("Discusion creada con exito");
@@ -75,12 +74,12 @@ void agregarNuevaDiscusion(Usuario *user, Discusion *disc, char* nombreCreador) 
 
 // insertarDiscusion(Discusion *disc): función que se encarga de insertar la discusion que recibe como argumento dentro de la base
 // de datos 'base.db'. Es llamada desde agregarNuevaDiscusion(Usuario *user, Discusion *disc).
-void insertarDiscusion(Discusion *disc, char* nombreCreador) {
+void insertarDiscusion(char* nombreDiscusion, char* nombreCreador) {
     char code[] = "INSERTARDISCUSION:";
 	strcpy(sendBuff, code);
-    strcat(sendBuff, disc->nombre);
+    strcat(sendBuff, nombreDiscusion);
     strcat(sendBuff, ":");
-    strcat(sendBuff, nombreCreador);
+    strcat(sendBuff, nombreU);
 	send(s, sendBuff, sizeof(sendBuff), 0);
 }
 

@@ -59,10 +59,7 @@ void cerrarSesion(Usuario *user) {
     sleep(1);
     system("cls || clear");
 
-    (*user).nombre = NULL;
-    (*user).contrasena = NULL;
-    (*user).email = NULL;
-    (*user).telefono = NULL;
+    strcpy(nombreU, "");
     strcpy(nombreU, NULL);
     printf("Sesion cerrada con exito\n");
     sleep(2);
@@ -74,7 +71,6 @@ void cerrarSesion(Usuario *user) {
 // caso de encontrarlo te devuelve un puntero a un usuario con todos los datos que le corresponden. Se usa cuando en leerDiscusiones();
 Usuario* leerUsuario(const char* nombre) {
     char sendBuff[512], recvBuff[512];
-    printf("%s", nombre);
     char code[] = "LEERUSUARIO:";
 
 	strcpy(sendBuff, strcat(code, nombre));

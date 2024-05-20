@@ -23,7 +23,7 @@
 // llamar a la función correspondiente
 void showMainMenu(Usuario *user) {  
     char* actual;                 
-    if((*user).nombre == NULL | (*user).id < 0) {
+    if(strcmp(nombreU, "") == 0 | (*user).id < 0) {
         fflush(stdout);
         printf("BIENVENIDO A THREADSPHERE\n");   
         printf(" 1.Iniciar sesion/Registrarse \n 2.Buscar una discusion \n");
@@ -45,10 +45,10 @@ void showMainMenu(Usuario *user) {
         char id[100];
         printf("Hola, %s\n", nombreU); 
         user = leerUsuario(nombreU);
-        
+
 
         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
-        if(strcmp(user->nombre, "admin") == 0) {
+        if(strcmp(nombreU, "admin") == 0) {
             printf(" \n-OPCIONES DE ADMINISTRADOR-\n 6.Borrar usuario\n 7.Borrar discusion\n 8.Borrar comentario\n");
             printf("%s %s %s %s",(*user).nombre,(*user).contrasena,(*user).email,(*user).telefono);
 

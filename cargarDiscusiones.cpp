@@ -142,7 +142,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
         cargarSeleccion(linea, user);
     }
     else {
-        free(com)
+        free(com);
         system("cls || clear");
         showMainMenu(user);
     }
