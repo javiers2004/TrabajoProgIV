@@ -150,7 +150,56 @@ void cargarSeleccion(char* linea, Usuario *user) {
 // leerDiscusiones(): lee las discusiones de la base de datos y las devuelve mediante un Puntero Discusion*. Esta función es llamada 
 // desde el método desplegarDiscusiones().
 Discusion* leerDiscusiones() {
-    
+ char sendBuff[512], recvBuff[4096];  // Increased recvBuff size to handle more data
+    char code[] = "LEERDISCUSIONES:";
+
+    strcpy(sendBuff, code);
+    send(s, sendBuff, strlen(sendBuff), 0);
+    recv(s, recvBuff, sizeof(recvBuff), 0);
+
+    int numDiscusiones = obtenerIdMaximoDiscusiones();
+    Discusion* discusiones = new Discusion[numDiscusiones];
+    int i = 0, j = 0, discIndex = 0;
+
+    while (recvBuff[i] != '\0') {
+        char temp[256];
+
+        while (recvBuff[i] != ';') {
+            temp[j++] = recvBuff[i++];
+        }
+        temp[j] = '\0';
+        discusiones[discIndex].id = atoi(temp);
+        i++;
+        j = 0;
+
+        while (recvBuff[i] != ';') {
+            temp[j++] = recvBuff[i++];
+        }
+        temp[j] = '\0';
+        discusiones[discIndex].nombre = strdup(temp);
+        i++;
+        j = 0;
+
+        while (recvBuff[i] != ';') {
+            temp[j++] = recvBuff[i++];
+        }
+        temp[j] = '\0';
+        discusiones[discIndex].creador = new Usuario();
+        discusiones[discIndex].creador->nombre = strdup(temp);
+        i++;
+        j = 0;
+
+        while (recvBuff[i] != ';') {
+            temp[j++] = recvBuff[i++];
+        }
+        temp[j] = '\0';
+        discusiones[discIndex].fechaCreacion = strdup(temp);
+        i++;
+        j = 0;
+
+        discIndex++;
+    }
+    return discusiones;   
     
 }
 // imprimirComentarios(char* IDConversacion): función que recive un char* lo convierte a int y imprime por pantalla todos los
