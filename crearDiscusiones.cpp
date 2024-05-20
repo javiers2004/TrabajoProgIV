@@ -43,8 +43,8 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
         showMainMenu(user);
     }
     else {   
-                  printf("%s", nombreCreador);
-                sleep(5);
+        printf("%s", nombreCreador);
+        sleep(5);
         d1->nombre = strdup(nombre);
         // time_t tiempo;
         // struct tm *info_tm;
