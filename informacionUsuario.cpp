@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void imprimirInfoUsuario(Usuario *user) {
+void imprimirInfoUsuario(const Usuario *user) {
     system("cls || clear");
     printf(" ______________________________________________________________\n");
     printf("|                     Informacion Usuario                      |\n");
@@ -19,5 +19,5 @@ void imprimirInfoUsuario(Usuario *user) {
     char linea[10];
     fgets(linea, 10, stdin);
     system("cls || clear");
-    showMainMenu(user);
+    showMainMenu(const_cast<Usuario*>(user));
 }

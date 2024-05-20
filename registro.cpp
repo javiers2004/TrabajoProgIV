@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <winsock2.h>
+#include <iostream>
+#include <cstring>
 
 extern SOCKET s;
 
@@ -73,13 +75,16 @@ void registro(Usuario *user) {
 	    fgets(str, sizeof(str), stdin);
 	    sscanf(str, "%s", telefono); 
 	    clearIfNeeded(str, sizeof(str));
-
-        system("cls || clear");
+        printf("aaaaa");
+        printf("%s %s %s %s",nombre,contrasena,email,telefono);
+        sleep(3);
+        //system("cls || clear");
         printf("Registrando usuario.");
-	    (*user).nombre = strdup(nombre); 
-        (*user).contrasena = strdup(contrasena); 
-        (*user).email = email;
-        (*user).telefono = telefono;
+        std::strcpy((*user).nombre, nombre);
+        std::strcpy((*user).contrasena, contrasena);
+        std::strcpy((*user).email, email);
+        std::strcpy((*user).telefono, telefono);
+
 
         time_t tiempo;
         struct tm *info_tm;
@@ -88,9 +93,7 @@ void registro(Usuario *user) {
         info_tm = localtime(&tiempo);
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
 
-        
         insertarUsuario(user);
-        user = leerUsuario(user->nombre);
     
         sleep(4);
         system("cls || clear");

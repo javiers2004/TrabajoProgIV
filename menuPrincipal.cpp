@@ -42,8 +42,10 @@ void showMainMenu(Usuario *user) {
         char id[100];
         printf("Hola, %s\n", (*user).nombre); 
         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
-        if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {
+        if(strcmp(user->nombre, "admin") == 0) {
             printf(" \n-OPCIONES DE ADMINISTRADOR-\n 6.Borrar usuario\n 7.Borrar discusion\n 8.Borrar comentario\n");
+            printf("%s %s %s %s",(*user).nombre,(*user).contrasena,(*user).email,(*user).telefono);
+
         }
         char linea[10];
 	    fgets(linea, 10, stdin);

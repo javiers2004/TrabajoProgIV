@@ -10,7 +10,8 @@
 #include <string.h>
 #include <string>
 #include <winsock2.h>
-
+#include <iostream>
+#include <cstring>
 extern SOCKET s;
 
 // inicioSesion(Usuario *user): función llamada por inicioSesionoRegistro(Usuario *user)(opción 1), se encarga de pedir el nombre y la
@@ -77,8 +78,10 @@ Usuario* leerUsuario(const char* nombre) {
 	strcpy(sendBuff, strcat(code, nombre));
     strcat(sendBuff, ";");
     send(s, sendBuff, strlen(sendBuff), 0);
-    printf("%s", sendBuff);
+    printf("%s\n", sendBuff);
 	recv(s, recvBuff, sizeof(recvBuff), 0);
+    printf("%s", recvBuff);
+
     Usuario *u = new Usuario();
 
     char id[256];
@@ -136,11 +139,15 @@ Usuario* leerUsuario(const char* nombre) {
     fechaCreacion[e] = '\0';
 
     u->id = id[0] - '0';
+
+    
+
     u->nombre = nombreUsuario;
     u->contrasena = contrasena;
     u->email = email;
     u->telefono = telefono;
     u->fechaCreacion = fechaCreacion;
+
     return u;
 }
 
@@ -186,6 +193,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
 	clearIfNeeded(str, sizeof(str));
     if(verificarCredenciales(nombre, contrasena) == 1) { // CASO DE QUE LA CONTRASEÑA INTRODUCIDA SEA CORRECTA
         user = leerUsuario(nombre);
+        printf("%s   %s   %s   %s", user->nombre, user->contrasena, user->email, user->telefono);
         system("cls || clear");
         printf("Iniciando sesion de %s.", (*user).nombre);
         sleep(1);

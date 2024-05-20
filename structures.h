@@ -5,11 +5,11 @@
 //ESTRUCTURAS NECESARIAS   -> Usuario, Discusión, Comentario
 typedef struct{
     int id;
-    const char* nombre;
-    const char* contrasena;
-    const char* fechaCreacion;
-    const char* telefono;
-    const char* email;
+    char* nombre;
+    char* contrasena;
+    char* fechaCreacion;
+    char* telefono;
+    char* email;
 }Usuario;
 
 typedef struct{

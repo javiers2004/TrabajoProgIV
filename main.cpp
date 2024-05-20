@@ -56,10 +56,10 @@ int main(int argc, char *argv[]) {
 
 
     //CODIGO PARA EMPEZAR EL PROGRAMA
-    Usuario user1;
-    user1.nombre = NULL;  
+    Usuario *user1 = new Usuario();
+    user1->nombre = NULL;  
     system("cls || clear");
-    showMainMenu(&user1);
+    showMainMenu(user1);
     
 
     closesocket(s);

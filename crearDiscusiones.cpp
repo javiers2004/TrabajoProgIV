@@ -22,6 +22,7 @@ void crearDiscusion(Usuario *user) {
     Discusion d1;
     char str[100];
     char nombre[100]; // Almacena el nombre de la discusión
+    printf("aaaa");
     printf("NOMBRE: \n");
 	fflush(stdout);
     printf("\n\n-------------------------------------------- \nPulse 'Enter' para volver al menu principal \n \n \n");
