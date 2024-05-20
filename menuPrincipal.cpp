@@ -19,7 +19,8 @@
 // showMainMenu(Usuario *user): despliega el menú principal, que en función de si ya está dentro de un usuario, se encarga de 
 // mostrar unas opciones u otras. Y además lee la entrada por teclado y en función de la opción seleccionada, se encarga de
 // llamar a la función correspondiente
-void showMainMenu(Usuario *user) {                      
+void showMainMenu(Usuario *user) {     
+    char* actual;                 
     if((*user).nombre == NULL | (*user).id < 0) {
         fflush(stdout);
         printf("BIENVENIDO A THREADSPHERE\n");   
@@ -61,7 +62,7 @@ void showMainMenu(Usuario *user) {
                 crearDiscusion(user, user->nombre);
                 break;
             case '4':
-                contarComentariosPorUsuario(*user, obtenerLineaPorNumero(8));
+                contarComentariosPorUsuario(user, obtenerLineaPorNumero(8));
                 break;
             case '5':
                 imprimirInfoUsuario(user);

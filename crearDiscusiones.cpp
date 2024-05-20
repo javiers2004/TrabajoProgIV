@@ -23,6 +23,7 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
     Discusion *d1  = new Discusion();
     char str[100];
     char nombre[100]; // Almacena el nombre de la discusión
+    printf("%s", nombreCreador);
     printf("NOMBRE: \n");
 	fflush(stdout);
     printf("\n\n-------------------------------------------- \nPulse 'Enter' para volver al menu principal \n \n \n");
@@ -42,15 +43,19 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
         showMainMenu(user);
     }
     else {   
+                  printf("%s", nombreCreador);
+                sleep(5);
         d1->nombre = strdup(nombre);
-        time_t tiempo;
-        struct tm *info_tm;
-        char buffer[26]; 
-        time(&tiempo);
-        info_tm = localtime(&tiempo);
-        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
-        d1->fechaCreacion = buffer;
+        // time_t tiempo;
+        // struct tm *info_tm;
+        // char buffer[26]; 
+
+        // time(&tiempo);
+        // info_tm = localtime(&tiempo);
+        // strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
+        // d1->fechaCreacion = buffer;
         agregarNuevaDiscusion(user, d1, nombreCreador);
+
     }}
 }
 
@@ -58,7 +63,7 @@ void crearDiscusion(Usuario *user, char* nombreCreador) {
 // datos. Se llama desde crearDiscusion(Usuario *user).
 void agregarNuevaDiscusion(Usuario *user, Discusion *disc, char* nombreCreador) {
     system("cls || clear");
-    printf("Creando la nueva discusion  '%s'  de  %s  el  %s... \n", eliminarSalto((*disc).nombre), eliminarSalto((*disc).creador->nombre), eliminarSalto((*disc).fechaCreacion));
+    printf("Creando la nueva discusion  '%s'  de  %s  el  %s... \n", eliminarSalto((*disc).nombre), nombreCreador, eliminarSalto((*disc).fechaCreacion));
     insertarDiscusion(disc, nombreCreador);
     sleep(4);
     system("cls || clear");

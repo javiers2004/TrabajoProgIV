@@ -2,7 +2,7 @@
 #include "anadirEstadisticas.h"
 #include "menuPrincipal.h"
 #include "apoyo.h"
-
+#include "inicioSesion.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,7 +17,7 @@ extern SOCKET s;
 // contarComentariosPorUsuario(Usuario user, const char *archivo): función que a partir de un fichero de tipo .txt en donde están todos  
 // los comentarios de los usuarios, imprime las estadísticas de la base de datos(comentarios totales, media de caracteres por comentario
 // y total de menciones) e imprime todo por pantalla. También llama a anadirEst(Usuario user);
-void contarComentariosPorUsuario(Usuario user, const char *archivo) {
+void contarComentariosPorUsuario(Usuario *user, const char *archivo) {
     system("cls || clear");
     FILE *file = fopen(archivo, "r");
     if (file == NULL) {
@@ -80,12 +80,13 @@ void contarComentariosPorUsuario(Usuario user, const char *archivo) {
     }
     printf("\n\nTotal de menciones(@) en los comentarios: %d\n", total_menciones);  // total menciones
     fclose(file);
-    anadirEst(user);
+    anadirEst(*user);
+    printf("%s   %s    %s    %s", user->nombre, user->contrasena, user->email, user->telefono);
     printf(" \n\nPulsa ENTER para continuar.");
     char linea[10];
     fgets(linea, 10, stdin);
     system("cls || clear");
-    showMainMenu(&user);
+    showMainMenu(user);
 }
 
 
