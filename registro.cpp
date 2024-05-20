@@ -10,8 +10,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <winsock2.h>
+#include <iostream>
+#include <cstring>
 
 extern SOCKET s;
+extern char* nombreU;
 
 // insertarUsuario(Usuario *user): se encarga de establecer conexión con la base de datos y añadir al usuario que se le pasa por
 // argumentos en la tabla Usuario, el Id se asigna automaticamente de manera ascendente.
@@ -73,13 +76,17 @@ void registro(Usuario *user) {
 	    fgets(str, sizeof(str), stdin);
 	    sscanf(str, "%s", telefono); 
 	    clearIfNeeded(str, sizeof(str));
-
-        system("cls || clear");
+        printf("aaaaa");
+        printf("%s %s %s %s",nombre,contrasena,email,telefono);
+        sleep(3);
+        //system("cls || clear");
         printf("Registrando usuario.");
-	    (*user).nombre = strdup(nombre); 
-        (*user).contrasena = strdup(contrasena); 
-        (*user).email = email;
-        (*user).telefono = telefono;
+        strcpy(nombreU, nombre);
+        user->nombre = nombre;
+        user->contrasena = contrasena;
+        user->email = email;
+        user->telefono = telefono;
+
 
         time_t tiempo;
         struct tm *info_tm;
@@ -88,9 +95,7 @@ void registro(Usuario *user) {
         info_tm = localtime(&tiempo);
         strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", info_tm);
 
-        
         insertarUsuario(user);
-        user = leerUsuario(user->nombre);
     
         sleep(4);
         system("cls || clear");

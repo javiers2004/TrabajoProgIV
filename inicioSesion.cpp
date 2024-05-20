@@ -10,8 +10,10 @@
 #include <string.h>
 #include <string>
 #include <winsock2.h>
-
+#include <iostream>
+#include <cstring>
 extern SOCKET s;
+extern char* nombreU;
 
 // inicioSesion(Usuario *user): función llamada por inicioSesionoRegistro(Usuario *user)(opción 1), se encarga de pedir el nombre y la
 // contraseña para el correcto inicio de sesión. Cuando introduces el nombre comprueba que está en la base de datos (si no está 
@@ -61,6 +63,7 @@ void cerrarSesion(Usuario *user) {
     (*user).contrasena = NULL;
     (*user).email = NULL;
     (*user).telefono = NULL;
+    nombreU = NULL;
     printf("Sesion cerrada con exito\n");
     sleep(2);
     system("cls || clear");
@@ -77,8 +80,8 @@ Usuario* leerUsuario(const char* nombre) {
 	strcpy(sendBuff, strcat(code, nombre));
     strcat(sendBuff, ";");
     send(s, sendBuff, strlen(sendBuff), 0);
-    printf("%s", sendBuff);
 	recv(s, recvBuff, sizeof(recvBuff), 0);
+
     Usuario *u = new Usuario();
 
     char id[256];
@@ -136,11 +139,14 @@ Usuario* leerUsuario(const char* nombre) {
     fechaCreacion[e] = '\0';
 
     u->id = id[0] - '0';
+
+    nombreU = u->nombre;
     u->nombre = nombreUsuario;
     u->contrasena = contrasena;
     u->email = email;
     u->telefono = telefono;
     u->fechaCreacion = fechaCreacion;
+
     return u;
 }
 
@@ -186,6 +192,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
 	clearIfNeeded(str, sizeof(str));
     if(verificarCredenciales(nombre, contrasena) == 1) { // CASO DE QUE LA CONTRASEÑA INTRODUCIDA SEA CORRECTA
         user = leerUsuario(nombre);
+        printf("%s   %s   %s   %s", user->nombre, user->contrasena, user->email, user->telefono);
         system("cls || clear");
         printf("Iniciando sesion de %s.", (*user).nombre);
         sleep(1);
@@ -197,6 +204,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
         sleep(1);
         system("cls || clear");
         printf("Sesion iniciada con exito\n");
+        nombreU = nombre;
         sleep(2);
         system("cls || clear");
         showMainMenu(user);

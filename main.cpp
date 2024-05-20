@@ -9,7 +9,7 @@
 #define SERVER_PORT 6000
 
 SOCKET s;
-
+char* nombreU;
 
 int main(int argc, char *argv[]) {
 
@@ -56,10 +56,10 @@ int main(int argc, char *argv[]) {
 
 
     //CODIGO PARA EMPEZAR EL PROGRAMA
-    Usuario user1;
-    user1.nombre = NULL;  
+    Usuario *user1 = new Usuario();
+    char* nombreU = user1->nombre;  
     system("cls || clear");
-    showMainMenu(&user1);
+    showMainMenu(user1);
     
 
     closesocket(s);

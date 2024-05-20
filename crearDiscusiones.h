@@ -3,9 +3,9 @@
 #include "structures.h"
 #include <winsock2.h>
 
-void crearDiscusion(Usuario *user);
-void agregarNuevaDiscusion(Usuario *user, Discusion *disc);
-void insertarDiscusion(Discusion *disc);
+void crearDiscusion(Usuario *user, char* nombreCreador);
+void agregarNuevaDiscusion(Usuario *user, Discusion *disc, char* nombreCreador);
+void insertarDiscusion(Discusion *disc, char* nombreCreador);
 int discusionExiste(const char* nombre);
 int obtenerIdMaximoDiscusiones();
 
