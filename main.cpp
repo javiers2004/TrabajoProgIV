@@ -9,7 +9,7 @@
 #define SERVER_PORT 6000
 
 SOCKET s;
-
+Usuario user;
 
 int main(int argc, char *argv[]) {
 

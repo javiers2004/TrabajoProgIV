@@ -80,10 +80,10 @@ void registro(Usuario *user) {
         sleep(3);
         //system("cls || clear");
         printf("Registrando usuario.");
-        std::strcpy((*user).nombre, nombre);
-        std::strcpy((*user).contrasena, contrasena);
-        std::strcpy((*user).email, email);
-        std::strcpy((*user).telefono, telefono);
+        user->nombre = nombre;
+        user->contrasena = contrasena;
+        user->email = email;
+        user->telefono = telefono;
 
 
         time_t tiempo;

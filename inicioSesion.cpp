@@ -78,9 +78,7 @@ Usuario* leerUsuario(const char* nombre) {
 	strcpy(sendBuff, strcat(code, nombre));
     strcat(sendBuff, ";");
     send(s, sendBuff, strlen(sendBuff), 0);
-    printf("%s\n", sendBuff);
 	recv(s, recvBuff, sizeof(recvBuff), 0);
-    printf("%s", recvBuff);
 
     Usuario *u = new Usuario();
 
@@ -140,7 +138,6 @@ Usuario* leerUsuario(const char* nombre) {
 
     u->id = id[0] - '0';
 
-    
 
     u->nombre = nombreUsuario;
     u->contrasena = contrasena;

@@ -41,6 +41,7 @@ void showMainMenu(Usuario *user) {
         int n;
         char id[100];
         printf("Hola, %s\n", (*user).nombre); 
+        user = leerUsuario(user->nombre);
         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
         if(strcmp(user->nombre, "admin") == 0) {
             printf(" \n-OPCIONES DE ADMINISTRADOR-\n 6.Borrar usuario\n 7.Borrar discusion\n 8.Borrar comentario\n");
@@ -57,7 +58,7 @@ void showMainMenu(Usuario *user) {
                 desplegarDiscusiones(user);
                 break;
             case '3':
-                crearDiscusion(user);
+                crearDiscusion(user, user->nombre);
                 break;
             case '4':
                 contarComentariosPorUsuario(*user, obtenerLineaPorNumero(8));
