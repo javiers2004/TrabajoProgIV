@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cstring>
 extern SOCKET s;
+extern char* nombreU;
 
 // inicioSesion(Usuario *user): función llamada por inicioSesionoRegistro(Usuario *user)(opción 1), se encarga de pedir el nombre y la
 // contraseña para el correcto inicio de sesión. Cuando introduces el nombre comprueba que está en la base de datos (si no está 
@@ -62,6 +63,7 @@ void cerrarSesion(Usuario *user) {
     (*user).contrasena = NULL;
     (*user).email = NULL;
     (*user).telefono = NULL;
+    nombreU = NULL;
     printf("Sesion cerrada con exito\n");
     sleep(2);
     system("cls || clear");
@@ -138,7 +140,7 @@ Usuario* leerUsuario(const char* nombre) {
 
     u->id = id[0] - '0';
 
-
+    nombreU = u->nombre;
     u->nombre = nombreUsuario;
     u->contrasena = contrasena;
     u->email = email;

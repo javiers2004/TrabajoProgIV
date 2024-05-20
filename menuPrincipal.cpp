@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <winsock2.h>
 
+extern char* nombreU;
 
 // showMainMenu(Usuario *user): despliega el menú principal, que en función de si ya está dentro de un usuario, se encarga de 
 // mostrar unas opciones u otras. Y además lee la entrada por teclado y en función de la opción seleccionada, se encarga de
@@ -41,7 +42,7 @@ void showMainMenu(Usuario *user) {
     else {
         int n;
         char id[100];
-        printf("Hola, %s\n", (*user).nombre); 
+        printf("Hola, %s\n", nombreU); 
         user = leerUsuario(user->nombre);
         printf(" 1.Cerrar sesion \n 2.Buscar una discusion \n 3.Crear nueva discusion \n 4.Mostrar estadisticas \n 5.Mostrar informacion de usuario \n");
         if(strcmp(user->nombre, "admin") == 0) {
