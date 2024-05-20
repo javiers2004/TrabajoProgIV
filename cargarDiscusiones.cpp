@@ -142,6 +142,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
         cargarSeleccion(linea, user);
     }
     else {
+        free(com)
         system("cls || clear");
         showMainMenu(user);
     }
@@ -204,7 +205,38 @@ Discusion* leerDiscusiones() {
 }
 // imprimirComentarios(char* IDConversacion): función que recive un char* lo convierte a int y imprime por pantalla todos los
 // comentarios de la conversación con dicho ID.
-void imprimirComentarios(char* IDConversacion) {
-    
-}
 
+
+void imprimirComentarios(char* IDConversacion) {
+    char sendBuff[512], recvBuff[4096];  // Increased recvBuff size to handle more data
+    char code[] = "LEERCOMENTARIOS:";
+    snprintf(sendBuff, sizeof(sendBuff), "%s%s", code, IDConversacion);
+
+    send(s, sendBuff, strlen(sendBuff), 0);
+    int bytesRecibidos = recv(s, recvBuff, sizeof(recvBuff), 0);
+
+    if (bytesRecibidos > 0) {
+        recvBuff[bytesRecibidos] = '\0'; // Null-terminar el buffer recibido
+        printf("Comentarios:\n");
+
+        char* token = strtok(recvBuff, ";");
+        while (token != NULL) {
+            printf("ID: %s\n", token);
+            token = strtok(NULL, ";");
+            if (token != NULL) {
+                printf("Creador: %s\n", token);
+                token = strtok(NULL, ";");
+            }
+            if (token != NULL) {
+                printf("Texto: %s\n", token);
+                token = strtok(NULL, ";");
+            }
+            if (token != NULL) {
+                printf("Fecha: %s\n\n", token);
+                token = strtok(NULL, ";");
+            }
+        }
+    } else {
+        printf("No se recibieron comentarios.\n");
+    }
+}
