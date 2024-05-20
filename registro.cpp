@@ -81,7 +81,7 @@ void registro(Usuario *user) {
         sleep(3);
         //system("cls || clear");
         printf("Registrando usuario.");
-        nombreU = nombre;
+        strcpy(nombreU, nombre);
         user->nombre = nombre;
         user->contrasena = contrasena;
         user->email = email;

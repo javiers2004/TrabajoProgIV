@@ -204,6 +204,7 @@ void contrasenaRecursiva(Usuario *user, int intentos, char* nombre) {
         sleep(1);
         system("cls || clear");
         printf("Sesion iniciada con exito\n");
+        nombreU = nombre;
         sleep(2);
         system("cls || clear");
         showMainMenu(user);
