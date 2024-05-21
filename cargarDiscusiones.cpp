@@ -29,20 +29,20 @@ void desplegarDiscusiones(Usuario *user) {
     printf("Recopilando discusiones...");
     sleep(1);
     Discusion *discusiones = leerDiscusiones();
-    system("cls || clear");
+    //system("cls || clear");
     if (discusiones == NULL) {          // por si acaso no hubiera ninguna discusión
         printf("No hay discusiones para desplegar.\n");
         return;
     }
 
-    printf("SELECCIONA LA DISCUSION A LA QUE DESEAS ACCEDER:\n");       //aquí te printea todas las referencias posibles
-    for (int i = 0; i<obtenerIdMaximoDiscusiones(); i++) {
-        printf("-----------------------------------------------------------------------------------------------------\n");
-        printf("%i . %s\n        creada por %s el %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].creador->nombre, discusiones[i].fechaCreacion);
-    }
+    //printf("SELECCIONA LA DISCUSION A LA QUE DESEAS ACCEDER:\n");       //aquí te printea todas las referencias posibles
+   // for (int i = 0; i<obtenerIdMaximoDiscusiones(); i++) {
+        // printf("-----------------------------------------------------------------------------------------------------\n");
+        // printf("%i . %s\n        creada por %s el %s\n",discusiones[i].id, discusiones[i].nombre, discusiones[i].creador->nombre, discusiones[i].fechaCreacion);
+    //}
 
-    printf("-----------------------------------------------------------------------------------------------------\n \n\n");
-    printf("Pulsa ENTER para volver al menu principal\n");
+    // printf("-----------------------------------------------------------------------------------------------------\n \n\n");
+    // printf("Pulsa ENTER para volver al menu principal\n");
     char linea[10];             // para leer la selección
 	fgets(linea, 10, stdin);
     if(linea[0] == '\n') {
@@ -112,7 +112,7 @@ void cargarSeleccion(char* linea, Usuario *user) {
 
     system("cls || clear");
     printf("Discusion seleccionada: %s\n", disc_num->nombre);
-    printf("Creada por: %s\n", disc_num->creador->nombre);
+    //printf("Creada por: %s\n", disc_num->creador->nombre);
     printf("Fecha de creacion: %s\n", disc_num->fechaCreacion);
     printf("-----------------------------------------------------------------------------------------------------\n");
     printf("COMENTARIOS:\n");
@@ -158,18 +158,47 @@ Discusion* leerDiscusiones() {
     send(s, sendBuff, strlen(sendBuff), 0);
     recv(s, recvBuff, sizeof(recvBuff), 0);
 
-    int numDiscusiones = obtenerIdMaximoDiscusiones();
-    Discusion* discusiones = new Discusion[numDiscusiones];
-    int i = 0, j = 0, discIndex = 0;
 
-    while (recvBuff[i] != '\0') {
+    int numDiscusiones = obtenerIdMaximoDiscusiones();
+    Discusion *discusiones = new Discusion[numDiscusiones];
+    int i = 0, j = 0, discIndex = 0;
+    printf("\nSELECCIONA LA DISCUSION A LA QUE DESEAS ACCEDER:\n");       //aquí te printea todas las referencias posibles
+
+    while (discIndex <= numDiscusiones-1) {
+        Discusion *d1 = new Discusion();
+
         char temp[256];
 
         while (recvBuff[i] != ';') {
             temp[j++] = recvBuff[i++];
+            //printf("%c", temp[j]);
         }
         temp[j] = '\0';
-        discusiones[discIndex].id = atoi(temp);
+        d1->id = atoi(temp);
+        i++;
+        j = 0;
+        char name[20];
+        while (recvBuff[i] != ';') {
+
+            name[j++] = recvBuff[i++];
+
+        }
+        name[j] = '\0';
+        //strcpy(d1->nombre, temp);
+        d1->nombre = name;
+        i++;
+        
+
+        j = 0;
+        char cr[20];
+        while (recvBuff[i] != ';') {
+            cr[j++] = recvBuff[i++];
+                    
+        }
+
+        cr[j] = '\0';
+        d1->creador = new Usuario();
+        //strcpy(d1->creador->nombre, cr);
         i++;
         j = 0;
 
@@ -177,29 +206,20 @@ Discusion* leerDiscusiones() {
             temp[j++] = recvBuff[i++];
         }
         temp[j] = '\0';
-        discusiones[discIndex].nombre = strdup(temp);
+        //discusiones[discIndex].fechaCreacion = strdup(temp);
+        //strcpy(d1->fechaCreacion, temp);
         i++;
         j = 0;
-
-        while (recvBuff[i] != ';') {
-            temp[j++] = recvBuff[i++];
-        }
-        temp[j] = '\0';
-        discusiones[discIndex].creador = new Usuario();
-        discusiones[discIndex].creador->nombre = strdup(temp);
-        i++;
-        j = 0;
-
-        while (recvBuff[i] != ';') {
-            temp[j++] = recvBuff[i++];
-        }
-        temp[j] = '\0';
-        discusiones[discIndex].fechaCreacion = strdup(temp);
-        i++;
-        j = 0;
+        discusiones[discIndex] = *d1;
+        printf("\n%i. %s creada por %s el %s\n", discIndex, name, cr, temp);   
+        printf("-----------------------------------------------------------------------------------------------------\n");
 
         discIndex++;
+
+        //printf("%s\n", discusiones[i].nombre);
     }
+    printf("-----------------------------------------------------------------------------------------------------\n \n\n");
+    printf("Pulsa ENTER para volver al menu principal\n");
     return discusiones;   
     
 }
@@ -215,20 +235,21 @@ void imprimirComentarios(char* IDConversacion) {
     send(s, sendBuff, strlen(sendBuff), 0);
     int bytesRecibidos = recv(s, recvBuff, sizeof(recvBuff), 0);
 
+    //printf("%s", recvBuff);
     if (bytesRecibidos > 0) {
         recvBuff[bytesRecibidos] = '\0'; // Null-terminar el buffer recibido
-        printf("Comentarios:\n");
+        //printf("Comentarios:\n");
 
         char* token = strtok(recvBuff, ";");
         while (token != NULL) {
             printf("ID: %s\n", token);
             token = strtok(NULL, ";");
             if (token != NULL) {
-                printf("Creador: %s\n", token);
+                printf("Texto: %s\n", token);
                 token = strtok(NULL, ";");
             }
             if (token != NULL) {
-                printf("Texto: %s\n", token);
+                printf("Creador: %s\n", token);
                 token = strtok(NULL, ";");
             }
             if (token != NULL) {

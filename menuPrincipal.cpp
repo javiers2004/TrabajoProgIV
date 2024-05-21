@@ -72,7 +72,7 @@ void showMainMenu(Usuario *user) {
                 imprimirInfoUsuario(user);
                 break;
             case '6':
-                if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {
+                if(strcmp(nombreU, obtenerLineaPorNumero(2)) == 0) {
                     system("cls || clear");
                     printf("ID del usuario:\n");
 	                fgets(id, 100, stdin);
@@ -83,7 +83,7 @@ void showMainMenu(Usuario *user) {
                 }
                 break;  
             case '7':
-                if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {
+                if(strcmp(nombreU, obtenerLineaPorNumero(2)) == 0) {
                     system("cls || clear");
                     printf("ID de la discusion\n");
 	                fgets(id, 100, stdin);
@@ -94,7 +94,7 @@ void showMainMenu(Usuario *user) {
                 }
                 break;
             case '8':
-                if(strcmp(user->nombre, obtenerLineaPorNumero(2)) == 0) {   
+                if(strcmp(nombreU, obtenerLineaPorNumero(2)) == 0) {   
                     system("cls || clear");
                     printf("ID del comentario\n");
 	                fgets(id, 100, stdin);

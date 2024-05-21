@@ -12,7 +12,7 @@ void imprimirInfoUsuario(Usuario *user) {
     printf("| Nombre:        %s\n", user->nombre);
     printf("| Email:         %s\n", user->email);
     printf("| Telefono:      %s\n", user->telefono);
-    printf("| Fecha Creacion:%s\n", user->fechaCreacion);
+    // printf("| Fecha Creacion:%s\n", user->fechaCreacion);
     printf("|______________________________________________________________|\n \n");
 
     printf("Pulsa ENTER para continuar.");
